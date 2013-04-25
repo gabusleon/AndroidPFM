@@ -16,7 +16,6 @@
 
 package com.google.zxing.client.android;
 
-import com.example.zxingprueba.R;
 
 import android.app.Activity;
 import android.content.Context;
@@ -29,6 +28,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.IOException;
+
+import pfm.android.R;
 
 /**
  * Manages beeps and vibrations for {@link CaptureActivity}.

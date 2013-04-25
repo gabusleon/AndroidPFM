@@ -16,7 +16,6 @@
 
 package com.google.zxing.client.android.book;
 
-import com.example.zxingprueba.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +23,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import java.util.List;
+
+import pfm.android.R;
 
 
 /**

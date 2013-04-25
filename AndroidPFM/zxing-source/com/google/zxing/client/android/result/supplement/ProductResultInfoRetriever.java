@@ -20,7 +20,6 @@ import android.content.Context;
 import android.text.Html;
 import android.widget.TextView;
 import com.google.zxing.client.android.HttpHelper;
-import com.example.zxingprueba.R;
 import com.google.zxing.client.android.history.HistoryManager;
 import com.google.zxing.client.android.LocaleManager;
 
@@ -28,6 +27,8 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import pfm.android.R;
 
 final class ProductResultInfoRetriever extends SupplementalInfoRetriever {
 

@@ -24,11 +24,12 @@ import android.content.Context;
 import android.widget.TextView;
 import com.google.zxing.client.android.HttpHelper;
 import com.google.zxing.client.android.LocaleManager;
-import com.example.zxingprueba.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
+import pfm.android.R;
 
 import com.google.zxing.client.android.history.HistoryManager;
 

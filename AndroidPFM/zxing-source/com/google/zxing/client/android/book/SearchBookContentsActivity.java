@@ -16,7 +16,6 @@
 
 package com.google.zxing.client.android.book;
 
-import com.example.zxingprueba.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -35,6 +34,8 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import pfm.android.R;
 
 import java.io.IOException;
 import java.util.ArrayList;

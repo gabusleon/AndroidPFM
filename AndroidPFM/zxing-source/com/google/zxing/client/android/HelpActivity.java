@@ -16,7 +16,7 @@
 
 package com.google.zxing.client.android;
 
-import com.example.zxingprueba.R;
+import pfm.android.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;

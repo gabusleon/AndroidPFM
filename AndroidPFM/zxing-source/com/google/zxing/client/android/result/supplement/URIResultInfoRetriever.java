@@ -20,12 +20,13 @@ import android.content.Context;
 import android.widget.TextView;
 import com.google.zxing.client.android.HttpHelper;
 import com.google.zxing.client.android.history.HistoryManager;
-import com.example.zxingprueba.R;
 import com.google.zxing.client.result.URIParsedResult;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import pfm.android.R;
 
 final class URIResultInfoRetriever extends SupplementalInfoRetriever {
 

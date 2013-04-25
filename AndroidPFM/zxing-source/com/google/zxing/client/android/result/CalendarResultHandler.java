@@ -18,7 +18,6 @@ package com.google.zxing.client.android.result;
 
 import android.content.ActivityNotFoundException;
 import android.util.Log;
-import com.example.zxingprueba.R;
 import com.google.zxing.client.result.CalendarParsedResult;
 import com.google.zxing.client.result.ParsedResult;
 
@@ -27,6 +26,8 @@ import android.content.Intent;
 
 import java.text.DateFormat;
 import java.util.Date;
+
+import pfm.android.R;
 
 /**
  * Handles calendar entries encoded in QR Codes.

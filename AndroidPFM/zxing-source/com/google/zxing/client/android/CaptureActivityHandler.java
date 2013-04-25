@@ -16,7 +16,6 @@
 
 package com.google.zxing.client.android;
 
-import com.example.zxingprueba.R;
 import android.content.ActivityNotFoundException;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -35,6 +34,8 @@ import android.os.Message;
 import android.util.Log;
 
 import java.util.Collection;
+
+import pfm.android.R;
 
 /**
  * This class handles all the messaging which comprises the state machine for capture.

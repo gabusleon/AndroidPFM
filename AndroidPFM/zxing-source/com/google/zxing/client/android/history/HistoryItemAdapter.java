@@ -25,9 +25,10 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.zxing.Result;
-import com.example.zxingprueba.R;
 
 import java.util.ArrayList;
+
+import pfm.android.R;
 
 final class HistoryItemAdapter extends ArrayAdapter<HistoryItem> {
 

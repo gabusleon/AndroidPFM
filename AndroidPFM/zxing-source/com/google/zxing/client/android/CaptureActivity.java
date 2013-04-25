@@ -16,7 +16,6 @@
 
 package com.google.zxing.client.android;
 
-import com.example.zxingprueba.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.google.zxing.ResultMetadataType;
@@ -72,6 +71,8 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
+
+import pfm.android.R;
 
 /**
  * This activity opens the camera and does the actual scanning on a background

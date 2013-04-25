@@ -16,7 +16,6 @@
 
 package com.google.zxing.client.android;
 
-import com.example.zxingprueba.R;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
@@ -26,6 +25,8 @@ import android.preference.PreferenceScreen;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import pfm.android.R;
 
 /**
  * The main settings activity.

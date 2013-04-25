@@ -24,7 +24,6 @@ import com.google.zxing.Result;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.android.Contents;
 import com.google.zxing.client.android.Intents;
-import com.example.zxingprueba.R;
 import com.google.zxing.client.result.AddressBookParsedResult;
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.ResultParser;
@@ -47,6 +46,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
+
+import pfm.android.R;
 
 /**
  * This class does the work of decoding the user's request and extracting all the data

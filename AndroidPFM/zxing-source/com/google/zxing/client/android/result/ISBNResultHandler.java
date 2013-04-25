@@ -16,8 +16,9 @@
 
 package com.google.zxing.client.android.result;
 
+import pfm.android.R;
+
 import com.google.zxing.Result;
-import com.example.zxingprueba.R;
 import com.google.zxing.client.result.ISBNParsedResult;
 import com.google.zxing.client.result.ParsedResult;
 

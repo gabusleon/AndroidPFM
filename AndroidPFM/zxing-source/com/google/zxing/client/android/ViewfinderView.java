@@ -16,7 +16,6 @@
 
 package com.google.zxing.client.android;
 
-import com.example.zxingprueba.R;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.camera.CameraManager;
 
@@ -31,6 +30,8 @@ import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pfm.android.R;
 
 /**
  * This view is overlaid on top of the camera preview. It adds the viewfinder rectangle and partial

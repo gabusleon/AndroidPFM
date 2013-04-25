@@ -16,7 +16,7 @@
 
 package com.google.zxing.client.android.share;
 
-import com.example.zxingprueba.R;
+import pfm.android.R;
 
 import android.content.Context;
 import android.database.Cursor;

@@ -16,7 +16,6 @@
 
 package com.google.zxing.client.android;
 
-import com.example.zxingprueba.R;
 import android.graphics.Bitmap;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
@@ -34,6 +33,8 @@ import android.os.Message;
 import android.util.Log;
 
 import java.util.Map;
+
+import pfm.android.R;
 
 final class DecodeHandler extends Handler {
 

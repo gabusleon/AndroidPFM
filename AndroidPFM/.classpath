@@ -5,7 +5,5 @@
 	<classpathentry kind="src" path="zxing-source"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="lib" path="libs/core.jar"/>
-	<classpathentry kind="lib" path="libs/pfm-entidades-1.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

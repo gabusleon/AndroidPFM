@@ -23,7 +23,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.android.Contents;
 import com.google.zxing.client.android.FinishListener;
 import com.google.zxing.client.android.Intents;
-import com.example.zxingprueba.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -43,6 +42,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.regex.Pattern;
+
+import pfm.android.R;
 
 /**
  * This class encodes data from an Intent into a QR code, and then displays it full screen so that

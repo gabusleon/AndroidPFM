@@ -11,14 +11,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/etiquetaMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"            
             android:text="@string/inicio_sesion"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFF"
@@ -31,14 +31,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayout1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="58dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="left"            
             android:text="@string/usuario"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFF"
@@ -51,14 +51,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/linearLayout2"
+        android:layout_marginTop="20dp"
         android:orientation="vertical" >
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/username"
             android:layout_width="203dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="14dp"
+            android:layout_gravity="center"            
             android:background="#FFF"
             android:ems="10"
             android:inputType="text" >
@@ -68,6 +68,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -79,25 +80,27 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contrasenia"
+            android:text="@string/contrasenia"            
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFF"
             android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout4"
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:layout_below="@+id/linearLayout4"
+        android:layout_marginTop="20dp"
         android:orientation="vertical" >
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/password"
             android:layout_width="203dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center"            
             android:background="#FFF"
             android:ems="10"
             android:inputType="textPassword" />
@@ -107,12 +110,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/linearLayout4"
-        android:layout_marginTop="28dp"
+        android:layout_below="@+id/linearLayout5"
+        android:layout_marginTop="20dp"
         android:orientation="vertical" >
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/btn_aceptar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -16,11 +16,11 @@
 
 package com.google.zxing.client.android.share;
 
+import pfm.android.R;
 import android.provider.ContactsContract;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.android.Contents;
 import com.google.zxing.client.android.Intents;
-import com.example.zxingprueba.R;
 
 import android.app.Activity;
 import android.content.ContentResolver;
