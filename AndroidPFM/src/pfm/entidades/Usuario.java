@@ -5,14 +5,12 @@ import java.lang.String;
 import java.util.Date;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Entity implementation class for Entity: Usuario
  * 
  */
 
-@XmlRootElement
 public class Usuario implements Serializable {
 
 	private int id;
