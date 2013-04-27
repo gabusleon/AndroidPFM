@@ -1,11 +1,11 @@
 package pfm.android.dao;
 
 public interface GenericDAO<T, ID> {
-	public boolean create(T entity);
+	public boolean create(String[] atributos, String[] values);
 
-	public T readXML(ID id);
+	public String read(ID id);
 
-	public boolean update(T entity);
+	public boolean update(String[] atributos, String[] values);
 
 	public boolean deleteById(ID id);
 

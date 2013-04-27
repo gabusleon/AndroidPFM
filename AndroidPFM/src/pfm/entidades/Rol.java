@@ -3,10 +3,15 @@ package pfm.entidades;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+
 /**
  * Entity implementation class for Entity: UsuarioRol
  * 
  */
+
+@XmlRootElement
 public class Rol implements Serializable {
 
 	private int id;

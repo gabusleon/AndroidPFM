@@ -1,8 +1,14 @@
 package pfm.android.jpa;
 
-import javax.ws.rs.core.MediaType;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 
-import com.sun.jersey.api.client.ClientResponse;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
+
+import android.util.Log;
 
 import pfm.android.dao.UsuarioDAO;
 import pfm.entidades.Usuario;
@@ -15,31 +21,23 @@ public class JPAUsuarioDAO extends JPAGenericDAO<Usuario, Integer> implements
 	}
 
 	@Override
-	public Usuario login(String username, String password) {
-		try {
-			this.setWr(this.getWr().path("/login/" + username + "/" + password));
-			Usuario responseUser = this.getWr()
-					.accept(MediaType.APPLICATION_XML).get(this.getClaseREST());
-			return responseUser;
-		} catch (Exception ex) {
-			return null;
-		}
-	}
+	public String login(String username, String password) {
 
-	@Override
-	public boolean registroUsuario(Usuario usuario) {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet del = new HttpGet(this.uri + this.urlREST + "/login/" + username
+				+ "/" + password);
+		del.setHeader("content-type", "application/json");
+
 		try {
-			ClientResponse response = this.getWr().path("/registro")
-					.type(MediaType.APPLICATION_XML)
-					.post(ClientResponse.class, usuario);
-			if (response.getStatus() == 200
-					&& !response.getEntity(String.class).equals("-1"))
-				return true;
-			else
-				return false;
+			HttpResponse resp = httpClient.execute(del);
+			String respStr = EntityUtils.toString(resp.getEntity());
+
+			JSONObject respJSON = new JSONObject(respStr);
+
+			return (String) respJSON.get("id");
 		} catch (Exception ex) {
-			System.out.println(ex.getMessage().toString());
-			return false;
+			Log.e("Error", "JPAUsuarioDAO <<login>>", ex);
+			return "error";
 		}
 	}
 

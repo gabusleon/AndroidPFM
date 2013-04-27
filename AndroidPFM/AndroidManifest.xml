@@ -1,9 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pfm.android"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -24,7 +26,11 @@
         </activity>
         <activity
             android:name="com.google.zxing.client.android.CaptureActivity"
-            android:label="ZXing" />    
+            android:label="ZXing" />
+        <activity
+            android:name="pfm.android.login.NuevoUsuarioActivity"
+            android:label="@string/title_activity_nuevo_usuario" >
+        </activity>
     </application>
 
 </manifest>
