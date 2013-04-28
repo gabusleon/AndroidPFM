@@ -116,20 +116,56 @@
         android:layout_marginTop="20dp"
         android:orientation="vertical" >
 
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/agencia"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFF"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/linearLayout6"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical" >
+
+        <Spinner
+            android:id="@+id/agencias"
+            android:layout_width="203dp"
+            android:layout_height="33dp"
+            android:layout_gravity="center"
+            android:background="#FFF"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/linearLayout7"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal" >
+
         <Button
             android:id="@+id/btn_aceptar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_height="40dp"
+            android:layout_weight="1"
             android:text="@string/btn_aceptar" />
 
         <Button
             android:id="@+id/btn_nuevo_usuario"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_height="40dp"
+            android:layout_weight="1"
             android:text="@string/btn_nuevo_usuario" />
-
     </LinearLayout>
 
 </RelativeLayout>

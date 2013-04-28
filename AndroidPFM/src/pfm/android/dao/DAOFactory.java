@@ -10,4 +10,6 @@ public abstract class DAOFactory {
 	}
 
 	public abstract UsuarioDAO getUsuarioDAO();
+
+	public abstract AgenciaDAO getAgenciaDAO();
 }

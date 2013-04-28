@@ -141,6 +141,7 @@
     <string name="inicio_sesion">Inicio de sesion</string>
     <string name="usuario">Usuario</string>
     <string name="contrasenia">Contraseña</string>
+    <string name="agencia">Agencia</string>
     <string name="btn_aceptar">Aceptar</string>
     <string name="btn_nuevo_usuario">Nuevo usuario</string>
     <string name="title_activity_nuevo_usuario">Registro de usuario</string>

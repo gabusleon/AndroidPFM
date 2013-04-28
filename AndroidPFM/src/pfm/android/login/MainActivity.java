@@ -8,8 +8,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -22,6 +24,14 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		Spinner spinner = (Spinner) findViewById(R.id.agencias);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+				MainActivity.this,
+				android.R.layout.simple_spinner_dropdown_item, JPADAOFactory
+						.getFactory().getAgenciaDAO().listAgencias());
+
+		spinner.setAdapter(adapter);
 
 		// obtiene los parametros de username y password
 		username = (EditText) findViewById(R.id.username);
@@ -47,6 +57,7 @@ public class MainActivity extends Activity {
 				nuevoUsuario();
 			}
 		});
+
 	}
 
 	@Override
