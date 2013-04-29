@@ -1,5 +1,8 @@
 package pfm.android.jpa;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -8,6 +11,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import pfm.android.dao.AgenciaDAO;
 import pfm.entidades.Agencia;
@@ -16,12 +20,13 @@ public class JPAAgenciaDAO extends JPAGenericDAO<Agencia, Integer> implements
 		AgenciaDAO {
 
 	public JPAAgenciaDAO() {
-		super(Agencia.class, "autenticacion");
+		super(Agencia.class, "agencia");
 
 	}
 
+	@SuppressLint("UseSparseArrays")
 	@Override
-	public String[] listAgencias() {
+	public Map<Integer, String> listAgencias() {
 
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet del = new HttpGet(this.uri + this.urlREST + "/listAgencias");
@@ -33,16 +38,16 @@ public class JPAAgenciaDAO extends JPAGenericDAO<Agencia, Integer> implements
 
 			JSONObject objJSON = new JSONObject(respStr);
 			JSONArray arrJSON = objJSON.getJSONArray("agencia");
-			String[] agencias = new String[arrJSON.length()];
+			Map<Integer, String> lista = new HashMap<Integer, String>();
 
 			for (int i = 0; i < arrJSON.length(); i++) {
 				JSONObject obj = arrJSON.getJSONObject(i);
-				String nombre = obj.getString("nombre");
-
-				agencias[i] = nombre;
+				int key = obj.getInt("id");
+				String value = obj.getString("nombre");
+				lista.put(key, value);
 			}
 
-			return agencias;
+			return lista;
 		} catch (Exception ex) {
 			Log.e("Error", "JPAAgenciaDAO <<listAgencias>>", ex);
 			return null;

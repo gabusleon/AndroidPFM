@@ -1,12 +1,22 @@
 package pfm.android.login;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import java.util.List;
+import java.util.Map;
+
 import pfm.android.R;
 import pfm.android.jpa.JPADAOFactory;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -14,10 +24,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+@SuppressLint("UseSparseArrays")
 public class MainActivity extends Activity {
 
 	private EditText username;
 	private EditText password;
+	private Spinner agencia;
+	private Map<Integer, String> mapaAgencias = new HashMap<Integer, String>();
+	private List<String> listaAgencias = new ArrayList<String>();
 	private final int REQUEST_ACTIVITY = 1;
 
 	@Override
@@ -25,17 +39,13 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		Spinner spinner = (Spinner) findViewById(R.id.agencias);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-				MainActivity.this,
-				android.R.layout.simple_spinner_dropdown_item, JPADAOFactory
-						.getFactory().getAgenciaDAO().listAgencias());
-
-		spinner.setAdapter(adapter);
+		// llama a tarea asincrona para rellenar el spinner
+		new ListaAgenciasTask(MainActivity.this).execute();
 
 		// obtiene los parametros de username y password
 		username = (EditText) findViewById(R.id.username);
 		password = (EditText) findViewById(R.id.password);
+
 		// obtiene los botones
 		Button btnAceptar = (Button) findViewById(R.id.btn_aceptar);
 		Button btnNuevoUsuario = (Button) findViewById(R.id.btn_nuevo_usuario);
@@ -60,25 +70,131 @@ public class MainActivity extends Activity {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
+	private class ListaAgenciasTask extends
+			AsyncTask<Void, Void, Map<Integer, String>> {
+		ProgressDialog pDialog;
+		Context context;
+
+		public ListaAgenciasTask(Context context) {
+			this.context = context;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			// Genera un dialogo de espera mientras realiza la tarea asincrona
+			pDialog = new ProgressDialog(context);
+			pDialog.setMessage("Cargando Agencias...");
+			pDialog.setCancelable(true);
+			pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			pDialog.show();
+		}
+
+		@Override
+		protected Map<Integer, String> doInBackground(Void... params) {
+			// obtiene el id, nombre de las agencias a traves del servicio REST
+			mapaAgencias = JPADAOFactory.getFactory().getAgenciaDAO()
+					.listAgencias();
+			return mapaAgencias;
+		}
+
+		@Override
+		protected void onPostExecute(Map<Integer, String> result) {
+			super.onPostExecute(result);
+			// Genera el spinner a partir de las agencias obtenidas
+			agencia = (Spinner) findViewById(R.id.agencias);
+
+			for (String value : result.values()) {
+				listaAgencias.add(value);
+			}
+
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+					android.R.layout.simple_spinner_dropdown_item,
+					listaAgencias);
+
+			agencia.setAdapter(adapter);
+			pDialog.dismiss();
+
+		}
+	}
+
+	private class LoginTask extends AsyncTask<Void, Void, String> {
+		ProgressDialog pDialog;
+		Context context;
+
+		public LoginTask(Context context) {
+			this.context = context;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			// Genera un dialogo de espera mientras realiza la tarea asincrona
+			pDialog = new ProgressDialog(context);
+			pDialog.setMessage("Comprobando Credenciales...");
+			pDialog.setCancelable(true);
+			pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			pDialog.show();
+		}
+
+		@Override
+		protected String doInBackground(Void... params) {
+			// verifica el usuario y contrasena ingresados a traves del servicio
+			// REST
+			// envia como resultado el id de la agencia
+			String id = "-1";
+			String respuesta = JPADAOFactory
+					.getFactory()
+					.getUsuarioDAO()
+					.login(username.getText().toString(),
+							password.getText().toString());
+			if (respuesta != "error") {
+				// se ha logeado correctamente y
+				// obtiene id de la agencia seleccionada a partir del
+				// mapaAgencias
+
+				Iterator<Map.Entry<Integer, String>> entries = mapaAgencias
+						.entrySet().iterator();
+				while (entries.hasNext()) {
+					Map.Entry<Integer, String> entry = entries.next();
+					if (entry.getValue().equals(
+							agencia.getSelectedItem().toString()))
+						id = String.valueOf(entry.getKey());
+				}
+
+			}
+			return id;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			if (result != "-1") {
+				Toast.makeText(context,
+						"Bienvenido: " + username.getText().toString(),
+						Toast.LENGTH_SHORT).show();
+				// AQUI DEBE IR EL CODIGO DEL INTENT A LA PANTALLA SIGUIENTE
+				// AGREGANDO COMO PARAMETRO "RESULT"
+			} else {
+				Toast.makeText(context, "Inicio de sesion incorrecto",
+						Toast.LENGTH_SHORT).show();
+			}
+			pDialog.dismiss();
+
+		}
+
 	}
 
 	public void login() {
-		String respuesta = JPADAOFactory
-				.getFactory()
-				.getUsuarioDAO()
-				.login(username.getText().toString(),
-						password.getText().toString());
-		if (respuesta != "error") {
-			// se ha logeado correctamente
-			Toast.makeText(this,
-					"Bienvenido: " + username.getText().toString(),
-					Toast.LENGTH_SHORT).show();
+
+		// validar que ingresa datos correctos
+		if (!password.getText().toString().isEmpty()
+				&& !username.getText().toString().isEmpty()) {
+
+			new LoginTask(this).execute();
+
 		} else {
-			Toast.makeText(this, "Inicio de sesion incorrecto",
+			Toast.makeText(this, "No ha ingresado los datos necesarios",
 					Toast.LENGTH_SHORT).show();
 		}
 	}
@@ -103,12 +219,6 @@ public class MainActivity extends Activity {
 			}
 		}
 	}
-
-	/*
-	 * PARA INICIALIZAR EL LECTOR DE COPDIGO QR public void onClick(View view) {
-	 * Intent intent = new Intent(getApplicationContext(),
-	 * CaptureActivity.class); startActivity(intent); }
-	 */
 
 	@Override
 	public void onBackPressed() {

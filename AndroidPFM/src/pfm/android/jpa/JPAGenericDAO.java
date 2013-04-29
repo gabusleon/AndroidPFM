@@ -17,8 +17,8 @@ import pfm.android.dao.GenericDAO;
 
 public class JPAGenericDAO<T, ID> implements GenericDAO<T, ID> {
 	private Class<T> claseREST;
-	String urlREST;
-	String uri = "http://10.0.2.2:8080/PFM/rest/";
+	protected String urlREST;
+	protected String uri = "http://10.0.2.2:8080/PFM/rest/";
 
 	public JPAGenericDAO(Class<T> claseREST, String urlREST) {
 		this.claseREST = claseREST;
