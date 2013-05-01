@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="textbox" parent="@android:style/TextAppearance.Medium">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">#00FF00</item>
+		<item name="android:typeface">sans</item>
+	</style>
+	<color name="barra">#848484</color>
+	<color name="barraTotales">#3D3D3D</color>
+
+	<style name="mediumText" parent="@android:style/TextAppearance.Medium">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:textColor">#A6A6A6</item>
+		<item name="android:typeface">sans</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_gravity">right</item>
+		<item name="android:textSize">15sp</item>
+		<item name="android:gravity">center_horizontal</item>
+	</style>
+	<style name="itemNombre" parent="@android:style/TextAppearance.Medium">
+		<item name="android:textColor">#595959</item>
+		<item name="android:typeface">sans</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">17dp</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+	<style name="itemSubtotal" parent="@android:style/TextAppearance.Medium">
+		<item name="android:textColor">#595959</item>
+		<item name="android:typeface">sans</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">17dp</item>
+	</style>
+	<style name="itemMinimum" parent="@android:style/TextAppearance.Medium">
+		<item name="android:textColor">#A6A6A6</item>
+		<item name="android:typeface">sans</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">10dp</item>
+	</style>
+	<style name="totalesText" parent="@android:style/TextAppearance.Medium">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:textColor">#FFFF00</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_gravity">right</item>
+		<item name="android:textSize">15dp</item>
+		<item name="android:gravity">center_horizontal</item>
+	</style>
+</resources>

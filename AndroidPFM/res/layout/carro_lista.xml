@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_gravity="right" >
+
+    <TextView
+        android:id="@+id/lblItemNombreCarro"
+        style="@style/itemNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="4dp"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/lblItemTotal"
+        style="@style/itemSubtotal"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="4dp"
+        android:layout_toRightOf="@id/lblItemNombreCarro"
+        android:gravity="right"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/lblItemAgencia"
+        style="@style/itemMinimum"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/lblItemNombreCarro"
+        android:layout_marginLeft="4dp"
+        android:gravity="left"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>

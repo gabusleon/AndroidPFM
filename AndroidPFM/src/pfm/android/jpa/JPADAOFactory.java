@@ -4,6 +4,7 @@ import pfm.android.dao.AgenciaDAO;
 import pfm.android.dao.BodegaDetalleDAO;
 import pfm.android.dao.DAOFactory;
 import pfm.android.dao.DescuentoDAO;
+import pfm.android.dao.FacturaDAO;
 import pfm.android.dao.FacturaDetalleDAO;
 import pfm.android.dao.UsuarioDAO;
 
@@ -32,6 +33,11 @@ public class JPADAOFactory extends DAOFactory {
 	@Override
 	public FacturaDetalleDAO getFacturaDetalleDAO() {
 		return new JPAFacturaDetalleDAO();
+	}
+
+	@Override
+	public FacturaDAO getFacturaDAO() {
+		return new JPAFacturaDAO();
 	}
 
 }

@@ -35,9 +35,11 @@
             android:name="pfm.android.producto.AddProductoActivity"
             android:label="@string/title_activity_add_producto" >
         </activity>
-        <activity
-            android:name="pfm.android.producto.EditProductoActivity"
-            android:label="@string/title_activity_edit_producto" >
+        <activity android:name="pfm.android.compras.Compras"
+            android:label="@string/title_activity_carro" >
+        </activity>
+        <activity android:name="pfm.android.compras.CarrosCompras"
+            android:label="@string/title_activity_carros" >
         </activity>
     </application>
 
