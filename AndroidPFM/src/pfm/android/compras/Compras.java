@@ -4,9 +4,6 @@ import java.util.List;
 import pfm.android.R;
 import pfm.android.jpa.JPADAOFactory;
 import pfm.android.producto.AddProductoActivity;
-import pfm.entidades.Agencia;
-import pfm.entidades.Factura;
-import pfm.entidades.Usuario;
 import pfm.entidades.rest.ItemProducto;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,7 +15,9 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class Compras extends ListActivity {
@@ -32,10 +31,12 @@ public class Compras extends ListActivity {
 	private TextView lblTitulo;
 	private TextView lblAgencia;
 
-	private Agencia agencia;
-	private Usuario usuario;
-	private Factura factura;
-	
+	private int idAgencia;
+	private int idUsuario;
+	private int idFactura;
+	private int idFacturaDetalle;
+	private String nombreAgencia = "FALTA";
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,20 +44,11 @@ public class Compras extends ListActivity {
 		
 		//Recepcion de Parametros
 		Bundle parametros = getIntent().getExtras();
-		this.agencia = (Agencia) parametros.getParcelable("agencia");
-		this.factura = (Factura) parametros.getParcelable("factura");
-		this.usuario = (Usuario) parametros.getParcelable("usuario");
-
-		/*
-		Agencia agencia = new Agencia(1, "Agencia Carlos", "Norte", "2341132", false);
-		SessionData.setAgencia(agencia);
-		Factura factura = new Factura();
-		SessionData.setFactura(factura);
-		Usuario usuario = new Usuario();
-		usuario.setId(3);
-		usuario.setNombres("Carlos");
-		SessionData.setUsuario(usuario);
-		*/
+		this.idAgencia = parametros.getInt("idAgencia");
+		this.idFactura = parametros.getInt("idFactura");
+		Log.i("CINIGUEZ","Id Factura: " + this.idFactura);
+		this.idUsuario = parametros.getInt("idUsuario");
+		this.idFacturaDetalle = parametros.getInt("idFacturaDetalle");
 
 		// llama a tarea asincrona para rellenar el spinner
 		new ListarProductosTask(Compras.this).execute();
@@ -66,7 +58,7 @@ public class Compras extends ListActivity {
 		this.lblTotal.setText("Total: " + 0);
 
 		this.lblAgencia = (TextView) findViewById(R.id.lblAgencia);
-		this.lblAgencia.setText(agencia.getNombre());
+		this.lblAgencia.setText(nombreAgencia);
 
 		this.lblTitulo = (TextView) findViewById(R.id.lblTitulo);
 		this.lblTitulo.setText("Carro de Compras");
@@ -116,17 +108,28 @@ public class Compras extends ListActivity {
 
 			}
 		});
-
+		
+		ListView listView = getListView();
+		listView.setTextFilterEnabled(true);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				final ItemProducto item = (ItemProducto) parent.getItemAtPosition(position);
+				Intent actividad = new Intent(Compras.this, AddProductoActivity.class);
+				actividad.putExtra("idFacturaDetalle", item.getIdFacturaDetalle());
+				startActivity(actividad);
+		}});
+		
 	}
 
 	public void btnConfirmar_onClick() {
-		/*Intent actividad = new Intent(Compras.this, CarrosCompras.class);
-		actividad.putExtra("agencia", this.agencia);
-		actividad.putExtra("factura", this.factura);
-		actividad.putExtra("usuario", this.usuario);
-		startActivity(actividad);
-		*/
-		Log.i("CINIGUEZ", "Boton CONFIRMAR");
+		/*
+		 * Intent actividad = new Intent(Compras.this, CarrosCompras.class);
+		 * actividad.putExtra("agencia", this.agencia);
+		 * actividad.putExtra("factura", this.factura);
+		 * actividad.putExtra("usuario", this.usuario);
+		 * startActivity(actividad);
+		 */
 		//TODO: Confirmar Carro de Compras
 	}
 
@@ -135,7 +138,13 @@ public class Compras extends ListActivity {
 	 * @author Carlos Iniguez
 	 */
 	public void btnAddProducto_onClick() {
-		Intent actividad = new Intent(this, AddProductoActivity.class);
+		Intent actividad = new Intent(Compras.this, AddProductoActivity.class);
+		actividad.putExtra("idAgencia", this.idAgencia);
+		actividad.putExtra("idFactura", this.idAgencia);
+		actividad.putExtra("idUsuario", this.idUsuario);
+		actividad.putExtra("idFactura", this.idFactura);
+		actividad.putExtra("idFacturaDetalle", this.idFacturaDetalle);
+
 		startActivity(actividad);
 	}
 
@@ -153,9 +162,13 @@ public class Compras extends ListActivity {
 	 */
 	public void btnCarros_onClick() {
 		Intent actividad = new Intent(Compras.this, CarrosCompras.class);
-		actividad.putExtra("agencia", this.agencia);
-		actividad.putExtra("factura", this.factura);
-		actividad.putExtra("usuario", this.usuario);
+		actividad.putExtra("idAgencia", this.idAgencia);
+		actividad.putExtra("idFactura", this.idAgencia);
+		actividad.putExtra("idUsuario", this.idUsuario);
+		actividad.putExtra("idFactura", this.idFactura);
+		actividad.putExtra("idFacturaDetalle", this.idFacturaDetalle);
+		actividad.putExtra("nombreAgencia", this.nombreAgencia);
+
 		startActivity(actividad);
 	}
 
@@ -189,7 +202,7 @@ public class Compras extends ListActivity {
 		@Override
 		protected List<ItemProducto> doInBackground(Void... params) {
 			// obtiene la lista de Productos a traves del servicio REST
-			listaProductos = JPADAOFactory.getFactory().getFacturaDAO().getCarroActual(factura.getId());
+			listaProductos = JPADAOFactory.getFactory().getFacturaDAO().getCarroActual(idFactura);
 			if (listaProductos != null) {
 				return listaProductos;
 			} else {

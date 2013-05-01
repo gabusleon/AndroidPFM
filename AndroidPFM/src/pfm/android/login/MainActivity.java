@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import pfm.android.R;
+import pfm.android.compras.CarrosCompras;
+import pfm.android.compras.Compras;
 import pfm.android.jpa.JPADAOFactory;
 import pfm.android.producto.EditProductoActivity;
 
@@ -176,11 +178,11 @@ public class MainActivity extends Activity {
 				// AGREGANDO COMO PARAMETRO "RESULT"
 				// Intent intento = new Intent(context,
 				// AddProductoActivity.class);
-				Intent intento = new Intent(context, EditProductoActivity.class);
+				Intent intento = new Intent(context, Compras.class);
 				// intento.putExtra("idBodegaDetalle", 1);
 				intento.putExtra("idFacturaDetalle", 4);
 				intento.putExtra("idAgencia", idAgencia);
-				intento.putExtra("idFactura", 2);
+				intento.putExtra("idFactura", 3);
 				intento.putExtra("idCliente", result);
 				startActivity(intento);
 			} else {

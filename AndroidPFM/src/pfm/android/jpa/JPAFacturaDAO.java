@@ -38,8 +38,12 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements Fa
 
 				for (int i = 0; i < detallesJSON.length(); i++) {
 					JSONObject productoJSON = detallesJSON.getJSONObject(i);
-					ItemProducto p = new ItemProducto(productoJSON.getInt("idBodegaDetalle"), productoJSON.getString("nombreProducto"),
-							productoJSON.getDouble("subtotal"), productoJSON.getInt("cantidad"), productoJSON.getDouble("precio"));
+					ItemProducto p = new ItemProducto(productoJSON.getInt("idBodegaDetalle"), 
+							productoJSON.getString("nombreProducto"),
+							productoJSON.getDouble("subtotal"), 
+							productoJSON.getInt("cantidad"), 
+							productoJSON.getDouble("precio"),
+							productoJSON.getInt("idFacturaDetalle"));
 					listaProductos.add(p);
 
 				}

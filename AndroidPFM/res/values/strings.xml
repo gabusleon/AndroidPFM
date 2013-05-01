@@ -189,4 +189,5 @@
 	<string name="btnCarros">Pendientes</string>
 	<string name="btnEliminarCarro">Eliminar Carro</string>
 	<string name="noProductos">No hay productos</string>
+	<string name="noCarros">No hay Carros de Compras</string>
 </resources>

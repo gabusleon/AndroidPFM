@@ -3,20 +3,20 @@ package pfm.android.compras;
 import java.util.List;
 import pfm.android.R;
 import pfm.android.jpa.JPADAOFactory;
-import pfm.entidades.Agencia;
-import pfm.entidades.Factura;
-import pfm.entidades.Usuario;
 import pfm.entidades.rest.ItemCarro;
-import pfm.entidades.rest.SessionData;
+import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class CarrosCompras extends ListActivity {
@@ -25,23 +25,24 @@ public class CarrosCompras extends ListActivity {
 	private Button btnCarros;
 	private TextView lblTitulo;
 	private TextView lblAgencia;
-	@SuppressWarnings("unused")
-	private Agencia agencia;
-	@SuppressWarnings("unused")
-	private Usuario usuario;
-	@SuppressWarnings("unused")
-	private Factura factura;
+	private int idAgencia;
+	private int idUsuario;
+	private int idFactura;
+	private int idFacturaDetalle;
+	private String nombreAgencia;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.carros_compras);
-
 		//Recepcion de Parametros
 		Bundle parametros = getIntent().getExtras();
-		this.agencia = (Agencia) parametros.getParcelable("agencia");
-		this.factura = (Factura) parametros.getParcelable("factura");
-		this.usuario = (Usuario) parametros.getParcelable("usuario");
+		this.idAgencia = parametros.getInt("idAgencia");
+		this.idFactura = parametros.getInt("idFactura");
+		this.idUsuario = parametros.getInt("idUsuario");
+		this.idFacturaDetalle = parametros.getInt("idFacturaDetalle");
+		Log.i("CINIGUEZ","Id de Agencia: " + this.idAgencia);
+		this.nombreAgencia = parametros.getString("nombreAgencia");
 
 		// llama a tarea asincrona para rellenar el spinner
 		new ListarCarrosTask(CarrosCompras.this).execute();
@@ -49,7 +50,7 @@ public class CarrosCompras extends ListActivity {
 		//CONTROLES DE LA VISTA
 
 		this.lblAgencia = (TextView) findViewById(R.id.lblAgencia_carros);
-		this.lblAgencia.setText(SessionData.getAgencia().getNombre());
+		this.lblAgencia.setText(this.nombreAgencia);
 
 		this.lblTitulo = (TextView) findViewById(R.id.lblTitulo_carros);
 		this.lblTitulo.setText("Mis Carros Pendientes");
@@ -75,6 +76,24 @@ public class CarrosCompras extends ListActivity {
 			}
 		});
 
+		ListView listView = getListView();
+		listView.setTextFilterEnabled(true);
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				final ItemCarro item = (ItemCarro) parent.getItemAtPosition(position);
+
+				Intent actividad = new Intent(CarrosCompras.this, Compras.class);
+
+				actividad.putExtra("idAgencia", CarrosCompras.this.idAgencia);
+				actividad.putExtra("idFactura", item.getIdFactura());
+				actividad.putExtra("idUsuario", CarrosCompras.this.idUsuario);
+				actividad.putExtra("idFactura", CarrosCompras.this.idFactura);
+				actividad.putExtra("nombreAgencia", CarrosCompras.this.nombreAgencia);
+				startActivity(actividad);
+			}
+		});
+
 	}
 
 	/**
@@ -82,8 +101,15 @@ public class CarrosCompras extends ListActivity {
 	 * @author Carlos Iniguez
 	 */
 	public void btnCarro_onClick() {
-		Intent intento = new Intent(this, Compras.class);
-		startActivity(intento);
+		Intent actividad = new Intent(CarrosCompras.this, Compras.class);
+		actividad.putExtra("idAgencia", this.idAgencia);
+		actividad.putExtra("idFactura", this.idAgencia);
+		actividad.putExtra("idUsuario", this.idUsuario);
+		actividad.putExtra("idFactura", this.idFactura);
+		actividad.putExtra("idFacturaDetalle", this.idFacturaDetalle);
+		actividad.putExtra("nombreAgencia", this.nombreAgencia);
+
+		startActivity(actividad);
 	}
 
 	/**
@@ -100,6 +126,7 @@ public class CarrosCompras extends ListActivity {
 		return true;
 	}
 
+	@SuppressLint("NewApi")
 	private class ListarCarrosTask extends AsyncTask<Void, Void, List<ItemCarro>> {
 		ProgressDialog pDialog;
 		Context context;
@@ -122,7 +149,7 @@ public class CarrosCompras extends ListActivity {
 		@Override
 		protected List<ItemCarro> doInBackground(Void... params) {
 			// obtiene la lista de Productos a traves del servicio REST
-			listaCarros = JPADAOFactory.getFactory().getFacturaDAO().getListaCarros(SessionData.getUsuario().getId(), SessionData.getAgencia().getId());
+			listaCarros = JPADAOFactory.getFactory().getFacturaDAO().getListaCarros(CarrosCompras.this.idUsuario, CarrosCompras.this.idAgencia);
 			if (listaCarros != null) {
 				return listaCarros;
 			} else {
