@@ -9,6 +9,7 @@ import java.util.Map;
 
 import pfm.android.R;
 import pfm.android.jpa.JPADAOFactory;
+import pfm.android.producto.EditProductoActivity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -118,9 +119,10 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	private class LoginTask extends AsyncTask<Void, Void, String> {
+	private class LoginTask extends AsyncTask<Void, Void, Integer> {
 		ProgressDialog pDialog;
 		Context context;
+		int idAgencia;
 
 		public LoginTask(Context context) {
 			this.context = context;
@@ -138,17 +140,22 @@ public class MainActivity extends Activity {
 		}
 
 		@Override
-		protected String doInBackground(Void... params) {
+		protected Integer doInBackground(Void... params) {
 			// verifica el usuario y contrasena ingresados a traves del servicio
 			// REST
 			// envia como resultado el id de la agencia
-			String id = "-1";
-			String respuesta = JPADAOFactory
+			int id = JPADAOFactory
 					.getFactory()
 					.getUsuarioDAO()
 					.login(username.getText().toString(),
 							password.getText().toString());
-			if (respuesta != "error") {
+			return id;
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			super.onPostExecute(result);
+			if (result != 0) {
 				// se ha logeado correctamente y
 				// obtiene id de la agencia seleccionada a partir del
 				// mapaAgencias
@@ -159,22 +166,23 @@ public class MainActivity extends Activity {
 					Map.Entry<Integer, String> entry = entries.next();
 					if (entry.getValue().equals(
 							agencia.getSelectedItem().toString()))
-						id = String.valueOf(entry.getKey());
+						idAgencia = entry.getKey();
 				}
 
-			}
-			return id;
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			super.onPostExecute(result);
-			if (result != "-1") {
 				Toast.makeText(context,
 						"Bienvenido: " + username.getText().toString(),
 						Toast.LENGTH_SHORT).show();
 				// AQUI DEBE IR EL CODIGO DEL INTENT A LA PANTALLA SIGUIENTE
 				// AGREGANDO COMO PARAMETRO "RESULT"
+				// Intent intento = new Intent(context,
+				// AddProductoActivity.class);
+				Intent intento = new Intent(context, EditProductoActivity.class);
+				// intento.putExtra("idBodegaDetalle", 1);
+				intento.putExtra("idFacturaDetalle", 4);
+				intento.putExtra("idAgencia", idAgencia);
+				intento.putExtra("idFactura", 2);
+				intento.putExtra("idCliente", result);
+				startActivity(intento);
 			} else {
 				Toast.makeText(context, "Inicio de sesion incorrecto",
 						Toast.LENGTH_SHORT).show();
@@ -182,7 +190,6 @@ public class MainActivity extends Activity {
 			pDialog.dismiss();
 
 		}
-
 	}
 
 	public void login() {

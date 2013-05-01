@@ -21,11 +21,11 @@ public class JPAUsuarioDAO extends JPAGenericDAO<Usuario, Integer> implements
 	}
 
 	@Override
-	public String login(String username, String password) {
+	public int login(String username, String password) {
 
 		HttpClient httpClient = new DefaultHttpClient();
-		HttpGet del = new HttpGet(this.uri + this.urlREST + "/login/" + username
-				+ "/" + password);
+		HttpGet del = new HttpGet(this.uri + this.urlREST + "/login/"
+				+ username + "/" + password);
 		del.setHeader("content-type", "application/json");
 
 		try {
@@ -34,10 +34,10 @@ public class JPAUsuarioDAO extends JPAGenericDAO<Usuario, Integer> implements
 
 			JSONObject respJSON = new JSONObject(respStr);
 
-			return (String) respJSON.get("id");
+			return respJSON.getInt("id");
 		} catch (Exception ex) {
 			Log.e("Error", "JPAUsuarioDAO <<login>>", ex);
-			return "error";
+			return 0;
 		}
 	}
 

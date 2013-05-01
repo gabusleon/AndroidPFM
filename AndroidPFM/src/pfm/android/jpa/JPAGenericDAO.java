@@ -57,7 +57,7 @@ public class JPAGenericDAO<T, ID> implements GenericDAO<T, ID> {
 	}
 
 	@Override
-	public String read(ID id) {
+	public int read(ID id) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet del = new HttpGet(uri + urlREST + "/read/" + id);
 		del.setHeader("content-type", "application/json");
@@ -66,10 +66,10 @@ public class JPAGenericDAO<T, ID> implements GenericDAO<T, ID> {
 			HttpResponse resp = httpClient.execute(del);
 			String respStr = EntityUtils.toString(resp.getEntity());
 			JSONObject respJSON = new JSONObject(respStr);
-			return (String) respJSON.get("id");
+			return respJSON.getInt("id");
 		} catch (Exception ex) {
 			Log.e("Error", "JPAGenericDAO <<read>>", ex);
-			return "error";
+			return 0;
 		}
 	}
 

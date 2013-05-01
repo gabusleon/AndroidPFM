@@ -35,6 +35,10 @@
             android:name="pfm.android.producto.AddProductoActivity"
             android:label="@string/title_activity_add_producto" >
         </activity>
+        <activity
+            android:name="pfm.android.producto.EditProductoActivity"
+            android:label="@string/title_activity_edit_producto" >
+        </activity>
     </application>
 
 </manifest>

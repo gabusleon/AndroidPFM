@@ -19,7 +19,7 @@
         android:orientation="horizontal" >
 
         <ImageButton
-            android:id="@+id/imageButton1"
+            android:id="@+id/btn_addproducto_cancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/img_cancelar"
@@ -44,308 +44,313 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/btn_addProducto_aceptar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/img_guardar"
             android:src="@android:drawable/ic_menu_add" />
     </LinearLayout>
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_below="@+id/linearLayout1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:background="#797979" >
+        android:layout_marginTop="0dp" >
 
-        <TableRow
-            android:id="@+id/tableRow1"
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="1dp" >
+            android:layout_marginTop="0dp"
+            android:background="#797979" >
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#999999"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="100dp"
-                    android:layout_height="38dp"
-                    android:layout_gravity="center"
-                    android:text="@string/addProducto_nombre"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#FFF"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
+            <TableRow
+                android:id="@+id/tableRow1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#CCCCCC"
-                android:orientation="vertical" >
+                android:layout_margin="1dp" >
 
-                <EditText
-                    android:id="@+id/addProducto_nombre"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#999999"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="100dp"
+                        android:layout_height="38dp"
+                        android:layout_gravity="center"
+                        android:text="@string/addProducto_nombre"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#FFF"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="38dp"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:inputType="text" >
-                </EditText>
-            </LinearLayout>
-        </TableRow>
+                    android:layout_height="wrap_content"
+                    android:background="#CCCCCC"
+                    android:orientation="vertical" >
 
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="1dp" >
+                    <EditText
+                        android:id="@+id/addProducto_nombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="text" >
+                    </EditText>
+                </LinearLayout>
+            </TableRow>
 
-            <LinearLayout
+            <TableRow
+                android:id="@+id/tableRow2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#999999"
-                android:orientation="vertical" >
+                android:layout_margin="1dp" >
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="100dp"
-                    android:layout_height="38dp"
-                    android:layout_gravity="center"
-                    android:text="@string/addProducto_precio"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#FFF"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#999999"
+                    android:orientation="vertical" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#CCCCCC"
-                android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="100dp"
+                        android:layout_height="38dp"
+                        android:layout_gravity="center"
+                        android:text="@string/addProducto_precio"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#FFF"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-                <EditText
-                    android:id="@+id/addProducto_precio"
-                    android:layout_width="230dp"
-                    android:layout_height="38dp"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:inputType="numberDecimal" >
-                </EditText>
-            </LinearLayout>
-        </TableRow>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#CCCCCC"
+                    android:orientation="vertical" >
 
-        <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="1dp" >
+                    <EditText
+                        android:id="@+id/addProducto_precio"
+                        android:layout_width="230dp"
+                        android:layout_height="38dp"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="numberDecimal" >
+                    </EditText>
+                </LinearLayout>
+            </TableRow>
 
-            <LinearLayout
+            <TableRow
+                android:id="@+id/tableRow3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#999999"
-                android:orientation="vertical" >
+                android:layout_margin="1dp" >
 
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="100dp"
-                    android:layout_height="38dp"
-                    android:layout_gravity="center"
-                    android:text="@string/addProducto_subtotal"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#FFF"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#999999"
+                    android:orientation="vertical" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#CCCCCC"
-                android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="100dp"
+                        android:layout_height="38dp"
+                        android:layout_gravity="center"
+                        android:text="@string/addProducto_subtotal"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#FFF"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-                <EditText
-                    android:id="@+id/addProducto_subtotal"
-                    android:layout_width="230dp"
-                    android:layout_height="38dp"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:inputType="numberDecimal" >
-                </EditText>
-            </LinearLayout>
-        </TableRow>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#CCCCCC"
+                    android:orientation="vertical" >
 
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="1dp" >
+                    <EditText
+                        android:id="@+id/addProducto_subtotal"
+                        android:layout_width="230dp"
+                        android:layout_height="38dp"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="numberDecimal" >
+                    </EditText>
+                </LinearLayout>
+            </TableRow>
 
-            <LinearLayout
+            <TableRow
+                android:id="@+id/tableRow4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#999999"
-                android:orientation="vertical" >
+                android:layout_margin="1dp" >
 
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="100dp"
-                    android:layout_height="38dp"
-                    android:layout_gravity="center"
-                    android:text="@string/addProducto_descuento"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#FFF"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#999999"
+                    android:orientation="vertical" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#CCCCCC"
-                android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="100dp"
+                        android:layout_height="38dp"
+                        android:layout_gravity="center"
+                        android:text="@string/addProducto_descuento"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#FFF"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-                <EditText
-                    android:id="@+id/addProducto_descuento"
-                    android:layout_width="230dp"
-                    android:layout_height="38dp"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:inputType="numberDecimal" >
-                </EditText>
-            </LinearLayout>
-        </TableRow>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#CCCCCC"
+                    android:orientation="vertical" >
 
-        <TableRow
-            android:id="@+id/tableRow5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="1dp" >
+                    <EditText
+                        android:id="@+id/addProducto_descuento"
+                        android:layout_width="230dp"
+                        android:layout_height="38dp"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="numberDecimal" >
+                    </EditText>
+                </LinearLayout>
+            </TableRow>
 
-            <LinearLayout
+            <TableRow
+                android:id="@+id/tableRow5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#999999"
-                android:orientation="vertical" >
+                android:layout_margin="1dp" >
 
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="100dp"
-                    android:layout_height="38dp"
-                    android:layout_gravity="center"
-                    android:text="@string/addProducto_iva"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#FFF"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#999999"
+                    android:orientation="vertical" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#CCCCCC"
-                android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="100dp"
+                        android:layout_height="38dp"
+                        android:layout_gravity="center"
+                        android:text="@string/addProducto_iva"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#FFF"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-                <EditText
-                    android:id="@+id/addProducto_iva"
-                    android:layout_width="230dp"
-                    android:layout_height="38dp"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:inputType="numberDecimal" >
-                </EditText>
-            </LinearLayout>
-        </TableRow>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#CCCCCC"
+                    android:orientation="vertical" >
 
-        <TableRow
-            android:id="@+id/tableRow6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="1dp" >
+                    <EditText
+                        android:id="@+id/addProducto_iva"
+                        android:layout_width="230dp"
+                        android:layout_height="38dp"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="numberDecimal" >
+                    </EditText>
+                </LinearLayout>
+            </TableRow>
 
-            <LinearLayout
+            <TableRow
+                android:id="@+id/tableRow6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#999999"
-                android:orientation="vertical" >
+                android:layout_margin="1dp" >
 
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="100dp"
-                    android:layout_height="38dp"
-                    android:layout_gravity="center"
-                    android:text="@string/addProducto_total"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#FFF"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#999999"
+                    android:orientation="vertical" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#CCCCCC"
-                android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="100dp"
+                        android:layout_height="38dp"
+                        android:layout_gravity="center"
+                        android:text="@string/addProducto_total"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#FFF"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-                <EditText
-                    android:id="@+id/addProducto_total"
-                    android:layout_width="230dp"
-                    android:layout_height="38dp"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:inputType="numberDecimal" >
-                </EditText>
-            </LinearLayout>
-        </TableRow>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#CCCCCC"
+                    android:orientation="vertical" >
 
-        <TableRow
-            android:id="@+id/tableRow7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="1dp" >
+                    <EditText
+                        android:id="@+id/addProducto_total"
+                        android:layout_width="230dp"
+                        android:layout_height="38dp"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="numberDecimal" >
+                    </EditText>
+                </LinearLayout>
+            </TableRow>
 
-            <LinearLayout
+            <TableRow
+                android:id="@+id/tableRow7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#999999"
-                android:orientation="vertical" >
+                android:layout_margin="1dp" >
 
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="100dp"
-                    android:layout_height="129dp"
-                    android:layout_gravity="center"
-                    android:text="@string/addProducto_cantidad"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#FFF"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#999999"
+                    android:orientation="vertical" >
 
-            <NumberPicker
-                android:id="@+id/numberPicker1"
-                android:layout_width="230dp"
-                android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="100dp"
+                        android:layout_height="130dp"
+                        android:layout_gravity="center"
+                        android:text="@string/addProducto_cantidad"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#FFF"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#CCCCCC"
-                android:orientation="vertical" >
-            </LinearLayout>
-        </TableRow>
-    </TableLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#CCCCCC"
+                    android:orientation="vertical" >
+
+                    <NumberPicker
+                        android:id="@+id/addProducto_cantidad"
+                        android:layout_width="230dp"
+                        android:layout_height="130dp" />
+                </LinearLayout>
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
 
 </RelativeLayout>

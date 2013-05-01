@@ -4,6 +4,6 @@ import pfm.entidades.Usuario;
 
 public interface UsuarioDAO extends GenericDAO<Usuario, Integer> {
 
-	public String login(String username, String password);	
+	public int login(String username, String password);	
 
 }
