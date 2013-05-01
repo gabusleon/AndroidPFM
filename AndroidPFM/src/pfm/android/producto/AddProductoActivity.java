@@ -1,11 +1,11 @@
 package pfm.android.producto;
 
 import pfm.android.R;
+import pfm.android.compras.Compras;
 import pfm.android.jpa.JPADAOFactory;
 import pfm.entidades.BodegaDetalle;
 import pfm.entidades.Descuento;
 import pfm.entidades.FacturaDetalle;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -230,6 +230,12 @@ public class AddProductoActivity extends Activity {
 			if (result > 0) {
 				Toast.makeText(context, "Producto guardado", Toast.LENGTH_SHORT)
 						.show();
+				Intent intento = new Intent(context, Compras.class);
+				intento.putExtra("idAgencia", idAgencia);
+				intento.putExtra("idFactura", result);
+				intento.putExtra("idCliente", idCliente);
+				startActivity(intento);
+				finish();
 			} else if (result == 0) {
 				Toast.makeText(context, "Transaccion incorrecta",
 						Toast.LENGTH_SHORT).show();
@@ -240,8 +246,8 @@ public class AddProductoActivity extends Activity {
 				Toast.makeText(context,
 						"El producto se encuentra en su carro de compras",
 						Toast.LENGTH_SHORT).show();
-			}
-			pDialog.dismiss();
+			}			
+			pDialog.dismiss();			
 		}
 	}
 
@@ -250,10 +256,13 @@ public class AddProductoActivity extends Activity {
 	}
 
 	public void cancelar() {
-		Intent intento = new Intent();
-		intento.setData(Uri.parse("Producto Cancelado"));
-		setResult(RESULT_CANCELED, intento);
-		super.onBackPressed();
+		Toast.makeText(this, "Producto cancelado", Toast.LENGTH_SHORT).show();
+		Intent intento = new Intent(this, Compras.class);
+		intento.putExtra("idAgencia", idAgencia);
+		intento.putExtra("idFactura", idFactura);
+		intento.putExtra("idCliente", idCliente);
+		startActivity(intento);
+		finish();
 	}
 
 	@Override

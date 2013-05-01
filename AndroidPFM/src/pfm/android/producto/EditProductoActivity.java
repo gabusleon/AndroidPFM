@@ -1,12 +1,12 @@
 package pfm.android.producto;
 
 import pfm.android.R;
+import pfm.android.compras.Compras;
 import pfm.android.jpa.JPADAOFactory;
 import pfm.entidades.BodegaDetalle;
 import pfm.entidades.Descuento;
 import pfm.entidades.FacturaDetalle;
 
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +28,9 @@ public class EditProductoActivity extends Activity {
 	private EditText total;
 	private NumberPicker cantidad;
 	private int idFacturaDetalle;
+	private int idAgencia;
+	private int idFactura;
+	private int idCliente;
 	private FacturaDetalle facturaDetalle = new FacturaDetalle();
 	private BodegaDetalle bodegaDetalle = new BodegaDetalle();
 	private Descuento des = new Descuento();
@@ -52,6 +55,9 @@ public class EditProductoActivity extends Activity {
 		// @param: idFacturaDetalle
 		Bundle extra = getIntent().getExtras();
 		idFacturaDetalle = extra.getInt("idFacturaDetalle");
+		idAgencia = extra.getInt("idAgencia");
+		idFactura = extra.getInt("idFactura");
+		idCliente = extra.getInt("idCliente");
 
 		ImageButton btn_editar = (ImageButton) findViewById(R.id.btn_editProducto_aceptar);
 		ImageButton btn_cancelar = (ImageButton) findViewById(R.id.btn_editproducto_cancelar);
@@ -216,6 +222,12 @@ public class EditProductoActivity extends Activity {
 			if (result > 0) {
 				Toast.makeText(context, "Producto guardado", Toast.LENGTH_SHORT)
 						.show();
+				Intent intento = new Intent(context, Compras.class);
+				intento.putExtra("idAgencia", idAgencia);
+				intento.putExtra("idFactura", result);
+				intento.putExtra("idCliente", idCliente);
+				startActivity(intento);
+				finish();
 			} else if (result == 0) {
 				Toast.makeText(context, "Transaccion incorrecta",
 						Toast.LENGTH_SHORT).show();
@@ -264,11 +276,18 @@ public class EditProductoActivity extends Activity {
 			if (result > 0) {
 				Toast.makeText(context, "Producto eliminado",
 						Toast.LENGTH_SHORT).show();
+				Intent intento = new Intent(context, Compras.class);
+				intento.putExtra("idAgencia", idAgencia);
+				intento.putExtra("idFactura", result);
+				intento.putExtra("idCliente", idCliente);
+				startActivity(intento);
+				finish();
 			} else if (result == 0) {
 				Toast.makeText(context, "Transaccion incorrecta",
 						Toast.LENGTH_SHORT).show();
 			}
 			pDialog.dismiss();
+
 		}
 	}
 
@@ -277,10 +296,13 @@ public class EditProductoActivity extends Activity {
 	}
 
 	public void cancelar() {
-		Intent intento = new Intent();
-		intento.setData(Uri.parse("Producto Cancelado"));
-		setResult(RESULT_CANCELED, intento);
-		super.onBackPressed();
+		Toast.makeText(this, "Producto cancelado", Toast.LENGTH_SHORT).show();
+		Intent intento = new Intent(this, Compras.class);
+		intento.putExtra("idAgencia", idAgencia);
+		intento.putExtra("idFactura", idFactura);
+		intento.putExtra("idCliente", idCliente);
+		startActivity(intento);
+		finish();
 	}
 
 	@Override

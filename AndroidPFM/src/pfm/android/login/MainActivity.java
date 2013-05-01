@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import pfm.android.R;
-import pfm.android.compras.CarrosCompras;
 import pfm.android.compras.Compras;
 import pfm.android.jpa.JPADAOFactory;
-import pfm.android.producto.EditProductoActivity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -176,14 +174,10 @@ public class MainActivity extends Activity {
 						Toast.LENGTH_SHORT).show();
 				// AQUI DEBE IR EL CODIGO DEL INTENT A LA PANTALLA SIGUIENTE
 				// AGREGANDO COMO PARAMETRO "RESULT"
-				// Intent intento = new Intent(context,
-				// AddProductoActivity.class);
 				Intent intento = new Intent(context, Compras.class);
-				// intento.putExtra("idBodegaDetalle", 1);
-				intento.putExtra("idFacturaDetalle", -1);
 				intento.putExtra("idAgencia", idAgencia);
-				intento.putExtra("idFactura", -1);
-				intento.putExtra("idCliente", result);
+				intento.putExtra("idFactura", 0);
+				intento.putExtra("idCliente", result);				
 				startActivity(intento);
 			} else {
 				Toast.makeText(context, "Inicio de sesion incorrecto",
