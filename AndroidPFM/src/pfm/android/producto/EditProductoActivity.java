@@ -39,7 +39,6 @@ public class EditProductoActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_producto);
-
 		nombre = (EditText) findViewById(R.id.editProducto_nombre);
 		precio = (EditText) findViewById(R.id.editProducto_precio);
 		subtotal = (EditText) findViewById(R.id.editProducto_subtotal);
@@ -58,6 +57,8 @@ public class EditProductoActivity extends Activity {
 		idAgencia = extra.getInt("idAgencia");
 		idFactura = extra.getInt("idFactura");
 		idCliente = extra.getInt("idCliente");
+		
+		
 
 		ImageButton btn_editar = (ImageButton) findViewById(R.id.btn_editProducto_aceptar);
 		ImageButton btn_cancelar = (ImageButton) findViewById(R.id.btn_editproducto_cancelar);
