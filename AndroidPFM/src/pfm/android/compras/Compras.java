@@ -117,10 +117,11 @@ public class Compras extends ListActivity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				final ItemProducto item = (ItemProducto) parent.getItemAtPosition(position);
 				Intent actividad = new Intent(Compras.this, EditProductoActivity.class);
+				
 				actividad.putExtra("idFacturaDetalle", item.getIdFacturaDetalle());
-				actividad.putExtra("idAgencia", idAgencia);
-				actividad.putExtra("idFactura", idFactura);
-				actividad.putExtra("idCliente", idCliente);
+				actividad.putExtra("idAgencia", Compras.this.idAgencia);
+				actividad.putExtra("idFactura", Compras.this.idFactura);
+				actividad.putExtra("idCliente", Compras.this.idCliente);
 				startActivity(actividad);
 			}
 		});
