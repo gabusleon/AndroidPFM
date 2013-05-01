@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,7 +25,7 @@ public class CarrosCompras extends ListActivity {
 	private TextView lblTitulo;
 	private TextView lblAgencia;
 	private int idAgencia;
-	private int idUsuario;
+	private int idCliente;
 	private int idFactura;
 	private int idFacturaDetalle;
 	private String nombreAgencia;
@@ -39,9 +38,8 @@ public class CarrosCompras extends ListActivity {
 		Bundle parametros = getIntent().getExtras();
 		this.idAgencia = parametros.getInt("idAgencia");
 		this.idFactura = parametros.getInt("idFactura");
-		this.idUsuario = parametros.getInt("idUsuario");
+		this.idCliente = parametros.getInt("idCliente");
 		this.idFacturaDetalle = parametros.getInt("idFacturaDetalle");
-		Log.i("CINIGUEZ","Id de Agencia: " + this.idAgencia);
 		this.nombreAgencia = parametros.getString("nombreAgencia");
 
 		// llama a tarea asincrona para rellenar el spinner
@@ -87,8 +85,8 @@ public class CarrosCompras extends ListActivity {
 
 				actividad.putExtra("idAgencia", CarrosCompras.this.idAgencia);
 				actividad.putExtra("idFactura", item.getIdFactura());
-				actividad.putExtra("idUsuario", CarrosCompras.this.idUsuario);
-				actividad.putExtra("idFactura", CarrosCompras.this.idFactura);
+				actividad.putExtra("idCliente", CarrosCompras.this.idCliente);
+				actividad.putExtra("idFactura", item.getIdFactura());
 				actividad.putExtra("nombreAgencia", CarrosCompras.this.nombreAgencia);
 				startActivity(actividad);
 			}
@@ -104,7 +102,7 @@ public class CarrosCompras extends ListActivity {
 		Intent actividad = new Intent(CarrosCompras.this, Compras.class);
 		actividad.putExtra("idAgencia", this.idAgencia);
 		actividad.putExtra("idFactura", this.idAgencia);
-		actividad.putExtra("idUsuario", this.idUsuario);
+		actividad.putExtra("idCliente", this.idCliente);
 		actividad.putExtra("idFactura", this.idFactura);
 		actividad.putExtra("idFacturaDetalle", this.idFacturaDetalle);
 		actividad.putExtra("nombreAgencia", this.nombreAgencia);
@@ -149,7 +147,7 @@ public class CarrosCompras extends ListActivity {
 		@Override
 		protected List<ItemCarro> doInBackground(Void... params) {
 			// obtiene la lista de Productos a traves del servicio REST
-			listaCarros = JPADAOFactory.getFactory().getFacturaDAO().getListaCarros(CarrosCompras.this.idUsuario, CarrosCompras.this.idAgencia);
+			listaCarros = JPADAOFactory.getFactory().getFacturaDAO().getListaCarros(CarrosCompras.this.idCliente, CarrosCompras.this.idAgencia);
 			if (listaCarros != null) {
 				return listaCarros;
 			} else {

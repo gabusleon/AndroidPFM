@@ -180,9 +180,9 @@ public class MainActivity extends Activity {
 				// AddProductoActivity.class);
 				Intent intento = new Intent(context, Compras.class);
 				// intento.putExtra("idBodegaDetalle", 1);
-				intento.putExtra("idFacturaDetalle", 4);
+				intento.putExtra("idFacturaDetalle", -1);
 				intento.putExtra("idAgencia", idAgencia);
-				intento.putExtra("idFactura", 3);
+				intento.putExtra("idFactura", -1);
 				intento.putExtra("idCliente", result);
 				startActivity(intento);
 			} else {

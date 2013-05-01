@@ -32,7 +32,7 @@ public class Compras extends ListActivity {
 	private TextView lblAgencia;
 
 	private int idAgencia;
-	private int idUsuario;
+	private int idCliente;
 	private int idFactura;
 	private int idFacturaDetalle;
 	private String nombreAgencia = "FALTA";
@@ -41,15 +41,15 @@ public class Compras extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.compras);
-		
+
 		//Recepcion de Parametros
 		Bundle parametros = getIntent().getExtras();
 		this.idAgencia = parametros.getInt("idAgencia");
 		this.idFactura = parametros.getInt("idFactura");
-		Log.i("CINIGUEZ","Id Factura: " + this.idFactura);
-		this.idUsuario = parametros.getInt("idUsuario");
+		this.idCliente = parametros.getInt("idCliente");
 		this.idFacturaDetalle = parametros.getInt("idFacturaDetalle");
-
+		
+		
 		// llama a tarea asincrona para rellenar el spinner
 		new ListarProductosTask(Compras.this).execute();
 
@@ -108,7 +108,7 @@ public class Compras extends ListActivity {
 
 			}
 		});
-		
+
 		ListView listView = getListView();
 		listView.setTextFilterEnabled(true);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -118,8 +118,9 @@ public class Compras extends ListActivity {
 				Intent actividad = new Intent(Compras.this, AddProductoActivity.class);
 				actividad.putExtra("idFacturaDetalle", item.getIdFacturaDetalle());
 				startActivity(actividad);
-		}});
-		
+			}
+		});
+
 	}
 
 	public void btnConfirmar_onClick() {
@@ -141,7 +142,7 @@ public class Compras extends ListActivity {
 		Intent actividad = new Intent(Compras.this, AddProductoActivity.class);
 		actividad.putExtra("idAgencia", this.idAgencia);
 		actividad.putExtra("idFactura", this.idAgencia);
-		actividad.putExtra("idUsuario", this.idUsuario);
+		actividad.putExtra("idCliente", this.idCliente);
 		actividad.putExtra("idFactura", this.idFactura);
 		actividad.putExtra("idFacturaDetalle", this.idFacturaDetalle);
 
@@ -164,7 +165,7 @@ public class Compras extends ListActivity {
 		Intent actividad = new Intent(Compras.this, CarrosCompras.class);
 		actividad.putExtra("idAgencia", this.idAgencia);
 		actividad.putExtra("idFactura", this.idAgencia);
-		actividad.putExtra("idUsuario", this.idUsuario);
+		actividad.putExtra("idCliente", this.idCliente);
 		actividad.putExtra("idFactura", this.idFactura);
 		actividad.putExtra("idFacturaDetalle", this.idFacturaDetalle);
 		actividad.putExtra("nombreAgencia", this.nombreAgencia);
@@ -202,10 +203,16 @@ public class Compras extends ListActivity {
 		@Override
 		protected List<ItemProducto> doInBackground(Void... params) {
 			// obtiene la lista de Productos a traves del servicio REST
-			listaProductos = JPADAOFactory.getFactory().getFacturaDAO().getCarroActual(idFactura);
+			Log.i("CINIGUEZ", "Id Usuario en Compras: " + Compras.this.idCliente);
+			Log.i("CINIGUEZ", "Id Factura: " + Compras.this.idFactura);
+			Log.i("CINIGUEZ", "Id Agencia: " + Compras.this.idAgencia);
+			listaProductos = JPADAOFactory.getFactory().getFacturaDAO().getCarroActual(Compras.this.idFactura);
+			
 			if (listaProductos != null) {
+				Log.i("CINIGUEZ","Numero de registros "+ listaProductos.size());
 				return listaProductos;
 			} else {
+				Log.i("CINIGUEZ","No hay registros");
 				return null;
 			}
 
