@@ -46,7 +46,11 @@ public class Compras extends ListActivity {
 		this.idAgencia = parametros.getInt("idAgencia");
 		this.idFactura = parametros.getInt("idFactura");
 		this.idCliente = parametros.getInt("idCliente");
-
+		/*
+		 * Log.i("CINIGUEZ", "Factura :" + this.idFactura); Log.i("CINIGUEZ",
+		 * "Agencia :" + this.idAgencia); Log.i("CINIGUEZ", "Cliente :" +
+		 * this.idCliente);
+		 */
 		// llama a tarea asincrona para rellenar el spinner
 		new ListarProductosTask(Compras.this).execute();
 
@@ -110,14 +114,10 @@ public class Compras extends ListActivity {
 		listView.setTextFilterEnabled(true);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				final ItemProducto item = (ItemProducto) parent
-						.getItemAtPosition(position);
-				Intent actividad = new Intent(Compras.this,
-						EditProductoActivity.class);
-				actividad.putExtra("idFacturaDetalle",
-						item.getIdFacturaDetalle());
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				final ItemProducto item = (ItemProducto) parent.getItemAtPosition(position);
+				Intent actividad = new Intent(Compras.this, EditProductoActivity.class);
+				actividad.putExtra("idFacturaDetalle", item.getIdFacturaDetalle());
 				actividad.putExtra("idAgencia", idAgencia);
 				actividad.putExtra("idFactura", idFactura);
 				actividad.putExtra("idCliente", idCliente);
@@ -182,8 +182,7 @@ public class Compras extends ListActivity {
 	}
 
 	@SuppressLint("NewApi")
-	private class ListarProductosTask extends
-			AsyncTask<Void, Integer, List<ItemProducto>> {
+	private class ListarProductosTask extends AsyncTask<Void, Integer, List<ItemProducto>> {
 		ProgressDialog pDialog;
 		Context context;
 
@@ -206,19 +205,11 @@ public class Compras extends ListActivity {
 		@Override
 		protected List<ItemProducto> doInBackground(Void... params) {
 			// obtiene la lista de Productos a traves del servicio REST
-			Log.i("CINIGUEZ", "Id Usuario en Compras: "
-					+ Compras.this.idCliente);
-			Log.i("CINIGUEZ", "Id Factura: " + Compras.this.idFactura);
-			Log.i("CINIGUEZ", "Id Agencia: " + Compras.this.idAgencia);
-			listaProductos = JPADAOFactory.getFactory().getFacturaDAO()
-					.getCarroActual(Compras.this.idFactura);
+			listaProductos = JPADAOFactory.getFactory().getFacturaDAO().getCarroActual(Compras.this.idFactura);
 
 			if (listaProductos != null) {
-				Log.i("CINIGUEZ",
-						"Numero de registros " + listaProductos.size());
 				return listaProductos;
 			} else {
-				Log.i("CINIGUEZ", "No hay registros");
 				return null;
 			}
 
@@ -228,7 +219,7 @@ public class Compras extends ListActivity {
 		protected void onPostExecute(List<ItemProducto> lista) {
 			super.onPostExecute(lista);
 			if (lista != null) {
-
+				Compras.this.lblTotal.setText("Total: " + lista.get(0).getTotalFactura());
 			} else {
 				Compras.this.lblTotal.setText("Total: " + 0);
 			}

@@ -9,8 +9,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import android.util.Log;
 import pfm.android.dao.FacturaDAO;
 import pfm.entidades.Factura;
 import pfm.entidades.rest.ItemCarro;
@@ -36,28 +34,46 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements Fa
 				HttpResponse resp = httpClient.execute(del);
 				String respStr = EntityUtils.toString(resp.getEntity());
 				JSONObject respJSON = new JSONObject(respStr);
+				
+				JSONObject pJSON = new JSONObject();
 
-				if (respStr.startsWith("{")) {
-					JSONObject pJSON = respJSON.getJSONObject("itemProducto");
-					ItemProducto p = new ItemProducto(pJSON.getInt("idBodegaDetalle"), pJSON.getString("nombreProducto"), pJSON.getDouble("subtotal"),
-							pJSON.getInt("cantidad"), pJSON.getDouble("precio"), pJSON.getInt("idFacturaDetalle"));
+				if (!respStr.contains("[")) {
+					pJSON = respJSON.getJSONObject("itemProducto");
+					ItemProducto p = new ItemProducto();
+					p.setCantidad(pJSON.getInt("cantidad"));
+					p.setDescuento(pJSON.getDouble("descuento"));
+					p.setDescuentoTotal(pJSON.getDouble("descuentoTotal"));
+					p.setIdBodegaDetalle(pJSON.getInt("idBodegaDetalle"));
+					p.setIdFacturaDetalle(pJSON.getInt("idFacturaDetalle"));
+					p.setNombreProducto(pJSON.getString("nombreProducto"));
+					p.setPrecio(pJSON.getDouble("precio"));
+					p.setSubtotal(pJSON.getDouble("subtotal"));
+					p.setTotalFactura(pJSON.getDouble("totalFactura"));
 					listaProductos.add(p);
 
 				} else {
 
 					JSONArray detallesJSON = respJSON.getJSONArray("itemProducto");
 					for (int i = 0; i < detallesJSON.length(); i++) {
-						JSONObject productoJSON = detallesJSON.getJSONObject(i);
-						ItemProducto p = new ItemProducto(productoJSON.getInt("idBodegaDetalle"), productoJSON.getString("nombreProducto"),
-								productoJSON.getDouble("subtotal"), productoJSON.getInt("cantidad"), productoJSON.getDouble("precio"),
-								productoJSON.getInt("idFacturaDetalle"));
+						pJSON = detallesJSON.getJSONObject(i);
+						
+						ItemProducto p = new ItemProducto();
+						p.setCantidad(pJSON.getInt("cantidad"));
+						p.setDescuento(pJSON.getDouble("descuento"));
+						p.setDescuentoTotal(pJSON.getDouble("descuentoTotal"));
+						p.setIdBodegaDetalle(pJSON.getInt("idBodegaDetalle"));
+						p.setIdFacturaDetalle(pJSON.getInt("idFacturaDetalle"));
+						p.setNombreProducto(pJSON.getString("nombreProducto"));
+						p.setPrecio(pJSON.getDouble("precio"));
+						p.setSubtotal(pJSON.getDouble("subtotal"));
+						p.setTotalFactura(pJSON.getDouble("totalFactura"));
+						listaProductos.add(p);
 						listaProductos.add(p);
 					}
 				}
 
 				return listaProductos;
 			} catch (Exception ex) {
-				Log.i("CINIGUEZ", " EXCEPTION : " + ex.getMessage().toString());
 				return null;
 			}
 		}
@@ -74,10 +90,9 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements Fa
 		try {
 			HttpResponse resp = httpClient.execute(del);
 			String respStr = EntityUtils.toString(resp.getEntity());
-
 			JSONObject respJSON = new JSONObject(respStr);
-			if (respStr.startsWith("{")) {
-				JSONObject pJSON = respJSON.getJSONObject("itemProducto");
+			if (!respStr.contains("[")) {
+				JSONObject pJSON = respJSON.getJSONObject("carroCompras");
 				ItemCarro c = new ItemCarro();
 				c.setFechaCreacion(pJSON.getString("fechaCreacion"));
 				c.setIdFactura(pJSON.getInt("idFactura"));

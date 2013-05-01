@@ -2,6 +2,7 @@ package pfm.entidades.rest;
 
 import java.io.Serializable;
 
+
 public class ItemProducto implements Serializable {
 
 	/**
@@ -15,19 +16,29 @@ public class ItemProducto implements Serializable {
 	private double subtotal;
 	private int cantidad;
 	private double precio;
+	private double descuento;
+	private double descuentoTotal;
+	private double totalFactura;
 	
-	public ItemProducto(){
-		
-	}
-	
-	public ItemProducto(int idBodegaDetalle, String nombreProducto, double subtotal, int cantidad, double precio, int idFacturaDetalle) {
+	public ItemProducto(int idBodegaDetalle, int idFacturaDetalle, String nombreProducto, double subtotal, int cantidad, double precio, double descuento,
+			double descuentoTotal, double totalFactura) {
+		super();
 		this.idBodegaDetalle = idBodegaDetalle;
+		this.idFacturaDetalle = idFacturaDetalle;
 		this.nombreProducto = nombreProducto;
 		this.subtotal = subtotal;
 		this.cantidad = cantidad;
 		this.precio = precio;
-		this.idFacturaDetalle = idFacturaDetalle;
+		this.descuento = descuento;
+		this.descuentoTotal = descuentoTotal;
+		this.totalFactura = totalFactura;
 	}
+
+	public ItemProducto(){
+		
+	}
+	
+	
 	
 	public int getIdBodegaDetalle() {
 		return idBodegaDetalle;
@@ -66,6 +77,30 @@ public class ItemProducto implements Serializable {
 
 	public void setIdFacturaDetalle(int idFacturaDetalle) {
 		this.idFacturaDetalle = idFacturaDetalle;
+	}
+
+	public double getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(double descuento) {
+		this.descuento = descuento;
+	}
+
+	public double getDescuentoTotal() {
+		return descuentoTotal;
+	}
+
+	public void setDescuentoTotal(double descuentoTotal) {
+		this.descuentoTotal = descuentoTotal;
+	}
+
+	public double getTotalFactura() {
+		return totalFactura;
+	}
+
+	public void setTotalFactura(double totalFactura) {
+		this.totalFactura = totalFactura;
 	}
 
 }
