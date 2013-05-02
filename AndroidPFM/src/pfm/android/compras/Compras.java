@@ -2,19 +2,18 @@ package pfm.android.compras;
 
 import java.util.List;
 
+import com.google.zxing.client.android.CaptureActivity;
+
 import pfm.android.R;
 import pfm.android.jpa.JPADAOFactory;
-import pfm.android.producto.AddProductoActivity;
 import pfm.android.producto.EditProductoActivity;
 import pfm.entidades.rest.ItemProducto;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -114,15 +113,20 @@ public class Compras extends ListActivity {
 		listView.setTextFilterEnabled(true);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				final ItemProducto item = (ItemProducto) parent.getItemAtPosition(position);
-				Intent actividad = new Intent(Compras.this, EditProductoActivity.class);
-				
-				actividad.putExtra("idFacturaDetalle", item.getIdFacturaDetalle());
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				final ItemProducto item = (ItemProducto) parent
+						.getItemAtPosition(position);
+				Intent actividad = new Intent(Compras.this,
+						EditProductoActivity.class);
+
+				actividad.putExtra("idFacturaDetalle",
+						item.getIdFacturaDetalle());
 				actividad.putExtra("idAgencia", Compras.this.idAgencia);
 				actividad.putExtra("idFactura", Compras.this.idFactura);
 				actividad.putExtra("idCliente", Compras.this.idCliente);
 				startActivity(actividad);
+				finish();
 			}
 		});
 
@@ -146,15 +150,13 @@ public class Compras extends ListActivity {
 	 */
 	public void btnAddProducto_onClick() {
 		// aqui debe ir el codigo (bodegaDetalle) de la lectura del QR
-		// por ahora seteado a 1
-		Intent actividad = new Intent(this, AddProductoActivity.class);
-		actividad.putExtra("idAgencia", this.idAgencia);
-		actividad.putExtra("idFactura", this.idFactura);
-		actividad.putExtra("idCliente", this.idCliente);
-		actividad.putExtra("idBodegaDetalle", 1);
-		startActivity(actividad);
-		// Intent intento = new Intent(this, CaptureActivity.class);
-		// startActivityForResult(intento, REQUEST_ACTIVITY);
+		// por ahora seteado a 1				
+		Intent intento = new Intent(this, CaptureActivity.class);
+		intento.putExtra("idAgencia", this.idAgencia);
+		intento.putExtra("idFactura", this.idFactura);
+		intento.putExtra("idCliente", this.idCliente);
+		startActivity(intento);
+		finish();
 
 	}
 
@@ -182,8 +184,8 @@ public class Compras extends ListActivity {
 		startActivity(actividad);
 	}
 
-	@SuppressLint("NewApi")
-	private class ListarProductosTask extends AsyncTask<Void, Integer, List<ItemProducto>> {
+	private class ListarProductosTask extends
+			AsyncTask<Void, Integer, List<ItemProducto>> {
 		ProgressDialog pDialog;
 		Context context;
 
@@ -191,7 +193,6 @@ public class Compras extends ListActivity {
 			this.context = context;
 		}
 
-		@SuppressLint("NewApi")
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -206,7 +207,8 @@ public class Compras extends ListActivity {
 		@Override
 		protected List<ItemProducto> doInBackground(Void... params) {
 			// obtiene la lista de Productos a traves del servicio REST
-			listaProductos = JPADAOFactory.getFactory().getFacturaDAO().getCarroActual(Compras.this.idFactura);
+			listaProductos = JPADAOFactory.getFactory().getFacturaDAO()
+					.getCarroActual(Compras.this.idFactura);
 
 			if (listaProductos != null) {
 				return listaProductos;
@@ -220,7 +222,8 @@ public class Compras extends ListActivity {
 		protected void onPostExecute(List<ItemProducto> lista) {
 			super.onPostExecute(lista);
 			if (lista != null) {
-				Compras.this.lblTotal.setText("Total: " + lista.get(0).getTotalFactura());
+				Compras.this.lblTotal.setText("Total: "
+						+ lista.get(0).getTotalFactura());
 			} else {
 				Compras.this.lblTotal.setText("Total: " + 0);
 			}
