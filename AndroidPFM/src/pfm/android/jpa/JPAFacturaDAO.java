@@ -40,23 +40,8 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
 				JSONObject respJSON = new JSONObject(respStr);
 
 				JSONObject pJSON = new JSONObject();
-
-				if (!respStr.contains("[")) {
-					pJSON = respJSON.getJSONObject("itemProducto");
-					ItemProducto p = new ItemProducto();
-					p.setCantidad(pJSON.getInt("cantidad"));
-					p.setDescuento(pJSON.getDouble("descuento"));
-					p.setDescuentoTotal(pJSON.getDouble("descuentoTotal"));
-					p.setIdBodegaDetalle(pJSON.getInt("idBodegaDetalle"));
-					p.setIdFacturaDetalle(pJSON.getInt("idFacturaDetalle"));
-					p.setNombreProducto(pJSON.getString("nombreProducto"));
-					p.setPrecio(pJSON.getDouble("precio"));
-					p.setSubtotal(pJSON.getDouble("subtotal"));
-					p.setTotalFactura(pJSON.getDouble("totalFactura"));
-					listaProductos.add(p);
-
-				} else {
-
+				JSONArray j = respJSON.optJSONArray("itemProducto");
+				if (j != null) {
 					JSONArray detallesJSON = respJSON
 							.getJSONArray("itemProducto");
 					for (int i = 0; i < detallesJSON.length(); i++) {
@@ -75,6 +60,21 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
 						listaProductos.add(p);
 						listaProductos.add(p);
 					}
+
+				} else {
+
+					pJSON = respJSON.getJSONObject("itemProducto");
+					ItemProducto p = new ItemProducto();
+					p.setCantidad(pJSON.getInt("cantidad"));
+					p.setDescuento(pJSON.getDouble("descuento"));
+					p.setDescuentoTotal(pJSON.getDouble("descuentoTotal"));
+					p.setIdBodegaDetalle(pJSON.getInt("idBodegaDetalle"));
+					p.setIdFacturaDetalle(pJSON.getInt("idFacturaDetalle"));
+					p.setNombreProducto(pJSON.getString("nombreProducto"));
+					p.setPrecio(pJSON.getDouble("precio"));
+					p.setSubtotal(pJSON.getDouble("subtotal"));
+					p.setTotalFactura(pJSON.getDouble("totalFactura"));
+					listaProductos.add(p);
 				}
 
 				return listaProductos;
@@ -97,16 +97,8 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
 			HttpResponse resp = httpClient.execute(del);
 			String respStr = EntityUtils.toString(resp.getEntity());
 			JSONObject respJSON = new JSONObject(respStr);
-			if (!respStr.contains("[")) {
-				JSONObject pJSON = respJSON.getJSONObject("carroCompras");
-				ItemCarro c = new ItemCarro();
-				c.setFechaCreacion(pJSON.getString("fechaCreacion"));
-				c.setIdFactura(pJSON.getInt("idFactura"));
-				c.setNombreAgencia(pJSON.getString("nombreAgencia"));
-				c.setTotal(pJSON.getDouble("total"));
-				listaCarros.add(c);
-
-			} else {
+			JSONArray j = respJSON.optJSONArray("carroCompras");
+			if (j != null) {
 				JSONArray carrosJSON = respJSON.getJSONArray("carroCompras");
 
 				for (int i = 0; i < carrosJSON.length(); i++) {
@@ -118,6 +110,16 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
 					c.setTotal(carroJSON.getDouble("total"));
 					listaCarros.add(c);
 				}
+
+			} else {
+				JSONObject pJSON = respJSON.getJSONObject("carroCompras");
+				ItemCarro c = new ItemCarro();
+				c.setFechaCreacion(pJSON.getString("fechaCreacion"));
+				c.setIdFactura(pJSON.getInt("idFactura"));
+				c.setNombreAgencia(pJSON.getString("nombreAgencia"));
+				c.setTotal(pJSON.getDouble("total"));
+				listaCarros.add(c);
+
 			}
 			return listaCarros;
 		} catch (Exception ex) {

@@ -36,16 +36,21 @@ public class JPAMedioPagoDAO extends JPAGenericDAO<MedioDePago, Integer>
 			String respStr = EntityUtils.toString(resp.getEntity());
 
 			JSONObject objJSON = new JSONObject(respStr);
-			JSONArray arrJSON = objJSON.getJSONArray("medioDePago");
 			Map<Integer, String> lista = new HashMap<Integer, String>();
+			JSONArray j = objJSON.optJSONArray("medioDePago");
+			if (j != null) {
+				JSONArray arrJSON = objJSON.getJSONArray("medioDePago");
 
-			for (int i = 0; i < arrJSON.length(); i++) {
-				JSONObject obj = arrJSON.getJSONObject(i);
-				int key = obj.getInt("id");
-				String value = obj.getString("nombre");
-				lista.put(key, value);
+				for (int i = 0; i < arrJSON.length(); i++) {
+					JSONObject obj = arrJSON.getJSONObject(i);
+					int key = obj.getInt("id");
+					String value = obj.getString("nombre");
+					lista.put(key, value);
+				}
+			} else {
+				JSONObject obj = objJSON.getJSONObject("medioDePago");
+				lista.put(obj.getInt("id"), obj.getString("nombre"));
 			}
-
 			return lista;
 		} catch (Exception ex) {
 			Log.e("Error", "JPAMedioPagoDAO <<listMedioPago>>", ex);

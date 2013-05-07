@@ -35,19 +35,22 @@
                 android:id="@+id/lblTitulo"
                 style="@style/mediumText"
                 android:layout_width="match_parent"
-                android:text="@string/compras_titulo" />
+                android:text="@string/compras_titulo"
+                android:textColor="#FFF"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/lblAgencia"
                 style="@style/mediumText"
-                android:text="" />
+                android:text=""
+                android:textColor="#FFF" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btnAddProducto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"            
+            android:layout_gravity="right"
             android:drawableLeft="@drawable/producto_03"
             android:text="@string/btnAddProducto"
             android:textSize="12sp" />

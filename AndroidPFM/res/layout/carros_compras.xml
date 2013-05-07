@@ -19,12 +19,15 @@
         <TextView
             android:id="@+id/lblTitulo_carros"
             style="@style/mediumText"
-            android:text="" />
+            android:text=""
+            android:textColor="#FFF"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/lblAgencia_carros"
             style="@style/mediumText"
-            android:text="" />
+            android:text=""
+            android:textColor="#FFF" />
     </LinearLayout>
 
     <LinearLayout
@@ -32,7 +35,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/listEncabezado_carros"
-              
         android:orientation="vertical" >
 
         <ListView

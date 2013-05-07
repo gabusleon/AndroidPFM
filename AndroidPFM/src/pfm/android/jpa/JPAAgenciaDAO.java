@@ -37,16 +37,21 @@ public class JPAAgenciaDAO extends JPAGenericDAO<Agencia, Integer> implements
 			String respStr = EntityUtils.toString(resp.getEntity());
 
 			JSONObject objJSON = new JSONObject(respStr);
-			JSONArray arrJSON = objJSON.getJSONArray("agencia");
 			Map<Integer, String> lista = new HashMap<Integer, String>();
+			JSONArray j = objJSON.optJSONArray("agencia");
+			if (j != null) {
+				JSONArray arrJSON = objJSON.getJSONArray("agencia");
 
-			for (int i = 0; i < arrJSON.length(); i++) {
-				JSONObject obj = arrJSON.getJSONObject(i);
-				int key = obj.getInt("id");
-				String value = obj.getString("nombre");
-				lista.put(key, value);
+				for (int i = 0; i < arrJSON.length(); i++) {
+					JSONObject obj = arrJSON.getJSONObject(i);
+					int key = obj.getInt("id");
+					String value = obj.getString("nombre");
+					lista.put(key, value);
+				}
+			} else {
+				JSONObject obj = objJSON.getJSONObject("agencia");
+				lista.put(obj.getInt("id"), obj.getString("nombre"));
 			}
-
 			return lista;
 		} catch (Exception ex) {
 			Log.e("Error", "JPAAgenciaDAO <<listAgencias>>", ex);
