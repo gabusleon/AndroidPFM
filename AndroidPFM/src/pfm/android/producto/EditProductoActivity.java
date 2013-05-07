@@ -29,6 +29,7 @@ public class EditProductoActivity extends Activity {
 	private NumberPicker cantidad;
 	private int idFacturaDetalle;
 	private int idAgencia;
+	private String nombreAgencia;
 	private int idFactura;
 	private int idCliente;
 	private FacturaDetalle facturaDetalle = new FacturaDetalle();
@@ -55,10 +56,9 @@ public class EditProductoActivity extends Activity {
 		Bundle extra = getIntent().getExtras();
 		idFacturaDetalle = extra.getInt("idFacturaDetalle");
 		idAgencia = extra.getInt("idAgencia");
+		nombreAgencia = extra.getString("nombreAgencia");
 		idFactura = extra.getInt("idFactura");
 		idCliente = extra.getInt("idCliente");
-		
-		
 
 		ImageButton btn_editar = (ImageButton) findViewById(R.id.btn_editProducto_aceptar);
 		ImageButton btn_cancelar = (ImageButton) findViewById(R.id.btn_editproducto_cancelar);
@@ -225,6 +225,7 @@ public class EditProductoActivity extends Activity {
 						.show();
 				Intent intento = new Intent(context, Compras.class);
 				intento.putExtra("idAgencia", idAgencia);
+				intento.putExtra("nombreAgencia", nombreAgencia);
 				intento.putExtra("idFactura", result);
 				intento.putExtra("idCliente", idCliente);
 				startActivity(intento);
@@ -279,6 +280,7 @@ public class EditProductoActivity extends Activity {
 						Toast.LENGTH_SHORT).show();
 				Intent intento = new Intent(context, Compras.class);
 				intento.putExtra("idAgencia", idAgencia);
+				intento.putExtra("nombreAgencia", nombreAgencia);
 				intento.putExtra("idFactura", result);
 				intento.putExtra("idCliente", idCliente);
 				startActivity(intento);
@@ -300,6 +302,7 @@ public class EditProductoActivity extends Activity {
 		Toast.makeText(this, "Producto cancelado", Toast.LENGTH_SHORT).show();
 		Intent intento = new Intent(this, Compras.class);
 		intento.putExtra("idAgencia", idAgencia);
+		intento.putExtra("nombreAgencia", nombreAgencia);
 		intento.putExtra("idFactura", idFactura);
 		intento.putExtra("idCliente", idCliente);
 		startActivity(intento);

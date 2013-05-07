@@ -27,8 +27,7 @@ public class CarrosCompras extends ListActivity {
 	private TextView lblAgencia;
 	private int idAgencia;
 	private int idCliente;
-	private int idFactura;
-	private int idFacturaDetalle;
+	private int idFactura;	
 	private String nombreAgencia;
 
 	@Override
@@ -39,8 +38,7 @@ public class CarrosCompras extends ListActivity {
 		Bundle parametros = getIntent().getExtras();
 		this.idAgencia = parametros.getInt("idAgencia");
 		this.idFactura = parametros.getInt("idFactura");
-		this.idCliente = parametros.getInt("idCliente");
-		this.idFacturaDetalle = parametros.getInt("idFacturaDetalle");
+		this.idCliente = parametros.getInt("idCliente");	
 		this.nombreAgencia = parametros.getString("nombreAgencia");
 
 		// llama a tarea asincrona para rellenar el spinner
@@ -87,11 +85,11 @@ public class CarrosCompras extends ListActivity {
 				Intent actividad = new Intent(CarrosCompras.this, Compras.class);
 
 				actividad.putExtra("idAgencia", CarrosCompras.this.idAgencia);
-				actividad.putExtra("idFactura", item.getIdFactura());
-				actividad.putExtra("idCliente", CarrosCompras.this.idCliente);
-				actividad.putExtra("idFactura", item.getIdFactura());
 				actividad.putExtra("nombreAgencia",
 						CarrosCompras.this.nombreAgencia);
+				actividad.putExtra("idFactura", item.getIdFactura());
+				actividad.putExtra("idCliente", CarrosCompras.this.idCliente);
+
 				startActivity(actividad);
 				finish();
 			}
@@ -107,11 +105,9 @@ public class CarrosCompras extends ListActivity {
 	public void btnCarro_onClick() {
 		Intent actividad = new Intent(CarrosCompras.this, Compras.class);
 		actividad.putExtra("idAgencia", this.idAgencia);
-		actividad.putExtra("idFactura", this.idAgencia);
-		actividad.putExtra("idCliente", this.idCliente);
-		actividad.putExtra("idFactura", this.idFactura);
-		actividad.putExtra("idFacturaDetalle", this.idFacturaDetalle);
 		actividad.putExtra("nombreAgencia", this.nombreAgencia);
+		actividad.putExtra("idFactura", this.idFactura);
+		actividad.putExtra("idCliente", this.idCliente);
 
 		startActivity(actividad);
 		finish();
@@ -185,8 +181,10 @@ public class CarrosCompras extends ListActivity {
 				Toast.LENGTH_SHORT).show();
 		Intent intento = new Intent(this, Compras.class);
 		intento.putExtra("idAgencia", idAgencia);
+		intento.putExtra("nombreAgencia", nombreAgencia);
 		intento.putExtra("idFactura", idFactura);
 		intento.putExtra("idCliente", idCliente);
+
 		startActivity(intento);
 		finish();
 	}

@@ -29,7 +29,6 @@ public class Compras extends ListActivity {
 	private Button btnCarros;
 	private Button btnEliminar;
 	private TextView lblTotal;
-	private TextView lblTitulo;
 	private TextView lblAgencia;
 	private int idAgencia;
 	private int idCliente;
@@ -45,13 +44,10 @@ public class Compras extends ListActivity {
 		// Recepcion de Parametros
 		Bundle parametros = getIntent().getExtras();
 		this.idAgencia = parametros.getInt("idAgencia");
+		this.nombreAgencia = parametros.getString("nombreAgencia");
 		this.idFactura = parametros.getInt("idFactura");
 		this.idCliente = parametros.getInt("idCliente");
-		/*
-		 * Log.i("CINIGUEZ", "Factura :" + this.idFactura); Log.i("CINIGUEZ",
-		 * "Agencia :" + this.idAgencia); Log.i("CINIGUEZ", "Cliente :" +
-		 * this.idCliente);
-		 */
+
 		// llama a tarea asincrona para rellenar el spinner
 		new ListarProductosTask(Compras.this).execute();
 
@@ -61,10 +57,7 @@ public class Compras extends ListActivity {
 
 		this.lblAgencia = (TextView) findViewById(R.id.lblAgencia);
 		this.lblAgencia.setText(nombreAgencia);
-
-		this.lblTitulo = (TextView) findViewById(R.id.lblTitulo);
-		this.lblTitulo.setText("Carro de Compras");
-
+		
 		// btnAddProducto
 		this.btnAgregarProducto = (Button) findViewById(R.id.btnAddProducto);
 		this.btnAgregarProducto.setOnClickListener(new View.OnClickListener() {
@@ -125,8 +118,10 @@ public class Compras extends ListActivity {
 				actividad.putExtra("idFacturaDetalle",
 						item.getIdFacturaDetalle());
 				actividad.putExtra("idAgencia", Compras.this.idAgencia);
+				actividad.putExtra("nombreAgencia", Compras.this.nombreAgencia);
 				actividad.putExtra("idFactura", Compras.this.idFactura);
 				actividad.putExtra("idCliente", Compras.this.idCliente);
+				
 				startActivity(actividad);
 				finish();
 			}
@@ -139,6 +134,7 @@ public class Compras extends ListActivity {
 		if (totalFactura != 0) {
 			Intent intento = new Intent(this, MedioDePagoActivity.class);
 			intento.putExtra("idAgencia", idAgencia);
+			intento.putExtra("nombreAgencia", nombreAgencia);
 			intento.putExtra("idFactura", idFactura);
 			intento.putExtra("idCliente", idCliente);
 			// se agregan nuevos parametros
@@ -160,6 +156,7 @@ public class Compras extends ListActivity {
 		// se abre la vista del lector de codigo qr ZXing
 		Intent intento = new Intent(this, CaptureActivity.class);
 		intento.putExtra("idAgencia", this.idAgencia);
+		intento.putExtra("nombreAgencia", this.nombreAgencia);
 		intento.putExtra("idFactura", this.idFactura);
 		intento.putExtra("idCliente", this.idCliente);
 		startActivity(intento);
@@ -184,9 +181,9 @@ public class Compras extends ListActivity {
 	public void btnCarros_onClick() {
 		Intent actividad = new Intent(Compras.this, CarrosCompras.class);
 		actividad.putExtra("idAgencia", this.idAgencia);
+		actividad.putExtra("nombreAgencia", this.nombreAgencia);
 		actividad.putExtra("idFactura", this.idFactura);
 		actividad.putExtra("idCliente", this.idCliente);
-		actividad.putExtra("nombreAgencia", this.nombreAgencia);
 
 		startActivity(actividad);
 		finish();
@@ -230,6 +227,7 @@ public class Compras extends ListActivity {
 						Toast.LENGTH_SHORT).show();
 				Intent intento = new Intent(context, Compras.class);
 				intento.putExtra("idAgencia", idAgencia);
+				intento.putExtra("nombreAgencia", nombreAgencia);
 				intento.putExtra("idFactura", 0);
 				intento.putExtra("idCliente", idCliente);
 				startActivity(intento);

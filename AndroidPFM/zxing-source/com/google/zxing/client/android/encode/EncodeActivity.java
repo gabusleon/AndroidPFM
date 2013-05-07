@@ -181,7 +181,8 @@ public final class EncodeActivity extends Activity {
     return fileName;
   }
 
-  @Override
+  @SuppressWarnings("deprecation")
+@Override
   protected void onResume() {
     super.onResume();
     // This assumes the view is full screen, which is a good assumption

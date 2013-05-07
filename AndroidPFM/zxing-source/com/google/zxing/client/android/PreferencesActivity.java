@@ -60,7 +60,8 @@ public final class PreferencesActivity extends PreferenceActivity
   private CheckBoxPreference decodeQR;
   private CheckBoxPreference decodeDataMatrix;
 
-  @Override
+  @SuppressWarnings("deprecation")
+@Override
   protected void onCreate(Bundle icicle) {
     super.onCreate(icicle);
     addPreferencesFromResource(R.xml.preferences);

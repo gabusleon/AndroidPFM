@@ -29,6 +29,7 @@ public class AddProductoActivity extends Activity {
 	private NumberPicker cantidad;
 	private int idBodegaDetalle;
 	private int idAgencia;
+	private String nombreAgencia;
 	private int idFactura;
 	private int idCliente;
 	private BodegaDetalle bodegaDetalle = new BodegaDetalle();
@@ -58,6 +59,7 @@ public class AddProductoActivity extends Activity {
 		Bundle extra = getIntent().getExtras();
 		idBodegaDetalle = extra.getInt("idBodegaDetalle");
 		idAgencia = extra.getInt("idAgencia");
+		nombreAgencia = extra.getString("nombreAgencia");
 		idFactura = extra.getInt("idFactura");
 		idCliente = extra.getInt("idCliente");
 
@@ -232,6 +234,7 @@ public class AddProductoActivity extends Activity {
 						.show();
 				Intent intento = new Intent(context, Compras.class);
 				intento.putExtra("idAgencia", idAgencia);
+				intento.putExtra("nombreAgencia", nombreAgencia);
 				intento.putExtra("idFactura", result);
 				intento.putExtra("idCliente", idCliente);
 				startActivity(intento);
@@ -246,8 +249,8 @@ public class AddProductoActivity extends Activity {
 				Toast.makeText(context,
 						"El producto se encuentra en su carro de compras",
 						Toast.LENGTH_SHORT).show();
-			}			
-			pDialog.dismiss();			
+			}
+			pDialog.dismiss();
 		}
 	}
 
@@ -259,6 +262,7 @@ public class AddProductoActivity extends Activity {
 		Toast.makeText(this, "Producto cancelado", Toast.LENGTH_SHORT).show();
 		Intent intento = new Intent(this, Compras.class);
 		intento.putExtra("idAgencia", idAgencia);
+		intento.putExtra("nombreAgencia", nombreAgencia);
 		intento.putExtra("idFactura", idFactura);
 		intento.putExtra("idCliente", idCliente);
 		startActivity(intento);

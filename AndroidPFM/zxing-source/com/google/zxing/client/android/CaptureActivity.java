@@ -78,6 +78,7 @@ public final class CaptureActivity extends Activity implements
 	private InactivityTimer inactivityTimer;
 	private BeepManager beepManager;
 	private int idAgencia;
+	private String nombreAgencia;
 	private int idCliente;
 	private int idFactura;
 
@@ -100,6 +101,7 @@ public final class CaptureActivity extends Activity implements
 		// obtiene parametros
 		Bundle parametros = getIntent().getExtras();
 		this.idAgencia = parametros.getInt("idAgencia");
+		this.nombreAgencia = parametros.getString("nombreAgencia");
 		this.idFactura = parametros.getInt("idFactura");
 		this.idCliente = parametros.getInt("idCliente");
 
@@ -267,10 +269,10 @@ public final class CaptureActivity extends Activity implements
 		if (Integer.parseInt(rawResult.getText().toString()) > 0) {
 			// llama a la actividad addProducto
 			beepManager.playBeepSoundAndVibrate();
-			Toast.makeText(this, "Codigo QR leido", Toast.LENGTH_SHORT)
-			.show();
+			Toast.makeText(this, "Codigo QR leido", Toast.LENGTH_SHORT).show();
 			Intent intento = new Intent(this, AddProductoActivity.class);
 			intento.putExtra("idAgencia", this.idAgencia);
+			intento.putExtra("nombreAgencia", this.nombreAgencia);
 			intento.putExtra("idFactura", this.idFactura);
 			intento.putExtra("idCliente", this.idCliente);
 			intento.putExtra("idBodegaDetalle",
@@ -282,6 +284,7 @@ public final class CaptureActivity extends Activity implements
 					.show();
 			Intent intento = new Intent(this, Compras.class);
 			intento.putExtra("idAgencia", this.idAgencia);
+			intento.putExtra("nombreAgencia", this.nombreAgencia);
 			intento.putExtra("idFactura", this.idFactura);
 			intento.putExtra("idCliente", this.idCliente);
 			startActivity(intento);

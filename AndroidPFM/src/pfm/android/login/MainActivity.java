@@ -123,6 +123,7 @@ public class MainActivity extends Activity {
 		ProgressDialog pDialog;
 		Context context;
 		int idAgencia;
+		String nombreAgencia;
 
 		public LoginTask(Context context) {
 			this.context = context;
@@ -165,8 +166,10 @@ public class MainActivity extends Activity {
 				while (entries.hasNext()) {
 					Map.Entry<Integer, String> entry = entries.next();
 					if (entry.getValue().equals(
-							agencia.getSelectedItem().toString()))
+							agencia.getSelectedItem().toString())) {
 						idAgencia = entry.getKey();
+						nombreAgencia = entry.getValue();
+					}
 				}
 
 				Toast.makeText(context,
@@ -176,8 +179,9 @@ public class MainActivity extends Activity {
 				// AGREGANDO COMO PARAMETRO "RESULT"
 				Intent intento = new Intent(context, Compras.class);
 				intento.putExtra("idAgencia", idAgencia);
+				intento.putExtra("nombreAgencia", nombreAgencia);
 				intento.putExtra("idFactura", 0);
-				intento.putExtra("idCliente", result);				
+				intento.putExtra("idCliente", result);
 				startActivity(intento);
 			} else {
 				Toast.makeText(context, "Inicio de sesion incorrecto",

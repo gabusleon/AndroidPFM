@@ -181,5 +181,6 @@ escanearlo.</string>
     <string name="title_activity_medio_de_pago">Confirmar Compras</string>
     <string name="confirmarCompras_total">Total</string>
     <string name="confirmarCompras_pago">Medio de pago</string>
+    <string name="compras_titulo">Lista de Compras</string>
 
 </resources>

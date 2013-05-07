@@ -48,7 +48,8 @@ public final class BookmarkPickerActivity extends ListActivity {
 
   private Cursor cursor = null;
 
-  @Override
+  @SuppressWarnings("deprecation")
+@Override
   protected void onCreate(Bundle icicle) {
     super.onCreate(icicle);
 

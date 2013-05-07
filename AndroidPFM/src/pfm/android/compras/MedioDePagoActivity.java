@@ -25,6 +25,7 @@ import android.content.Intent;
 public class MedioDePagoActivity extends Activity {
 
 	private int idAgencia;
+	private String nombreAgencia;
 	private int idFactura;
 	private int idCliente;
 	private double totalFactura;
@@ -43,6 +44,7 @@ public class MedioDePagoActivity extends Activity {
 		// Recepcion de Parametros
 		Bundle parametros = getIntent().getExtras();
 		this.idAgencia = parametros.getInt("idAgencia");
+		this.nombreAgencia = parametros.getString("nombreAgencia");
 		this.idFactura = parametros.getInt("idFactura");
 		this.idCliente = parametros.getInt("idCliente");
 		this.totalFactura = parametros.getDouble("totalFactura");
@@ -193,6 +195,7 @@ public class MedioDePagoActivity extends Activity {
 						Toast.LENGTH_SHORT).show();
 				Intent intento = new Intent(context, Compras.class);
 				intento.putExtra("idAgencia", idAgencia);
+				intento.putExtra("nombreAgencia", nombreAgencia);
 				intento.putExtra("idFactura", 0);
 				intento.putExtra("idCliente", idCliente);
 				startActivity(intento);
@@ -210,6 +213,7 @@ public class MedioDePagoActivity extends Activity {
 		Toast.makeText(this, "Pago cancelado", Toast.LENGTH_SHORT).show();
 		Intent intento = new Intent(this, Compras.class);
 		intento.putExtra("idAgencia", idAgencia);
+		intento.putExtra("nombreAgencia", nombreAgencia);
 		intento.putExtra("idFactura", idFactura);
 		intento.putExtra("idCliente", idCliente);
 		startActivity(intento);

@@ -39,7 +39,8 @@ public final class AppPickerActivity extends ListActivity {
     taskExec = new AsyncTaskExecManager().build();
   }
 
-  @Override
+  @SuppressWarnings("unchecked")
+@Override
   protected void onResume() {
     super.onResume();
     labelsPackages.clear();
