@@ -18,6 +18,8 @@ public abstract class DAOFactory {
 	public abstract DescuentoDAO getDescuentoDAO();
 
 	public abstract FacturaDetalleDAO getFacturaDetalleDAO();
-	
+
 	public abstract FacturaDAO getFacturaDAO();
+
+	public abstract MedioPagoDAO getMedioPagoDAO();
 }

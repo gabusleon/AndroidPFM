@@ -15,7 +15,8 @@ public class AdaptadorListaProductos extends BaseAdapter {
 	private final Activity actividad;
 	private final List<ItemProducto> listaProductos;
 
-	public AdaptadorListaProductos(Activity actividad, List<ItemProducto> listaProductos) {
+	public AdaptadorListaProductos(Activity actividad,
+			List<ItemProducto> listaProductos) {
 		super();
 		this.actividad = actividad;
 		this.listaProductos = listaProductos;
@@ -46,14 +47,19 @@ public class AdaptadorListaProductos extends BaseAdapter {
 		TextView textView = (TextView) view.findViewById(R.id.lblItemNombre);
 		textView.setText(listaProductos.get(position).getNombreProducto());
 
-		TextView txtCantidad = (TextView) view.findViewById(R.id.lblItemCantidad);
-		txtCantidad.setText("Cantidad: " + String.valueOf(listaProductos.get(position).getCantidad()));
+		TextView txtCantidad = (TextView) view
+				.findViewById(R.id.lblItemCantidad);
+		txtCantidad.setText("Cantidad: "
+				+ String.valueOf(listaProductos.get(position).getCantidad()));
 
-		TextView txtSubtotal = (TextView) view.findViewById(R.id.lblItemSubtotal);
-		txtSubtotal.setText(String.valueOf(listaProductos.get(position).getSubtotal()));
+		TextView txtSubtotal = (TextView) view
+				.findViewById(R.id.lblItemSubtotal);
+		txtSubtotal.setText(String.valueOf(listaProductos.get(position)
+				.getSubtotal()));
 
 		TextView txtPrecio = (TextView) view.findViewById(R.id.lblItemPrecio);
-		txtPrecio.setText("Valor Unitario: "+String.valueOf(listaProductos.get(position).getPrecio()));
+		txtPrecio.setText("Valor Unitario: "
+				+ String.valueOf(listaProductos.get(position).getPrecio()));
 
 		return view;
 

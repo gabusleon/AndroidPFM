@@ -6,6 +6,7 @@ import pfm.android.dao.DAOFactory;
 import pfm.android.dao.DescuentoDAO;
 import pfm.android.dao.FacturaDAO;
 import pfm.android.dao.FacturaDetalleDAO;
+import pfm.android.dao.MedioPagoDAO;
 import pfm.android.dao.UsuarioDAO;
 
 public class JPADAOFactory extends DAOFactory {
@@ -38,6 +39,11 @@ public class JPADAOFactory extends DAOFactory {
 	@Override
 	public FacturaDAO getFacturaDAO() {
 		return new JPAFacturaDAO();
+	}
+
+	@Override
+	public MedioPagoDAO getMedioPagoDAO() {
+		return new JPAMedioPagoDAO();
 	}
 
 }

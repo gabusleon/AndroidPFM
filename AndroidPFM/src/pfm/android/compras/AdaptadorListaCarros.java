@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class AdaptadorListaCarros extends BaseAdapter{
+public class AdaptadorListaCarros extends BaseAdapter {
 	private final Activity actividad;
 	private final List<ItemCarro> listaCarros;
 
@@ -43,14 +43,19 @@ public class AdaptadorListaCarros extends BaseAdapter{
 		LayoutInflater inflater = actividad.getLayoutInflater();
 		View view = inflater.inflate(R.layout.carro_lista, null, true);
 
-		TextView textView = (TextView) view.findViewById(R.id.lblItemNombreCarro);
-		textView.setText("Carro : " + listaCarros.get(position).getFechaCreacion());
+		TextView textView = (TextView) view
+				.findViewById(R.id.lblItemNombreCarro);
+		textView.setText("Carro : "
+				+ listaCarros.get(position).getFechaCreacion());
 
-		TextView txtCantidad = (TextView) view.findViewById(R.id.lblItemAgencia);
-		txtCantidad.setText("Agencia: " + listaCarros.get(position).getNombreAgencia());
+		TextView txtCantidad = (TextView) view
+				.findViewById(R.id.lblItemAgencia);
+		txtCantidad.setText("Agencia: "
+				+ listaCarros.get(position).getNombreAgencia());
 
 		TextView txtSubtotal = (TextView) view.findViewById(R.id.lblItemTotal);
-		txtSubtotal.setText("Total: " + String.valueOf(listaCarros.get(position).getTotal()));
+		txtSubtotal.setText("Total: "
+				+ String.valueOf(listaCarros.get(position).getTotal()));
 
 		return view;
 

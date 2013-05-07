@@ -9,12 +9,15 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import android.util.Log;
 import pfm.android.dao.FacturaDAO;
 import pfm.entidades.Factura;
 import pfm.entidades.rest.ItemCarro;
 import pfm.entidades.rest.ItemProducto;
 
-public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements FacturaDAO {
+public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
+		FacturaDAO {
 
 	public JPAFacturaDAO() {
 		super(Factura.class, "compra");
@@ -27,14 +30,15 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements Fa
 			return null;
 		} else {
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpGet del = new HttpGet(this.uri + this.urlREST + "/carro/" + idFactura);
+			HttpGet del = new HttpGet(this.uri + this.urlREST + "/carro/"
+					+ idFactura);
 			del.setHeader("content-type", "application/json");
 
 			try {
 				HttpResponse resp = httpClient.execute(del);
 				String respStr = EntityUtils.toString(resp.getEntity());
 				JSONObject respJSON = new JSONObject(respStr);
-				
+
 				JSONObject pJSON = new JSONObject();
 
 				if (!respStr.contains("[")) {
@@ -53,10 +57,11 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements Fa
 
 				} else {
 
-					JSONArray detallesJSON = respJSON.getJSONArray("itemProducto");
+					JSONArray detallesJSON = respJSON
+							.getJSONArray("itemProducto");
 					for (int i = 0; i < detallesJSON.length(); i++) {
 						pJSON = detallesJSON.getJSONObject(i);
-						
+
 						ItemProducto p = new ItemProducto();
 						p.setCantidad(pJSON.getInt("cantidad"));
 						p.setDescuento(pJSON.getDouble("descuento"));
@@ -84,7 +89,8 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements Fa
 		List<ItemCarro> listaCarros = new ArrayList<ItemCarro>();
 
 		HttpClient httpClient = new DefaultHttpClient();
-		HttpGet del = new HttpGet(this.uri + this.urlREST + "/carros/" + idUsuario + "/" + idAgencia);
+		HttpGet del = new HttpGet(this.uri + this.urlREST + "/carros/"
+				+ idUsuario + "/" + idAgencia);
 		del.setHeader("content-type", "application/json");
 
 		try {
@@ -117,6 +123,66 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements Fa
 		} catch (Exception ex) {
 			return null;
 		}
+	}
+
+	@Override
+	public int EliminarFactura(int id) {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet del = new HttpGet(uri + urlREST + "/delete/" + id);
+		del.setHeader("content-type", "application/json");
+
+		try {
+			HttpResponse resp = httpClient.execute(del);
+			String respStr = EntityUtils.toString(resp.getEntity());
+
+			JSONObject objJSON = new JSONObject(respStr);
+
+			return objJSON.getInt("id");
+		} catch (Exception ex) {
+			Log.e("Error", "JPAFacturaDAO <<EliminarFactura>>", ex);
+			return 0;
+		}
+	}
+
+	@Override
+	public double ConfirmaTotal(int id, double totalFatura) {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet del = new HttpGet(uri + urlREST + "/confirmaTotal/" + id + "/"
+				+ totalFatura);
+		del.setHeader("content-type", "application/json");
+
+		try {
+			HttpResponse resp = httpClient.execute(del);
+			String respStr = EntityUtils.toString(resp.getEntity());
+
+			JSONObject objJSON = new JSONObject(respStr);
+
+			return objJSON.getDouble("total");
+		} catch (Exception ex) {
+			Log.e("Error", "JPAFacturaDAO <<ConfirmaTotal>>", ex);
+			return 0;
+		}
+	}
+
+	@Override
+	public int ConfirmaCompra(int idFactura, int idMedioDePago) {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet del = new HttpGet(uri + urlREST + "/confirmaCompra/"
+				+ idFactura + "/" + idMedioDePago);
+		del.setHeader("content-type", "application/json");
+
+		try {
+			HttpResponse resp = httpClient.execute(del);
+			String respStr = EntityUtils.toString(resp.getEntity());
+
+			JSONObject objJSON = new JSONObject(respStr);
+
+			return objJSON.getInt("id");
+		} catch (Exception ex) {
+			Log.e("Error", "JPAFacturaDAO <<ConfirmaCompra>>", ex);
+			return 0;
+		}
+
 	}
 
 }
