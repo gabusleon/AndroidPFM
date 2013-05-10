@@ -43,7 +43,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import pfm.android.R;
-import pfm.android.compras.Compras;
+import pfm.android.compras.ComprasActivity;
 import pfm.android.producto.AddProductoActivity;
 
 /**
@@ -282,7 +282,7 @@ public final class CaptureActivity extends Activity implements
 			// muestra error y llama a la actividad compras
 			Toast.makeText(this, "Codigo QR incompatible", Toast.LENGTH_SHORT)
 					.show();
-			Intent intento = new Intent(this, Compras.class);
+			Intent intento = new Intent(this, ComprasActivity.class);
 			intento.putExtra("idAgencia", this.idAgencia);
 			intento.putExtra("nombreAgencia", this.nombreAgencia);
 			intento.putExtra("idFactura", this.idFactura);

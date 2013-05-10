@@ -22,7 +22,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 
-public class MedioDePagoActivity extends Activity {
+public class ConfirmarComprasActivity extends Activity {
 
 	private int idAgencia;
 	private String nombreAgencia;
@@ -39,7 +39,7 @@ public class MedioDePagoActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_medio_de_pago);
+		setContentView(R.layout.activity_confirmar_compras);
 
 		// Recepcion de Parametros
 		Bundle parametros = getIntent().getExtras();
@@ -97,7 +97,6 @@ public class MedioDePagoActivity extends Activity {
 
 		@Override
 		protected Map<Integer, String> doInBackground(Void... params) {
-			// obtiene el id, nombre de las agencias a traves del servicio REST
 			mapaMedioPago = JPADAOFactory.getFactory().getMedioPagoDAO()
 					.listMedioPago();
 			return mapaMedioPago;
@@ -106,7 +105,6 @@ public class MedioDePagoActivity extends Activity {
 		@Override
 		protected void onPostExecute(Map<Integer, String> result) {
 			super.onPostExecute(result);
-			// Genera el spinner a partir de las agencias obtenidas
 			medioPago = (Spinner) findViewById(R.id.medioPago);
 
 			for (String value : result.values()) {
@@ -146,6 +144,7 @@ public class MedioDePagoActivity extends Activity {
 		protected Integer doInBackground(Void... params) {
 			totalFacturaActual = JPADAOFactory.getFactory().getFacturaDAO()
 					.ConfirmaTotal(idFactura, totalFactura);
+			// confirma totales iguales
 			if (totalFacturaActual == totalFactura) {
 				// confirma compra
 				int idMedioDePago = 0;
@@ -170,7 +169,7 @@ public class MedioDePagoActivity extends Activity {
 				}
 
 			} else {
-				// cambio de valores volver a confirmar
+				// cambio de valores debe volver a confirmar
 				totalFactura = totalFacturaActual;
 				return 0;
 			}
@@ -180,7 +179,19 @@ public class MedioDePagoActivity extends Activity {
 		@Override
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
-			if (result == -1) {
+			if (result == -2) {
+				Toast.makeText(context, "No existe stock suficiente",
+						Toast.LENGTH_SHORT).show();
+				Intent intento = new Intent(context, ComprasActivity.class);
+				intento.putExtra("idAgencia", idAgencia);
+				intento.putExtra("nombreAgencia", nombreAgencia);
+				intento.putExtra("idFactura", idFactura);
+				intento.putExtra("idCliente", idCliente);
+
+				// inicia la actividad
+				startActivity(intento);
+				finish();
+			} else if (result == -1) {
 				Toast.makeText(context, "Error al momento de confirmar",
 						Toast.LENGTH_SHORT).show();
 			} else if (result == 0) {
@@ -193,11 +204,13 @@ public class MedioDePagoActivity extends Activity {
 				Toast.makeText(context,
 						"Compra confirmada, acercarse a la caja mas cercana",
 						Toast.LENGTH_SHORT).show();
-				Intent intento = new Intent(context, Compras.class);
+				Intent intento = new Intent(context, ComprasActivity.class);
 				intento.putExtra("idAgencia", idAgencia);
 				intento.putExtra("nombreAgencia", nombreAgencia);
 				intento.putExtra("idFactura", 0);
 				intento.putExtra("idCliente", idCliente);
+
+				// inicia la actividad
 				startActivity(intento);
 				finish();
 			}
@@ -211,7 +224,7 @@ public class MedioDePagoActivity extends Activity {
 
 	public void cancelar() {
 		Toast.makeText(this, "Pago cancelado", Toast.LENGTH_SHORT).show();
-		Intent intento = new Intent(this, Compras.class);
+		Intent intento = new Intent(this, ComprasActivity.class);
 		intento.putExtra("idAgencia", idAgencia);
 		intento.putExtra("nombreAgencia", nombreAgencia);
 		intento.putExtra("idFactura", idFactura);

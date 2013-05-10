@@ -4,6 +4,13 @@ import pfm.entidades.Usuario;
 
 public interface UsuarioDAO extends GenericDAO<Usuario, Integer> {
 
-	public int login(String username, String password);	
+	/**
+	 * Verifica el username y password ingresados en la aplicacion movil
+	 * 
+	 * @param username
+	 * @param password
+	 * @return idUsuario
+	 */
+	public int login(String username, String password);
 
 }

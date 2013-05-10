@@ -3,8 +3,9 @@ package pfm.android.compras;
 import java.util.List;
 
 import pfm.android.R;
-import pfm.entidades.rest.ItemProducto;
+import pfm.entidades.FacturaDetalle;
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,10 @@ import android.widget.TextView;
 
 public class AdaptadorListaProductos extends BaseAdapter {
 	private final Activity actividad;
-	private final List<ItemProducto> listaProductos;
+	private final List<FacturaDetalle> listaProductos;
 
 	public AdaptadorListaProductos(Activity actividad,
-			List<ItemProducto> listaProductos) {
+			List<FacturaDetalle> listaProductos) {
 		super();
 		this.actividad = actividad;
 		this.listaProductos = listaProductos;
@@ -45,13 +46,22 @@ public class AdaptadorListaProductos extends BaseAdapter {
 		View view = inflater.inflate(R.layout.producto_lista, null, true);
 
 		TextView textView = (TextView) view.findViewById(R.id.lblItemNombre);
-		textView.setText(listaProductos.get(position).getNombreProducto());
+		textView.setText(listaProductos.get(position).getBodegaDetalle()
+				.getProducto().getNombre());
 
 		TextView txtCantidad = (TextView) view
 				.findViewById(R.id.lblItemCantidad);
-		txtCantidad.setText("Cantidad: "
-				+ String.valueOf(listaProductos.get(position).getCantidad()));
+		if (listaProductos.get(position).getBodegaDetalle().getCantidad() < listaProductos
+				.get(position).getCantidad()) {
+			txtCantidad.setTextColor(Color.RED);
+			txtCantidad.setText("Cantidad: Fuera de Stock");
+		} else {
 
+			txtCantidad
+					.setText("Cantidad: "
+							+ String.valueOf(listaProductos.get(position)
+									.getCantidad()));
+		}
 		TextView txtSubtotal = (TextView) view
 				.findViewById(R.id.lblItemSubtotal);
 		txtSubtotal.setText(String.valueOf(listaProductos.get(position)

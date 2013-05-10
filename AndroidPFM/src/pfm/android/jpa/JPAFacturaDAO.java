@@ -1,6 +1,8 @@
 package pfm.android.jpa;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -10,86 +12,54 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import pfm.android.dao.FacturaDAO;
 import pfm.entidades.Factura;
-import pfm.entidades.rest.ItemCarro;
-import pfm.entidades.rest.ItemProducto;
 
 public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
 		FacturaDAO {
 
 	public JPAFacturaDAO() {
-		super(Factura.class, "compra");
+		super(Factura.class, "factura");
 	}
 
+	@SuppressLint("SimpleDateFormat")
 	@Override
-	public List<ItemProducto> getCarroActual(int idFactura) {
-		List<ItemProducto> listaProductos = new ArrayList<ItemProducto>();
-		if (idFactura == -1) {
+	public Factura getJSONParserFactura(JSONObject objJSON) {
+		try {
+			// mapea la entidad factura a partir del JSON
+			Factura factura = new Factura();
+			factura.setId(objJSON.getInt("id"));
+			factura.setSubtotal(objJSON.getDouble("subtotal"));
+			factura.setDescuento(objJSON.getDouble("descuento"));
+			factura.setIva(objJSON.getDouble("iva"));
+			factura.setTotal(objJSON.getDouble("total"));
+			factura.setEliminado(objJSON.getBoolean("eliminado"));
+			factura.setPagado(objJSON.getBoolean("pagado"));
+			factura.setPendiente(objJSON.getBoolean("pendiente"));
+			// obtiene fecha
+			String fecha = objJSON.getString("fecha");
+			SimpleDateFormat formatoFecha1 = new SimpleDateFormat("yyyy-MM-dd");
+			Date fc1 = null;
+			fc1 = formatoFecha1.parse(fecha);
+			factura.setFecha(fc1);
+			// obtiene la entidad agencia del objeto JSON
+			JSONObject ageJSON = objJSON.getJSONObject("agencia");
+			factura.setAgencia(JPADAOFactory.getFactory().getAgenciaDAO()
+					.getJSONParserAgencia(ageJSON));
+			return factura;
+		} catch (Exception e) {
 			return null;
-		} else {
-			HttpClient httpClient = new DefaultHttpClient();
-			HttpGet del = new HttpGet(this.uri + this.urlREST + "/carro/"
-					+ idFactura);
-			del.setHeader("content-type", "application/json");
-
-			try {
-				HttpResponse resp = httpClient.execute(del);
-				String respStr = EntityUtils.toString(resp.getEntity());
-				JSONObject respJSON = new JSONObject(respStr);
-
-				JSONObject pJSON = new JSONObject();
-				JSONArray j = respJSON.optJSONArray("itemProducto");
-				if (j != null) {
-					JSONArray detallesJSON = respJSON
-							.getJSONArray("itemProducto");
-					for (int i = 0; i < detallesJSON.length(); i++) {
-						pJSON = detallesJSON.getJSONObject(i);
-
-						ItemProducto p = new ItemProducto();
-						p.setCantidad(pJSON.getInt("cantidad"));
-						p.setDescuento(pJSON.getDouble("descuento"));
-						p.setDescuentoTotal(pJSON.getDouble("descuentoTotal"));
-						p.setIdBodegaDetalle(pJSON.getInt("idBodegaDetalle"));
-						p.setIdFacturaDetalle(pJSON.getInt("idFacturaDetalle"));
-						p.setNombreProducto(pJSON.getString("nombreProducto"));
-						p.setPrecio(pJSON.getDouble("precio"));
-						p.setSubtotal(pJSON.getDouble("subtotal"));
-						p.setTotalFactura(pJSON.getDouble("totalFactura"));
-						listaProductos.add(p);
-						listaProductos.add(p);
-					}
-
-				} else {
-
-					pJSON = respJSON.getJSONObject("itemProducto");
-					ItemProducto p = new ItemProducto();
-					p.setCantidad(pJSON.getInt("cantidad"));
-					p.setDescuento(pJSON.getDouble("descuento"));
-					p.setDescuentoTotal(pJSON.getDouble("descuentoTotal"));
-					p.setIdBodegaDetalle(pJSON.getInt("idBodegaDetalle"));
-					p.setIdFacturaDetalle(pJSON.getInt("idFacturaDetalle"));
-					p.setNombreProducto(pJSON.getString("nombreProducto"));
-					p.setPrecio(pJSON.getDouble("precio"));
-					p.setSubtotal(pJSON.getDouble("subtotal"));
-					p.setTotalFactura(pJSON.getDouble("totalFactura"));
-					listaProductos.add(p);
-				}
-
-				return listaProductos;
-			} catch (Exception ex) {
-				return null;
-			}
 		}
 	}
 
 	@Override
-	public List<ItemCarro> getListaCarros(int idUsuario, int idAgencia) {
-		List<ItemCarro> listaCarros = new ArrayList<ItemCarro>();
+	public List<Factura> getCarrosCompra(int idUsuario, int idAgencia) {
+		List<Factura> listaCarros = new ArrayList<Factura>();
 
 		HttpClient httpClient = new DefaultHttpClient();
-		HttpGet del = new HttpGet(this.uri + this.urlREST + "/carros/"
+		HttpGet del = new HttpGet(this.uri + this.urlREST + "/carrosCompra/"
 				+ idUsuario + "/" + idAgencia);
 		del.setHeader("content-type", "application/json");
 
@@ -97,28 +67,23 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
 			HttpResponse resp = httpClient.execute(del);
 			String respStr = EntityUtils.toString(resp.getEntity());
 			JSONObject respJSON = new JSONObject(respStr);
-			JSONArray j = respJSON.optJSONArray("carroCompras");
+			JSONArray j = respJSON.optJSONArray("factura");
+			Factura factura = new Factura();
 			if (j != null) {
-				JSONArray carrosJSON = respJSON.getJSONArray("carroCompras");
+				JSONArray carrosJSON = respJSON.getJSONArray("factura");
 
 				for (int i = 0; i < carrosJSON.length(); i++) {
 					JSONObject carroJSON = carrosJSON.getJSONObject(i);
-					ItemCarro c = new ItemCarro();
-					c.setFechaCreacion(carroJSON.getString("fechaCreacion"));
-					c.setIdFactura(carroJSON.getInt("idFactura"));
-					c.setNombreAgencia(carroJSON.getString("nombreAgencia"));
-					c.setTotal(carroJSON.getDouble("total"));
-					listaCarros.add(c);
+					factura = JPADAOFactory.getFactory().getFacturaDAO()
+							.getJSONParserFactura(carroJSON);
+					listaCarros.add(factura);
 				}
 
 			} else {
-				JSONObject pJSON = respJSON.getJSONObject("carroCompras");
-				ItemCarro c = new ItemCarro();
-				c.setFechaCreacion(pJSON.getString("fechaCreacion"));
-				c.setIdFactura(pJSON.getInt("idFactura"));
-				c.setNombreAgencia(pJSON.getString("nombreAgencia"));
-				c.setTotal(pJSON.getDouble("total"));
-				listaCarros.add(c);
+				JSONObject pJSON = respJSON.getJSONObject("factura");
+				factura = JPADAOFactory.getFactory().getFacturaDAO()
+						.getJSONParserFactura(pJSON);
+				listaCarros.add(factura);
 
 			}
 			return listaCarros;
@@ -127,6 +92,15 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
 		}
 	}
 
+	/**
+	 * Eliminado logico del carro de compras
+	 * 
+	 * @param id
+	 *            identificador de la factura
+	 * @return id de la factura eliminada
+	 * @author Gabus
+	 * 
+	 */
 	@Override
 	public int EliminarFactura(int id) {
 		HttpClient httpClient = new DefaultHttpClient();
@@ -178,13 +152,27 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
 			String respStr = EntityUtils.toString(resp.getEntity());
 
 			JSONObject objJSON = new JSONObject(respStr);
+			// comprobar si el JSON es FacturaDetalle o Factura
+			JSONArray arrFacDetJSON = objJSON.optJSONArray("facturaDetalle");
+			if (arrFacDetJSON == null) {
+				JSONObject objfacDetJSON = objJSON
+						.optJSONObject("facturaDetalle");
+				if (objfacDetJSON == null) {
+					// confirmacion correcta
+					return objJSON.getInt("id");
+				} else {
+					// no hay stock para un producto
+					return -2;
+				}
+			} else {
+				// no hay stock para varios productos
+				return -2;
+			}
 
-			return objJSON.getInt("id");
 		} catch (Exception ex) {
 			Log.e("Error", "JPAFacturaDAO <<ConfirmaCompra>>", ex);
 			return 0;
 		}
 
 	}
-
 }

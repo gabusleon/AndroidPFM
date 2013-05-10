@@ -23,6 +23,24 @@ public class JPADescuentoDAO extends JPAGenericDAO<Descuento, Integer>
 	}
 
 	@Override
+	public Descuento getJSONParserDescuento(JSONObject objJSON) {
+		try {
+			// mapea la entidad descuento a partir del JSON
+			Descuento descuento = new Descuento();
+			descuento.setEliminado(objJSON.getBoolean("eliminado"));
+			descuento.setFechaFin((Date) objJSON.get("fechaFin"));
+			descuento.setFechaInicio((Date) objJSON.get("fechaFin"));
+			descuento.setId(objJSON.getInt("id"));
+			descuento.setNombre(objJSON.getString("nombre"));
+			descuento.setValor(objJSON.getDouble("valor"));
+
+			return descuento;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
 	public Descuento getDescuentoByProducto(int idProducto) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet del = new HttpGet(uri + urlREST + "/getDescuentoByProducto/"
@@ -35,18 +53,11 @@ public class JPADescuentoDAO extends JPAGenericDAO<Descuento, Integer>
 
 			JSONObject objJSON = new JSONObject(respStr);
 			Descuento descuento = new Descuento();
-			descuento.setEliminado(objJSON.getBoolean("eliminado"));
-			descuento.setFechaFin((Date) objJSON.get("fechaFin"));
-			descuento.setFechaInicio((Date) objJSON.get("fechaFin"));
-			descuento.setId(objJSON.getInt("id"));
-			descuento.setNombre(objJSON.getString("nombre"));
-			descuento.setValor(objJSON.getDouble("valor"));
-
+			descuento = getJSONParserDescuento(objJSON);
 			return descuento;
 		} catch (Exception ex) {
 			Log.e("Error", "JPADescuentoDAO <<getDescuentoByProducto>>", ex);
 			return null;
 		}
 	}
-
 }

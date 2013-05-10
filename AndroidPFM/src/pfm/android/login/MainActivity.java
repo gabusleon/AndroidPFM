@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import pfm.android.R;
-import pfm.android.compras.Compras;
+import pfm.android.compras.ComprasActivity;
 import pfm.android.jpa.JPADAOFactory;
 
 import android.os.AsyncTask;
@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// llama a tarea asincrona para rellenar el spinner
+		// llama a tarea asincrona para rellenar el spinner de agencuias
 		new ListaAgenciasTask(MainActivity.this).execute();
 
 		// obtiene los parametros de username y password
@@ -71,6 +71,12 @@ public class MainActivity extends Activity {
 
 	}
 
+	/**
+	 * Tarea asincrona para llenar el spinner con el listado de agencias
+	 * 
+	 * @author Gabus
+	 * 
+	 */
 	private class ListaAgenciasTask extends
 			AsyncTask<Void, Void, Map<Integer, String>> {
 		ProgressDialog pDialog;
@@ -103,22 +109,34 @@ public class MainActivity extends Activity {
 		protected void onPostExecute(Map<Integer, String> result) {
 			super.onPostExecute(result);
 			// Genera el spinner a partir de las agencias obtenidas
-			agencia = (Spinner) findViewById(R.id.agencias);
+			if (result != null) {
+				agencia = (Spinner) findViewById(R.id.agencias);
 
-			for (String value : result.values()) {
-				listaAgencias.add(value);
+				for (String value : result.values()) {
+					listaAgencias.add(value);
+				}
+
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+						context, android.R.layout.simple_spinner_dropdown_item,
+						listaAgencias);
+
+				agencia.setAdapter(adapter);
+			} else {
+				Toast.makeText(context, "Existe un error en el servidor",
+						Toast.LENGTH_SHORT).show();
+
 			}
-
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
-					android.R.layout.simple_spinner_dropdown_item,
-					listaAgencias);
-
-			agencia.setAdapter(adapter);
 			pDialog.dismiss();
 
 		}
 	}
 
+	/**
+	 * Tarea asincrona para comprobar el username y password ingresados
+	 * 
+	 * @author Gabus
+	 * 
+	 */
 	private class LoginTask extends AsyncTask<Void, Void, Integer> {
 		ProgressDialog pDialog;
 		Context context;
@@ -142,9 +160,7 @@ public class MainActivity extends Activity {
 
 		@Override
 		protected Integer doInBackground(Void... params) {
-			// verifica el usuario y contrasena ingresados a traves del servicio
-			// REST
-			// envia como resultado el id de la agencia
+			// envia como resultado el id del usuario
 			int id = JPADAOFactory
 					.getFactory()
 					.getUsuarioDAO()
@@ -157,10 +173,9 @@ public class MainActivity extends Activity {
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
 			if (result != 0) {
-				// se ha logeado correctamente y
-				// obtiene id de la agencia seleccionada a partir del
-				// mapaAgencias
+				// se ha logeado correctamente
 
+				// obtiene el id y nombre de la agencia seleccionada
 				Iterator<Map.Entry<Integer, String>> entries = mapaAgencias
 						.entrySet().iterator();
 				while (entries.hasNext()) {
@@ -175,15 +190,18 @@ public class MainActivity extends Activity {
 				Toast.makeText(context,
 						"Bienvenido: " + username.getText().toString(),
 						Toast.LENGTH_SHORT).show();
-				// AQUI DEBE IR EL CODIGO DEL INTENT A LA PANTALLA SIGUIENTE
-				// AGREGANDO COMO PARAMETRO "RESULT"
-				Intent intento = new Intent(context, Compras.class);
+
+				Intent intento = new Intent(context, ComprasActivity.class);
 				intento.putExtra("idAgencia", idAgencia);
 				intento.putExtra("nombreAgencia", nombreAgencia);
 				intento.putExtra("idFactura", 0);
 				intento.putExtra("idCliente", result);
+
+				// inicia la actividad
 				startActivity(intento);
+				finish();
 			} else {
+				// si existe un error en el servidor o los datos son erroneos
 				Toast.makeText(context, "Inicio de sesion incorrecto",
 						Toast.LENGTH_SHORT).show();
 			}
@@ -194,9 +212,9 @@ public class MainActivity extends Activity {
 
 	public void login() {
 
-		// validar que ingresa datos correctos
+		// validar que ingresa los datos necesarios
 		if (!password.getText().toString().isEmpty()
-				&& !username.getText().toString().isEmpty()) {
+				&& !username.getText().toString().isEmpty() && agencia != null) {
 
 			new LoginTask(this).execute();
 
@@ -208,6 +226,7 @@ public class MainActivity extends Activity {
 
 	public void nuevoUsuario() {
 
+		// crea la nueva actividad espernado un resultado de la actividad creada
 		Intent intento = new Intent(this, NuevoUsuarioActivity.class);
 		startActivityForResult(intento, REQUEST_ACTIVITY);
 
@@ -215,6 +234,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// la respuesta de la actividad NuevoUsuarioActivity.class
 		if (requestCode == REQUEST_ACTIVITY) {
 			if (resultCode == RESULT_CANCELED) {
 				Toast.makeText(this, data.getDataString(), Toast.LENGTH_SHORT)

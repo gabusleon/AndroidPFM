@@ -40,15 +40,15 @@
             android:label="@string/title_activity_edit_producto" >
         </activity>
         <activity
-            android:name="pfm.android.compras.Compras"
+            android:name="pfm.android.compras.ComprasActivity"
             android:label="@string/title_activity_carro" >
         </activity>
         <activity
-            android:name="pfm.android.compras.CarrosCompras"
+            android:name="pfm.android.compras.CarrosComprasActivity"
             android:label="@string/title_activity_carros" >
         </activity>
         <activity
-            android:name="pfm.android.compras.MedioDePagoActivity"
+            android:name="pfm.android.compras.ConfirmarComprasActivity"
             android:label="@string/title_activity_medio_de_pago" >
         </activity>
     </application>

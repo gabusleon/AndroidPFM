@@ -141,7 +141,7 @@
             android:layout_height="33dp"
             android:layout_gravity="center"
             android:background="#FFF"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
     <LinearLayout

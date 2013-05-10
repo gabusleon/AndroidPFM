@@ -3,15 +3,13 @@ package pfm.android.compras;
 import java.util.List;
 import pfm.android.R;
 import pfm.android.jpa.JPADAOFactory;
-import pfm.entidades.rest.ItemCarro;
-import android.annotation.SuppressLint;
+import pfm.entidades.Factura;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,30 +17,30 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CarrosCompras extends ListActivity {
-	private List<ItemCarro> listaCarros = null;
+public class CarrosComprasActivity extends ListActivity {
+	private List<Factura> listaCarros = null;
 	private Button btnCarro;
 	private Button btnCarros;
 	private TextView lblTitulo;
 	private TextView lblAgencia;
 	private int idAgencia;
 	private int idCliente;
-	private int idFactura;	
+	private int idFactura;
 	private String nombreAgencia;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.carros_compras);
+		setContentView(R.layout.activity_carros_compras);
 		// Recepcion de Parametros
 		Bundle parametros = getIntent().getExtras();
 		this.idAgencia = parametros.getInt("idAgencia");
 		this.idFactura = parametros.getInt("idFactura");
-		this.idCliente = parametros.getInt("idCliente");	
+		this.idCliente = parametros.getInt("idCliente");
 		this.nombreAgencia = parametros.getString("nombreAgencia");
 
-		// llama a tarea asincrona para rellenar el spinner
-		new ListarCarrosTask(CarrosCompras.this).execute();
+		// llama a tarea asincrona para rellenar la lista de carros
+		new ListarCarrosTask(this).execute();
 
 		// CONTROLES DE LA VISTA
 
@@ -73,24 +71,28 @@ public class CarrosCompras extends ListActivity {
 			}
 		});
 
+		// lista de carros
 		ListView listView = getListView();
 		listView.setTextFilterEnabled(true);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				final ItemCarro item = (ItemCarro) parent
+				final Factura item = (Factura) parent
 						.getItemAtPosition(position);
 
-				Intent actividad = new Intent(CarrosCompras.this, Compras.class);
+				Intent intento = new Intent(CarrosComprasActivity.this,
+						ComprasActivity.class);
+				intento.putExtra("idAgencia",
+						CarrosComprasActivity.this.idAgencia);
+				intento.putExtra("nombreAgencia",
+						CarrosComprasActivity.this.nombreAgencia);
+				intento.putExtra("idFactura", item.getId());
+				intento.putExtra("idCliente",
+						CarrosComprasActivity.this.idCliente);
 
-				actividad.putExtra("idAgencia", CarrosCompras.this.idAgencia);
-				actividad.putExtra("nombreAgencia",
-						CarrosCompras.this.nombreAgencia);
-				actividad.putExtra("idFactura", item.getIdFactura());
-				actividad.putExtra("idCliente", CarrosCompras.this.idCliente);
-
-				startActivity(actividad);
+				// inicia la actividad
+				startActivity(intento);
 				finish();
 			}
 		});
@@ -103,13 +105,14 @@ public class CarrosCompras extends ListActivity {
 	 * @author Carlos Iniguez
 	 */
 	public void btnCarro_onClick() {
-		Intent actividad = new Intent(CarrosCompras.this, Compras.class);
-		actividad.putExtra("idAgencia", this.idAgencia);
-		actividad.putExtra("nombreAgencia", this.nombreAgencia);
-		actividad.putExtra("idFactura", this.idFactura);
-		actividad.putExtra("idCliente", this.idCliente);
+		Intent intento = new Intent(this, ComprasActivity.class);
+		intento.putExtra("idAgencia", idAgencia);
+		intento.putExtra("nombreAgencia", nombreAgencia);
+		intento.putExtra("idFactura", idFactura);
+		intento.putExtra("idCliente", idCliente);
 
-		startActivity(actividad);
+		// inicia la actividad
+		startActivity(intento);
 		finish();
 	}
 
@@ -119,18 +122,11 @@ public class CarrosCompras extends ListActivity {
 	 * @author Carlos Iniguez
 	 */
 	public void btnCarros_onClick() {
-		// TODO: Llamar Carros
+		// se encuntra en el listado de carros de compras por lo que el boton no
+		// debe realizar ninguna accion
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// getMenuInflater().inflate(R.menu.compras, menu);
-		return true;
-	}
-
-	@SuppressLint("NewApi")
-	private class ListarCarrosTask extends
-			AsyncTask<Void, Void, List<ItemCarro>> {
+	private class ListarCarrosTask extends AsyncTask<Void, Void, List<Factura>> {
 		ProgressDialog pDialog;
 		Context context;
 
@@ -150,13 +146,10 @@ public class CarrosCompras extends ListActivity {
 		}
 
 		@Override
-		protected List<ItemCarro> doInBackground(Void... params) {
+		protected List<Factura> doInBackground(Void... params) {
 			// obtiene la lista de Productos a traves del servicio REST
-			listaCarros = JPADAOFactory
-					.getFactory()
-					.getFacturaDAO()
-					.getListaCarros(CarrosCompras.this.idCliente,
-							CarrosCompras.this.idAgencia);
+			listaCarros = JPADAOFactory.getFactory().getFacturaDAO()
+					.getCarrosCompra(idCliente, idAgencia);
 			if (listaCarros != null) {
 				return listaCarros;
 			} else {
@@ -166,11 +159,12 @@ public class CarrosCompras extends ListActivity {
 		}
 
 		@Override
-		protected void onPostExecute(List<ItemCarro> lista) {
+		protected void onPostExecute(List<Factura> lista) {
 			super.onPostExecute(lista);
 
 			// Seteamos el adaptador para llenar al ListView
-			setListAdapter(new AdaptadorListaCarros(CarrosCompras.this, lista));
+			setListAdapter(new AdaptadorListaCarros(CarrosComprasActivity.this,
+					lista));
 			pDialog.dismiss();
 
 		}
@@ -179,12 +173,13 @@ public class CarrosCompras extends ListActivity {
 	public void cancelar() {
 		Toast.makeText(this, "Compras pendientes canceladas",
 				Toast.LENGTH_SHORT).show();
-		Intent intento = new Intent(this, Compras.class);
+		Intent intento = new Intent(this, ComprasActivity.class);
 		intento.putExtra("idAgencia", idAgencia);
 		intento.putExtra("nombreAgencia", nombreAgencia);
 		intento.putExtra("idFactura", idFactura);
 		intento.putExtra("idCliente", idCliente);
 
+		// inicia la actividad
 		startActivity(intento);
 		finish();
 	}

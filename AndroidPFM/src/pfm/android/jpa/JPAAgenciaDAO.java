@@ -24,6 +24,25 @@ public class JPAAgenciaDAO extends JPAGenericDAO<Agencia, Integer> implements
 
 	}
 
+	@Override
+	public Agencia getJSONParserAgencia(JSONObject objJSON) {
+		try {
+			Agencia agencia = new Agencia();
+			agencia.setId(objJSON.getInt("id"));
+			agencia.setNombre(objJSON.getString("nombre"));
+			agencia.setDireccion(objJSON.getString("direccion"));
+			agencia.setEliminado(objJSON.getBoolean("eliminado"));
+			agencia.setTelefono(objJSON.getString("telefono"));
+
+			return agencia;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Envia el listado de agencias en una Map<Integer, String>
+	 */
 	@SuppressLint("UseSparseArrays")
 	@Override
 	public Map<Integer, String> listAgencias() {

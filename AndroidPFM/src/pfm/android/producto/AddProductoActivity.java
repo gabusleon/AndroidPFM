@@ -1,7 +1,7 @@
 package pfm.android.producto;
 
 import pfm.android.R;
-import pfm.android.compras.Compras;
+import pfm.android.compras.ComprasActivity;
 import pfm.android.jpa.JPADAOFactory;
 import pfm.entidades.BodegaDetalle;
 import pfm.entidades.Descuento;
@@ -232,7 +232,7 @@ public class AddProductoActivity extends Activity {
 			if (result > 0) {
 				Toast.makeText(context, "Producto guardado", Toast.LENGTH_SHORT)
 						.show();
-				Intent intento = new Intent(context, Compras.class);
+				Intent intento = new Intent(context, ComprasActivity.class);
 				intento.putExtra("idAgencia", idAgencia);
 				intento.putExtra("nombreAgencia", nombreAgencia);
 				intento.putExtra("idFactura", result);
@@ -260,7 +260,7 @@ public class AddProductoActivity extends Activity {
 
 	public void cancelar() {
 		Toast.makeText(this, "Producto cancelado", Toast.LENGTH_SHORT).show();
-		Intent intento = new Intent(this, Compras.class);
+		Intent intento = new Intent(this, ComprasActivity.class);
 		intento.putExtra("idAgencia", idAgencia);
 		intento.putExtra("nombreAgencia", nombreAgencia);
 		intento.putExtra("idFactura", idFactura);

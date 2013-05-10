@@ -1,9 +1,11 @@
 package pfm.android.compras;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import pfm.android.R;
-import pfm.entidades.rest.ItemCarro;
+import pfm.entidades.Factura;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +15,9 @@ import android.widget.TextView;
 
 public class AdaptadorListaCarros extends BaseAdapter {
 	private final Activity actividad;
-	private final List<ItemCarro> listaCarros;
+	private final List<Factura> listaCarros;
 
-	public AdaptadorListaCarros(Activity actividad, List<ItemCarro> listaCarros) {
+	public AdaptadorListaCarros(Activity actividad, List<Factura> listaCarros) {
 		super();
 		this.actividad = actividad;
 		this.listaCarros = listaCarros;
@@ -39,19 +41,23 @@ public class AdaptadorListaCarros extends BaseAdapter {
 		return arg0;
 	}
 
+	@SuppressLint("SimpleDateFormat")
 	public View getView(int position, View arg1, ViewGroup arg2) {
 		LayoutInflater inflater = actividad.getLayoutInflater();
 		View view = inflater.inflate(R.layout.carro_lista, null, true);
 
+		SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+		String fecha = formatoFecha
+				.format(listaCarros.get(position).getFecha());
+
 		TextView textView = (TextView) view
 				.findViewById(R.id.lblItemNombreCarro);
-		textView.setText("Carro : "
-				+ listaCarros.get(position).getFechaCreacion());
+		textView.setText("Carro : " + fecha);
 
 		TextView txtCantidad = (TextView) view
 				.findViewById(R.id.lblItemAgencia);
 		txtCantidad.setText("Agencia: "
-				+ listaCarros.get(position).getNombreAgencia());
+				+ listaCarros.get(position).getAgencia().getNombre());
 
 		TextView txtSubtotal = (TextView) view.findViewById(R.id.lblItemTotal);
 		txtSubtotal.setText("Total: "

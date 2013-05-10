@@ -48,6 +48,7 @@ public class NuevoUsuarioActivity extends Activity {
 		ImageButton btn_aceptar = (ImageButton) findViewById(R.id.btn_nuevo_usuario_aceptar);
 		ImageButton btn_cancelar = (ImageButton) findViewById(R.id.btn_nuevo_usuario_cancelar);
 
+		// genera el listener de los botones
 		btn_aceptar.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -87,7 +88,7 @@ public class NuevoUsuarioActivity extends Activity {
 		@SuppressLint("SimpleDateFormat")
 		@Override
 		protected Boolean doInBackground(Void... params) {
-
+			// envia los atributos y valores para crear el nuevo usuario
 			String[] atributos = { "nombres", "apellidos", "direccion",
 					"telefono", "fechaNacimiento", "email", "username",
 					"password" };
@@ -123,7 +124,7 @@ public class NuevoUsuarioActivity extends Activity {
 	@SuppressLint("SimpleDateFormat")
 	public void nuevoUsuario() {
 		try {
-
+			// valida que esten ingresados todos los datos
 			if (!nombres.getText().toString().isEmpty()
 					&& !apellidos.getText().toString().isEmpty()
 					&& !direccion.getText().toString().isEmpty()

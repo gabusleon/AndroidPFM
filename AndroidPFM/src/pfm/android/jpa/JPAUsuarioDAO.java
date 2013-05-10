@@ -20,6 +20,11 @@ public class JPAUsuarioDAO extends JPAGenericDAO<Usuario, Integer> implements
 		super(Usuario.class, "autenticacion");
 	}
 
+	/**
+	 * Envia el username y password al servicio REST devuelve la entidad usuario
+	 * y el metodo devuelve el id del usuario encontrado caso contrario, un
+	 * valor 0
+	 */
 	@Override
 	public int login(String username, String password) {
 

@@ -1,10 +1,14 @@
 package pfm.android.jpa;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.util.Log;
@@ -12,7 +16,6 @@ import android.util.Log;
 import pfm.android.dao.FacturaDetalleDAO;
 import pfm.entidades.BodegaDetalle;
 import pfm.entidades.Descuento;
-import pfm.entidades.Factura;
 import pfm.entidades.FacturaDetalle;
 
 public class JPAFacturaDetalleDAO extends
@@ -20,6 +23,36 @@ public class JPAFacturaDetalleDAO extends
 
 	public JPAFacturaDetalleDAO() {
 		super(FacturaDetalle.class, "facturaDetalle");
+	}
+
+	@Override
+	public FacturaDetalle getJSONParserFacturaDetalle(JSONObject objJSON) {
+		try {
+			// mapea la entidad facturaDetalle a partir del JSON
+			FacturaDetalle facturaDetalle = new FacturaDetalle();
+			facturaDetalle.setId(objJSON.getInt("id"));
+			facturaDetalle.setCantidad(objJSON.getInt("cantidad"));
+			facturaDetalle.setPrecio(objJSON.getDouble("precio"));
+			facturaDetalle.setSubtotal(objJSON.getDouble("subtotal"));
+			facturaDetalle.setDescuento(objJSON.getDouble("descuento"));
+			facturaDetalle.setIva(objJSON.getDouble("iva"));
+			facturaDetalle.setTotal(objJSON.getDouble("total"));
+
+			// genera la entidad bodegaDetalle
+			JSONObject bodDetJSON = objJSON.getJSONObject("bodegaDetalle");
+			facturaDetalle.setBodegaDetalle(JPADAOFactory.getFactory()
+					.getBodegaDetalleDAO()
+					.getJSONParserBodegaDetalle(bodDetJSON));
+
+			// genera la entidad factura solo con su id
+			JSONObject facJSON = objJSON.getJSONObject("factura");
+			facturaDetalle.setFactura(JPADAOFactory.getFactory()
+					.getFacturaDAO().getJSONParserFactura(facJSON));
+
+			return facturaDetalle;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
@@ -34,26 +67,8 @@ public class JPAFacturaDetalleDAO extends
 			String respStr = EntityUtils.toString(resp.getEntity());
 
 			JSONObject objJSON = new JSONObject(respStr);
-			// mapea la entidad facturaDetalle a partir del JSON, solo los datos
-			// necesarios
 			FacturaDetalle facturaDetalle = new FacturaDetalle();
-			facturaDetalle.setId(objJSON.getInt("id"));
-			facturaDetalle.setCantidad(objJSON.getInt("cantidad"));
-			facturaDetalle.setPrecio(objJSON.getDouble("precio"));
-			facturaDetalle.setSubtotal(objJSON.getDouble("subtotal"));
-			facturaDetalle.setDescuento(objJSON.getDouble("descuento"));
-			facturaDetalle.setIva(objJSON.getDouble("iva"));
-			facturaDetalle.setTotal(objJSON.getDouble("total"));
-			JSONObject bodDetJSON = objJSON.getJSONObject("bodegaDetalle");
-			facturaDetalle.setBodegaDetalle(JPADAOFactory.getFactory()
-					.getBodegaDetalleDAO()
-					.getBodegaDetalleById(bodDetJSON.getInt("id")));
-			JSONObject facJSON = objJSON.getJSONObject("factura");
-			// genera la entidad factura solo con su id
-			Factura factura = new Factura();
-			factura.setId(facJSON.getInt("id"));
-			facturaDetalle.setFactura(factura);
-
+			facturaDetalle = getJSONParserFacturaDetalle(objJSON);
 			return facturaDetalle;
 
 		} catch (Exception ex) {
@@ -89,9 +104,6 @@ public class JPAFacturaDetalleDAO extends
 		facturaDetalle.setPrecio(bodegaDetalle.getPrecio());
 		facturaDetalle.setSubtotal(sub);
 		facturaDetalle.setTotal(tot);
-		// en esta facturaDetalle no esta seteado ni el id, ni la factura, eso
-		// se lo debe hacer
-		// cuando se vaya a guardar el detalle
 
 		return facturaDetalle;
 	}
@@ -186,6 +198,54 @@ public class JPAFacturaDetalleDAO extends
 					ex);
 			return false;
 		}
+	}
+
+	/**
+	 * Obtiene el listado de los productos del carro de compras actual
+	 * 
+	 * @param idFactura
+	 *            el identificador de la factura
+	 * @return listado de facturaDetalle
+	 * @author Carlos Iniguez
+	 */
+	@Override
+	public List<FacturaDetalle> getCarroActual(int idFactura) {
+
+		List<FacturaDetalle> listaProductos = new ArrayList<FacturaDetalle>();
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet del = new HttpGet(this.uri + this.urlREST
+				+ "/carroCompraActual/" + idFactura);
+		del.setHeader("content-type", "application/json");
+
+		try {
+			HttpResponse resp = httpClient.execute(del);
+			String respStr = EntityUtils.toString(resp.getEntity());
+			JSONObject respJSON = new JSONObject(respStr);
+
+			JSONObject pJSON = new JSONObject();
+			JSONArray j = respJSON.optJSONArray("facturaDetalle");
+			FacturaDetalle facturaDetalle = new FacturaDetalle();
+			if (j != null) {
+				JSONArray detallesJSON = respJSON
+						.getJSONArray("facturaDetalle");
+				for (int i = 0; i < detallesJSON.length(); i++) {
+					pJSON = detallesJSON.getJSONObject(i);
+					facturaDetalle = getJSONParserFacturaDetalle(pJSON);
+					listaProductos.add(facturaDetalle);
+				}
+
+			} else {
+
+				pJSON = respJSON.getJSONObject("facturaDetalle");
+				facturaDetalle = getJSONParserFacturaDetalle(pJSON);
+				listaProductos.add(facturaDetalle);
+			}
+
+			return listaProductos;
+		} catch (Exception ex) {
+			return null;
+		}
+
 	}
 
 }

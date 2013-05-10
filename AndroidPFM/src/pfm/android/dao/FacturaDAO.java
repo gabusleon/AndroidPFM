@@ -2,19 +2,19 @@ package pfm.android.dao;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 import pfm.entidades.Factura;
-import pfm.entidades.rest.ItemCarro;
-import pfm.entidades.rest.ItemProducto;
 
 public interface FacturaDAO extends GenericDAO<Factura, Integer> {
 
 	/**
-	 * Obtiene la Lista de Productos ( facturaDetalle ) del carro indicado
+	 * Realiza el mapeo del objeto JSON a la entidad Factura
 	 * 
-	 * @author Carlos Iniguez
-	 * @return Lista de Detalles de Factura ( productos)
+	 * @param objJSON
+	 * @return Factura
 	 */
-	public List<ItemProducto> getCarroActual(int idFactura);
+	public Factura getJSONParserFactura(JSONObject objJSON);
 
 	/**
 	 * Obtiene la lista de Carros del Cliente (Facturas pendientes)
@@ -22,7 +22,7 @@ public interface FacturaDAO extends GenericDAO<Factura, Integer> {
 	 * @author Carlos Iniguez
 	 * @return Lista de Facturas
 	 */
-	public List<ItemCarro> getListaCarros(int idUsuario, int idAgencia);
+	public List<Factura> getCarrosCompra(int idUsuario, int idAgencia);
 
 	/**
 	 * Eliminado logico de la factura por el ID

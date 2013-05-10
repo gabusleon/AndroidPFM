@@ -25,23 +25,14 @@ public class JPABodegaDetalleDAO extends JPAGenericDAO<BodegaDetalle, Integer>
 	}
 
 	@Override
-	public BodegaDetalle getBodegaDetalleById(int id) {
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpGet del = new HttpGet(uri + urlREST + "/getBodegaDetalleById/" + id);
-		del.setHeader("content-type", "application/json");
-
+	public BodegaDetalle getJSONParserBodegaDetalle(JSONObject objJSON) {
 		try {
-			HttpResponse resp = httpClient.execute(del);
-			String respStr = EntityUtils.toString(resp.getEntity());
-			
-			JSONObject objJSON = new JSONObject(respStr);
-
 			BodegaDetalle bodegaDetalle = new BodegaDetalle();
 			bodegaDetalle.setId(objJSON.getInt("id"));
 			bodegaDetalle.setCantidad(objJSON.getInt("cantidad"));
 			bodegaDetalle.setPrecio(objJSON.getDouble("precio"));
 			bodegaDetalle.setEliminado(objJSON.getBoolean("eliminado"));
-			
+
 			JSONObject bod = objJSON.getJSONObject("bodega");
 			JSONObject pro = objJSON.getJSONObject("producto");
 
@@ -53,16 +44,13 @@ public class JPABodegaDetalleDAO extends JPAGenericDAO<BodegaDetalle, Integer>
 			bodega.setNombre(bod.getString("nombre"));
 			bodega.setTelefono(bod.getString("telefono"));
 
-			// genera la entidad agencia para agregarla a la bodega	
+			// genera la entidad agencia para agregarla a la bodega
 			JSONObject age = bod.getJSONObject("agencia");
 			Agencia agencia = new Agencia();
-			agencia.setDireccion(age.getString("direccion"));
-			agencia.setEliminado(age.getBoolean("eliminado"));
-			agencia.setId(age.getInt("id"));
-			agencia.setNombre(age.getString("nombre"));
-			agencia.setTelefono(age.getString("telefono"));
+			agencia = JPADAOFactory.getFactory().getAgenciaDAO()
+					.getJSONParserAgencia(age);
 
-			// genera la entidad empresa para agregarla a la agencia			
+			// genera la entidad empresa para agregarla a la agencia
 			JSONObject emp = age.getJSONObject("empresa");
 			Empresa empresa = new Empresa();
 			empresa.setDireccion(emp.getString("direccion"));
@@ -86,14 +74,14 @@ public class JPABodegaDetalleDAO extends JPAGenericDAO<BodegaDetalle, Integer>
 			producto.setId(pro.getInt("id"));
 			producto.setNombre(pro.getString("nombre"));
 
-			// genera la entidad categora para agregarla al producto			
+			// genera la entidad categora para agregarla al producto
 			JSONObject cat = pro.getJSONObject("categoria");
 			Categoria categoria = new Categoria();
 			categoria.setEliminado(cat.getBoolean("eliminado"));
 			categoria.setId(cat.getInt("id"));
 			categoria.setNombre("nombre");
 
-			// genera la entidad marca para agregara al producto			
+			// genera la entidad marca para agregara al producto
 			JSONObject mar = pro.getJSONObject("marca");
 			Marca marca = new Marca();
 			marca.setEliminado(mar.getBoolean("eliminado"));
@@ -107,6 +95,25 @@ public class JPABodegaDetalleDAO extends JPAGenericDAO<BodegaDetalle, Integer>
 			// agrega el producto a bodegaDetalle
 			bodegaDetalle.setProducto(producto);
 
+			return bodegaDetalle;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public BodegaDetalle getBodegaDetalleById(int id) {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpGet del = new HttpGet(uri + urlREST + "/getBodegaDetalleById/" + id);
+		del.setHeader("content-type", "application/json");
+
+		try {
+			HttpResponse resp = httpClient.execute(del);
+			String respStr = EntityUtils.toString(resp.getEntity());
+
+			JSONObject objJSON = new JSONObject(respStr);
+			BodegaDetalle bodegaDetalle = new BodegaDetalle();
+			bodegaDetalle = getJSONParserBodegaDetalle(objJSON);
 			return bodegaDetalle;
 
 		} catch (Exception ex) {

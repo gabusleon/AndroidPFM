@@ -7,7 +7,7 @@ import com.google.zxing.client.android.CaptureActivity;
 import pfm.android.R;
 import pfm.android.jpa.JPADAOFactory;
 import pfm.android.producto.EditProductoActivity;
-import pfm.entidades.rest.ItemProducto;
+import pfm.entidades.FacturaDetalle;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.ListActivity;
@@ -21,8 +21,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Compras extends ListActivity {
-	private List<ItemProducto> listaProductos = null;
+public class ComprasActivity extends ListActivity {
+	private List<FacturaDetalle> listaProductos = null;
 	private Button btnConfirmar;
 	private Button btnAgregarProducto;
 	private Button btnCarro;
@@ -39,25 +39,29 @@ public class Compras extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.compras);
+		setContentView(R.layout.activity_compras);
 
 		// Recepcion de Parametros
-		Bundle parametros = getIntent().getExtras();
-		this.idAgencia = parametros.getInt("idAgencia");
-		this.nombreAgencia = parametros.getString("nombreAgencia");
-		this.idFactura = parametros.getInt("idFactura");
-		this.idCliente = parametros.getInt("idCliente");
+		Bundle extra = getIntent().getExtras();
+		idAgencia = extra.getInt("idAgencia");
+		nombreAgencia = extra.getString("nombreAgencia");
+		idFactura = extra.getInt("idFactura");
+		idCliente = extra.getInt("idCliente");
 
-		// llama a tarea asincrona para rellenar el spinner
-		new ListarProductosTask(Compras.this).execute();
+		// llama a tarea asincrona para rellenar el listado de productos si el
+		// idFactura es mayor a 0
+		if (idFactura > 0) {
+			new ListarProductosTask(this).execute();
+		}
 
 		// CONTROLES DE LA VISTA
-		this.lblTotal = (TextView) findViewById(R.id.lblTotal);
-		this.lblTotal.setText("Total: " + 0);
+		lblTotal = (TextView) findViewById(R.id.lblTotal);
+		lblTotal.setText("Total: " + 0);
 
-		this.lblAgencia = (TextView) findViewById(R.id.lblAgencia);
-		this.lblAgencia.setText(nombreAgencia);
-		
+		lblAgencia = (TextView) findViewById(R.id.lblAgencia);
+		lblAgencia.setText(nombreAgencia);
+
+		// Creacion de botones con sus listener
 		// btnAddProducto
 		this.btnAgregarProducto = (Button) findViewById(R.id.btnAddProducto);
 		this.btnAgregarProducto.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +99,7 @@ public class Compras extends ListActivity {
 
 			}
 		});
+
 		// btnEliminar
 		this.btnEliminar = (Button) findViewById(R.id.btnEliminarCarro);
 		this.btnEliminar.setOnClickListener(new View.OnClickListener() {
@@ -104,41 +109,49 @@ public class Compras extends ListActivity {
 			}
 		});
 
+		// creacion de listas
 		ListView listView = getListView();
 		listView.setTextFilterEnabled(true);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				final ItemProducto item = (ItemProducto) parent
+				final FacturaDetalle item = (FacturaDetalle) parent
 						.getItemAtPosition(position);
-				Intent actividad = new Intent(Compras.this,
+				Intent intento = new Intent(ComprasActivity.this,
 						EditProductoActivity.class);
 
-				actividad.putExtra("idFacturaDetalle",
-						item.getIdFacturaDetalle());
-				actividad.putExtra("idAgencia", Compras.this.idAgencia);
-				actividad.putExtra("nombreAgencia", Compras.this.nombreAgencia);
-				actividad.putExtra("idFactura", Compras.this.idFactura);
-				actividad.putExtra("idCliente", Compras.this.idCliente);
-				
-				startActivity(actividad);
+				intento.putExtra("idFacturaDetalle", item.getId());
+				intento.putExtra("idAgencia", ComprasActivity.this.idAgencia);
+				intento.putExtra("nombreAgencia",
+						ComprasActivity.this.nombreAgencia);
+				intento.putExtra("idFactura", ComprasActivity.this.idFactura);
+				intento.putExtra("idCliente", ComprasActivity.this.idCliente);
+
+				// inicia la actividad
+				startActivity(intento);
 				finish();
 			}
 		});
 
 	}
 
+	/**
+	 * Abrir la vista para confirmar la compra
+	 * 
+	 * @author Gabus
+	 */
 	public void btnConfirmar_onClick() {
-		// se abre la vista de confirmar compras
+		// valida que exista prodictos en la lista de compras
 		if (totalFactura != 0) {
-			Intent intento = new Intent(this, MedioDePagoActivity.class);
+			Intent intento = new Intent(this, ConfirmarComprasActivity.class);
 			intento.putExtra("idAgencia", idAgencia);
 			intento.putExtra("nombreAgencia", nombreAgencia);
 			intento.putExtra("idFactura", idFactura);
 			intento.putExtra("idCliente", idCliente);
-			// se agregan nuevos parametros
 			intento.putExtra("totalFactura", totalFactura);
+
+			// inicia la actividad
 			startActivity(intento);
 			finish();
 		} else {
@@ -148,29 +161,27 @@ public class Compras extends ListActivity {
 	}
 
 	/**
-	 * Abrir la vista para Agregar Producto
+	 * Abrir la vista para anadir nuevo producto
 	 * 
-	 * @author Carlos Iniguez
+	 * @author Gabus
 	 */
 	public void btnAddProducto_onClick() {
-		// se abre la vista del lector de codigo qr ZXing
+		// se abre la vista del lector de codigo QR de la libreria ZXing
 		Intent intento = new Intent(this, CaptureActivity.class);
 		intento.putExtra("idAgencia", this.idAgencia);
 		intento.putExtra("nombreAgencia", this.nombreAgencia);
 		intento.putExtra("idFactura", this.idFactura);
 		intento.putExtra("idCliente", this.idCliente);
+
+		// inicia la actividad
 		startActivity(intento);
 		finish();
 
 	}
 
-	/**
-	 * Abrir la vista para Visualizar el carro de compras activo
-	 * 
-	 * @author Carlos Iniguez
-	 */
 	public void btnCarro_onClick() {
-		// TODO: Llamar a forma Carro
+		// se encuntra en el carro de compras por lo que el boton no debe
+		// realizar ninguna accion
 	}
 
 	/**
@@ -179,21 +190,37 @@ public class Compras extends ListActivity {
 	 * @author Carlos Iniguez
 	 */
 	public void btnCarros_onClick() {
-		Intent actividad = new Intent(Compras.this, CarrosCompras.class);
-		actividad.putExtra("idAgencia", this.idAgencia);
-		actividad.putExtra("nombreAgencia", this.nombreAgencia);
-		actividad.putExtra("idFactura", this.idFactura);
-		actividad.putExtra("idCliente", this.idCliente);
+		Intent intento = new Intent(this, CarrosComprasActivity.class);
+		intento.putExtra("idAgencia", idAgencia);
+		intento.putExtra("nombreAgencia", nombreAgencia);
+		intento.putExtra("idFactura", idFactura);
+		intento.putExtra("idCliente", idCliente);
 
-		startActivity(actividad);
+		// inicia la actividad
+		startActivity(intento);
 		finish();
 	}
 
-	private class EliminarFacturaTask extends AsyncTask<Void, Void, Integer> {
+	/**
+	 * Eliminado logico del carro de compras
+	 * 
+	 * @author Gabus
+	 */
+	public void btnEliminar_onClick() {
+		new EliminarCarroTask(this).execute();
+	}
+
+	/**
+	 * Tarea asincrona para eliminar el carro de compras
+	 * 
+	 * @author Gabus
+	 * 
+	 */
+	private class EliminarCarroTask extends AsyncTask<Void, Void, Integer> {
 		ProgressDialog pDialog;
 		Context context;
 
-		public EliminarFacturaTask(Context context) {
+		public EliminarCarroTask(Context context) {
 			this.context = context;
 		}
 
@@ -210,30 +237,36 @@ public class Compras extends ListActivity {
 
 		@Override
 		protected Integer doInBackground(Void... params) {
-			if (idFactura != 0) {
-
+			// valida si existe un carro de compras
+			if (idFactura > 0) {
+				// devuelve el id de la factura eliminada
 				return JPADAOFactory.getFactory().getFacturaDAO()
 						.EliminarFactura(idFactura);
 			} else {
-				return 0;
+				return -1;
 			}
 		}
 
 		@Override
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
-			if (result != 0) {
+			if (result > 0) {
 				Toast.makeText(context, "Carro de compras eliminado",
 						Toast.LENGTH_SHORT).show();
-				Intent intento = new Intent(context, Compras.class);
+				Intent intento = new Intent(context, ComprasActivity.class);
 				intento.putExtra("idAgencia", idAgencia);
 				intento.putExtra("nombreAgencia", nombreAgencia);
 				intento.putExtra("idFactura", 0);
 				intento.putExtra("idCliente", idCliente);
+
+				// inicia la actividad
 				startActivity(intento);
 				finish();
-			} else {
+			} else if (result == -1) {
 				Toast.makeText(context, "No existe carro de compras",
+						Toast.LENGTH_SHORT).show();
+			} else if (result == 0) {
+				Toast.makeText(context, "Existe un error en el servidor",
 						Toast.LENGTH_SHORT).show();
 			}
 			pDialog.dismiss();
@@ -241,14 +274,13 @@ public class Compras extends ListActivity {
 	}
 
 	/**
-	 * Elimina el carro de compras, seteando la factura a eliminado = true
+	 * Tarea asincrona para listar los productos del carro de compras
+	 * 
+	 * @author Carlos Iniguez
+	 * 
 	 */
-	public void btnEliminar_onClick() {
-		new EliminarFacturaTask(this).execute();
-	}
-
 	private class ListarProductosTask extends
-			AsyncTask<Void, Integer, List<ItemProducto>> {
+			AsyncTask<Void, Integer, List<FacturaDetalle>> {
 		ProgressDialog pDialog;
 		Context context;
 
@@ -268,10 +300,10 @@ public class Compras extends ListActivity {
 		}
 
 		@Override
-		protected List<ItemProducto> doInBackground(Void... params) {
+		protected List<FacturaDetalle> doInBackground(Void... params) {
 			// obtiene la lista de Productos a traves del servicio REST
-			listaProductos = JPADAOFactory.getFactory().getFacturaDAO()
-					.getCarroActual(Compras.this.idFactura);
+			listaProductos = JPADAOFactory.getFactory().getFacturaDetalleDAO()
+					.getCarroActual(idFactura);
 
 			if (listaProductos != null) {
 				return listaProductos;
@@ -282,18 +314,19 @@ public class Compras extends ListActivity {
 		}
 
 		@Override
-		protected void onPostExecute(List<ItemProducto> lista) {
+		protected void onPostExecute(List<FacturaDetalle> lista) {
 			super.onPostExecute(lista);
 			if (lista != null) {
-				Compras.this.lblTotal.setText("Total: "
-						+ lista.get(0).getTotalFactura());
-				totalFactura = lista.get(0).getTotalFactura();
+				lblTotal.setText("Total: "
+						+ lista.get(0).getFactura().getTotal());
+				totalFactura = lista.get(0).getFactura().getTotal();
 			} else {
-				Compras.this.lblTotal.setText("Total: " + 0);
+				lblTotal.setText("Total: " + 0);
 				totalFactura = 0;
 			}
 			// Seteamos el adaptador para llenar al ListView
-			setListAdapter(new AdaptadorListaProductos(Compras.this, lista));
+			setListAdapter(new AdaptadorListaProductos(ComprasActivity.this,
+					lista));
 			pDialog.dismiss();
 
 		}
