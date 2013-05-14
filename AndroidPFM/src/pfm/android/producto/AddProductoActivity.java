@@ -2,7 +2,7 @@ package pfm.android.producto;
 
 import pfm.android.R;
 import pfm.android.compras.ComprasActivity;
-import pfm.android.jpa.JPADAOFactory;
+import pfm.android.rest.RESTFactory;
 import pfm.entidades.BodegaDetalle;
 import pfm.entidades.Descuento;
 import pfm.entidades.FacturaDetalle;
@@ -122,13 +122,11 @@ public class AddProductoActivity extends Activity {
 		@Override
 		protected FacturaDetalle doInBackground(Void... params) {
 
-			bodegaDetalle = JPADAOFactory.getFactory().getBodegaDetalleDAO()
+			bodegaDetalle = new RESTFactory().getBodegaDetalleDAO()
 					.getBodegaDetalleById(idBodegaDetalle);
-			des = JPADAOFactory
-					.getFactory()
-					.getDescuentoDAO()
-					.getDescuentoByProducto(bodegaDetalle.getProducto().getId());
-			facturaDetalle = JPADAOFactory.getFactory().getFacturaDetalleDAO()
+			des = new RESTFactory().getDescuentoDAO().getDescuentoByProducto(
+					bodegaDetalle.getProducto().getId());
+			facturaDetalle = new RESTFactory().getFacturaDetalleDAO()
 					.setTotales(bodegaDetalle, des, 1);
 			return facturaDetalle;
 		}
@@ -161,8 +159,8 @@ public class AddProductoActivity extends Activity {
 	}
 
 	public void calcularTotales() {
-		facturaDetalle = JPADAOFactory.getFactory().getFacturaDetalleDAO()
-				.setTotales(bodegaDetalle, des, cantidad.getValue());
+		facturaDetalle = new RESTFactory().getFacturaDetalleDAO().setTotales(
+				bodegaDetalle, des, cantidad.getValue());
 		nombre.setText(facturaDetalle.getBodegaDetalle().getProducto()
 				.getNombre());
 		precio.setText(String.valueOf(facturaDetalle.getPrecio()));
@@ -197,9 +195,7 @@ public class AddProductoActivity extends Activity {
 			boolean existeProducto = false;
 			if (idFactura != 0) {
 				// validar que no exista el mismo producto en el carro de
-				existeProducto = JPADAOFactory
-						.getFactory()
-						.getFacturaDetalleDAO()
+				existeProducto = new RESTFactory().getFacturaDetalleDAO()
 						.existeProductoByFacturaDetalle(idFactura,
 								idBodegaDetalle);
 			}
@@ -212,9 +208,7 @@ public class AddProductoActivity extends Activity {
 					} else {
 						descuentoId = 0;
 					}
-					return JPADAOFactory
-							.getFactory()
-							.getFacturaDetalleDAO()
+					return new RESTFactory().getFacturaDetalleDAO()
 							.anadirProducto(idFactura, idAgencia, idCliente,
 									idBodegaDetalle, descuentoId,
 									facturaDetalle.getCantidad());

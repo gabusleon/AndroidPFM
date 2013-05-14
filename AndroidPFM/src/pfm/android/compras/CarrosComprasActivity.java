@@ -2,7 +2,7 @@ package pfm.android.compras;
 
 import java.util.List;
 import pfm.android.R;
-import pfm.android.jpa.JPADAOFactory;
+import pfm.android.rest.RESTFactory;
 import pfm.entidades.Factura;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -148,8 +148,8 @@ public class CarrosComprasActivity extends ListActivity {
 		@Override
 		protected List<Factura> doInBackground(Void... params) {
 			// obtiene la lista de Productos a traves del servicio REST
-			listaCarros = JPADAOFactory.getFactory().getFacturaDAO()
-					.getCarrosCompra(idCliente, idAgencia);
+			listaCarros = new RESTFactory().getFacturaDAO().getCarrosCompra(
+					idCliente, idAgencia);
 			if (listaCarros != null) {
 				return listaCarros;
 			} else {

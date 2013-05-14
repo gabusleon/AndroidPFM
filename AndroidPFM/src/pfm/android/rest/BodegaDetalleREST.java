@@ -1,4 +1,4 @@
-package pfm.android.jpa;
+package pfm.android.rest;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -8,7 +8,6 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import android.util.Log;
-import pfm.android.dao.BodegaDetalleDAO;
 import pfm.entidades.Agencia;
 import pfm.entidades.Bodega;
 import pfm.entidades.BodegaDetalle;
@@ -17,14 +16,18 @@ import pfm.entidades.Empresa;
 import pfm.entidades.Marca;
 import pfm.entidades.Producto;
 
-public class JPABodegaDetalleDAO extends JPAGenericDAO<BodegaDetalle, Integer>
-		implements BodegaDetalleDAO {
+public class BodegaDetalleREST extends GenericREST {
 
-	public JPABodegaDetalleDAO() {
-		super(BodegaDetalle.class, "bodegaDetalle");
+	public BodegaDetalleREST() {
+		super("bodegaDetalle");
 	}
 
-	@Override
+	/**
+	 * Realiza el mapeo del objeto JSON a la entidad BodegaDetalle
+	 * 
+	 * @param objJSON
+	 * @return BodegaDetalle
+	 */
 	public BodegaDetalle getJSONParserBodegaDetalle(JSONObject objJSON) {
 		try {
 			BodegaDetalle bodegaDetalle = new BodegaDetalle();
@@ -47,8 +50,8 @@ public class JPABodegaDetalleDAO extends JPAGenericDAO<BodegaDetalle, Integer>
 			// genera la entidad agencia para agregarla a la bodega
 			JSONObject age = bod.getJSONObject("agencia");
 			Agencia agencia = new Agencia();
-			agencia = JPADAOFactory.getFactory().getAgenciaDAO()
-					.getJSONParserAgencia(age);
+			agencia = new RESTFactory().getAgenciaDAO().getJSONParserAgencia(
+					age);
 
 			// genera la entidad empresa para agregarla a la agencia
 			JSONObject emp = age.getJSONObject("empresa");
@@ -101,7 +104,12 @@ public class JPABodegaDetalleDAO extends JPAGenericDAO<BodegaDetalle, Integer>
 		}
 	}
 
-	@Override
+	/**
+	 * busca la entidad bodegaDetalle
+	 * 
+	 * @param id
+	 * @return BodegaDetalle
+	 */
 	public BodegaDetalle getBodegaDetalleById(int id) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet del = new HttpGet(uri + urlREST + "/getBodegaDetalleById/" + id);

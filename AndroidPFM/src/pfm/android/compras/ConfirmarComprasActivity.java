@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import pfm.android.R;
-import pfm.android.jpa.JPADAOFactory;
+import pfm.android.rest.RESTFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -97,7 +97,7 @@ public class ConfirmarComprasActivity extends Activity {
 
 		@Override
 		protected Map<Integer, String> doInBackground(Void... params) {
-			mapaMedioPago = JPADAOFactory.getFactory().getMedioPagoDAO()
+			mapaMedioPago = new RESTFactory().getMedioPagoDAO()
 					.listMedioPago();
 			return mapaMedioPago;
 		}
@@ -142,7 +142,7 @@ public class ConfirmarComprasActivity extends Activity {
 
 		@Override
 		protected Integer doInBackground(Void... params) {
-			totalFacturaActual = JPADAOFactory.getFactory().getFacturaDAO()
+			totalFacturaActual = new RESTFactory().getFacturaDAO()
 					.ConfirmaTotal(idFactura, totalFactura);
 			// confirma totales iguales
 			if (totalFacturaActual == totalFactura) {
@@ -158,8 +158,8 @@ public class ConfirmarComprasActivity extends Activity {
 					}
 				}
 
-				int id = JPADAOFactory.getFactory().getFacturaDAO()
-						.ConfirmaCompra(idFactura, idMedioDePago);
+				int id = new RESTFactory().getFacturaDAO().ConfirmaCompra(
+						idFactura, idMedioDePago);
 				if (id == 0) {
 					// error en el servicio web
 					return -1;

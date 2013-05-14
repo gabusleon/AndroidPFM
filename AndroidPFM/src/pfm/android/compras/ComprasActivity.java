@@ -5,8 +5,8 @@ import java.util.List;
 import com.google.zxing.client.android.CaptureActivity;
 
 import pfm.android.R;
-import pfm.android.jpa.JPADAOFactory;
 import pfm.android.producto.EditProductoActivity;
+import pfm.android.rest.RESTFactory;
 import pfm.entidades.FacturaDetalle;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -240,8 +240,8 @@ public class ComprasActivity extends ListActivity {
 			// valida si existe un carro de compras
 			if (idFactura > 0) {
 				// devuelve el id de la factura eliminada
-				return JPADAOFactory.getFactory().getFacturaDAO()
-						.EliminarFactura(idFactura);
+				return new RESTFactory().getFacturaDAO().EliminarFactura(
+						idFactura);
 			} else {
 				return -1;
 			}
@@ -302,7 +302,7 @@ public class ComprasActivity extends ListActivity {
 		@Override
 		protected List<FacturaDetalle> doInBackground(Void... params) {
 			// obtiene la lista de Productos a traves del servicio REST
-			listaProductos = JPADAOFactory.getFactory().getFacturaDetalleDAO()
+			listaProductos = new RESTFactory().getFacturaDetalleDAO()
 					.getCarroActual(idFactura);
 
 			if (listaProductos != null) {

@@ -9,7 +9,7 @@ import java.util.Map;
 
 import pfm.android.R;
 import pfm.android.compras.ComprasActivity;
-import pfm.android.jpa.JPADAOFactory;
+import pfm.android.rest.RESTFactory;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -100,8 +100,7 @@ public class MainActivity extends Activity {
 		@Override
 		protected Map<Integer, String> doInBackground(Void... params) {
 			// obtiene el id, nombre de las agencias a traves del servicio REST
-			mapaAgencias = JPADAOFactory.getFactory().getAgenciaDAO()
-					.listAgencias();
+			mapaAgencias = new RESTFactory().getAgenciaDAO().listAgencias();
 			return mapaAgencias;
 		}
 
@@ -161,11 +160,9 @@ public class MainActivity extends Activity {
 		@Override
 		protected Integer doInBackground(Void... params) {
 			// envia como resultado el id del usuario
-			int id = JPADAOFactory
-					.getFactory()
-					.getUsuarioDAO()
-					.login(username.getText().toString(),
-							password.getText().toString());
+			int id = new RESTFactory().getUsuarioDAO().login(
+					username.getText().toString(),
+					password.getText().toString());
 			return id;
 		}
 

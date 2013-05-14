@@ -1,4 +1,4 @@
-package pfm.android.jpa;
+package pfm.android.rest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,42 +13,22 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
-import pfm.android.dao.AgenciaDAO;
-import pfm.entidades.Agencia;
 
-public class JPAAgenciaDAO extends JPAGenericDAO<Agencia, Integer> implements
-		AgenciaDAO {
+public class MedioPagoREST extends GenericREST {
 
-	public JPAAgenciaDAO() {
-		super(Agencia.class, "agencia");
-
-	}
-
-	@Override
-	public Agencia getJSONParserAgencia(JSONObject objJSON) {
-		try {
-			Agencia agencia = new Agencia();
-			agencia.setId(objJSON.getInt("id"));
-			agencia.setNombre(objJSON.getString("nombre"));
-			agencia.setDireccion(objJSON.getString("direccion"));
-			agencia.setEliminado(objJSON.getBoolean("eliminado"));
-			agencia.setTelefono(objJSON.getString("telefono"));
-
-			return agencia;
-		} catch (Exception e) {
-			return null;
-		}
+	public MedioPagoREST() {
+		super("medioDePago");
 	}
 
 	/**
-	 * Envia el listado de agencias en una Map<Integer, String>
+	 * Listado de Medio de pagos
+	 * 
+	 * @return mapa de medio de pagos
 	 */
 	@SuppressLint("UseSparseArrays")
-	@Override
-	public Map<Integer, String> listAgencias() {
-
+	public Map<Integer, String> listMedioPago() {
 		HttpClient httpClient = new DefaultHttpClient();
-		HttpGet del = new HttpGet(this.uri + this.urlREST + "/listAgencias");
+		HttpGet del = new HttpGet(this.uri + this.urlREST + "/listMedioPago");
 		del.setHeader("content-type", "application/json");
 
 		try {
@@ -57,9 +37,9 @@ public class JPAAgenciaDAO extends JPAGenericDAO<Agencia, Integer> implements
 
 			JSONObject objJSON = new JSONObject(respStr);
 			Map<Integer, String> lista = new HashMap<Integer, String>();
-			JSONArray j = objJSON.optJSONArray("agencia");
+			JSONArray j = objJSON.optJSONArray("medioDePago");
 			if (j != null) {
-				JSONArray arrJSON = objJSON.getJSONArray("agencia");
+				JSONArray arrJSON = objJSON.getJSONArray("medioDePago");
 
 				for (int i = 0; i < arrJSON.length(); i++) {
 					JSONObject obj = arrJSON.getJSONObject(i);
@@ -68,14 +48,14 @@ public class JPAAgenciaDAO extends JPAGenericDAO<Agencia, Integer> implements
 					lista.put(key, value);
 				}
 			} else {
-				JSONObject obj = objJSON.getJSONObject("agencia");
+				JSONObject obj = objJSON.getJSONObject("medioDePago");
 				lista.put(obj.getInt("id"), obj.getString("nombre"));
 			}
 			return lista;
 		} catch (Exception ex) {
-			Log.e("Error", "JPAAgenciaDAO <<listAgencias>>", ex);
+			Log.e("Error", "JPAMedioPagoDAO <<listMedioPago>>", ex);
 			return null;
 		}
-	}
 
+	}
 }

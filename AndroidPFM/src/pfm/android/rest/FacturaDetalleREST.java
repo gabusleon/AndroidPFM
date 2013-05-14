@@ -1,4 +1,4 @@
-package pfm.android.jpa;
+package pfm.android.rest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,19 +13,22 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-import pfm.android.dao.FacturaDetalleDAO;
 import pfm.entidades.BodegaDetalle;
 import pfm.entidades.Descuento;
 import pfm.entidades.FacturaDetalle;
 
-public class JPAFacturaDetalleDAO extends
-		JPAGenericDAO<FacturaDetalle, Integer> implements FacturaDetalleDAO {
+public class FacturaDetalleREST extends GenericREST {
 
-	public JPAFacturaDetalleDAO() {
-		super(FacturaDetalle.class, "facturaDetalle");
+	public FacturaDetalleREST() {
+		super("facturaDetalle");
 	}
 
-	@Override
+	/**
+	 * Realiza el mapeo del objeto JSON a la entidad FacturaDetalle
+	 * 
+	 * @param objJSON
+	 * @return FacturaDetalle
+	 */
 	public FacturaDetalle getJSONParserFacturaDetalle(JSONObject objJSON) {
 		try {
 			// mapea la entidad facturaDetalle a partir del JSON
@@ -40,14 +43,14 @@ public class JPAFacturaDetalleDAO extends
 
 			// genera la entidad bodegaDetalle
 			JSONObject bodDetJSON = objJSON.getJSONObject("bodegaDetalle");
-			facturaDetalle.setBodegaDetalle(JPADAOFactory.getFactory()
-					.getBodegaDetalleDAO()
-					.getJSONParserBodegaDetalle(bodDetJSON));
+			facturaDetalle.setBodegaDetalle(new RESTFactory()
+					.getBodegaDetalleDAO().getJSONParserBodegaDetalle(
+							bodDetJSON));
 
 			// genera la entidad factura solo con su id
 			JSONObject facJSON = objJSON.getJSONObject("factura");
-			facturaDetalle.setFactura(JPADAOFactory.getFactory()
-					.getFacturaDAO().getJSONParserFactura(facJSON));
+			facturaDetalle.setFactura(new RESTFactory().getFacturaDAO()
+					.getJSONParserFactura(facJSON));
 
 			return facturaDetalle;
 		} catch (Exception e) {
@@ -55,7 +58,12 @@ public class JPAFacturaDetalleDAO extends
 		}
 	}
 
-	@Override
+	/**
+	 * Obtiene la entidad FacturaDetalle enviando como parametro el id
+	 * 
+	 * @param id
+	 * @return FacturaDetalle
+	 */
 	public FacturaDetalle getFacturaDetalleById(int id) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet del = new HttpGet(uri + urlREST + "/getFacturaDetalleById/"
@@ -77,7 +85,14 @@ public class JPAFacturaDetalleDAO extends
 		}
 	}
 
-	@Override
+	/**
+	 * Realiza los calculos de los costos de una FacturaDetalle
+	 * 
+	 * @param bodegaDetalle
+	 * @param descuento
+	 * @param cantidad
+	 * @return FacturaDetalle
+	 */
 	public FacturaDetalle setTotales(BodegaDetalle bodegaDetalle,
 			Descuento descuento, int cantidad) {
 		double des = 0;
@@ -108,7 +123,17 @@ public class JPAFacturaDetalleDAO extends
 		return facturaDetalle;
 	}
 
-	@Override
+	/**
+	 * Inserta un producto en la FacturaDetalle
+	 * 
+	 * @param idFactura
+	 * @param idAgencia
+	 * @param idCliente
+	 * @param idBodegaDetalle
+	 * @param idDescuento
+	 * @param cantidad
+	 * @return idFactura
+	 */
 	public int anadirProducto(int idFactura, int idAgencia, int idCliente,
 			int idBodegaDetalle, int idDescuento, int cantidad) {
 
@@ -131,7 +156,14 @@ public class JPAFacturaDetalleDAO extends
 		}
 	}
 
-	@Override
+	/**
+	 * Actualiza la cantidad de un producto en la FacturaDetalle
+	 * 
+	 * @param idFacturaDetalle
+	 * @param idDescuento
+	 * @param cantidad
+	 * @return idFactura
+	 */
 	public int actualizarProducto(int idFacturaDetalle, int idDescuento,
 			int cantidad) {
 		HttpClient httpClient = new DefaultHttpClient();
@@ -152,7 +184,12 @@ public class JPAFacturaDetalleDAO extends
 		}
 	}
 
-	@Override
+	/**
+	 * Elimina fisicamente la FacturaDetalle
+	 * 
+	 * @param idFacturaDetalle
+	 * @return idFactura
+	 */
 	public int eliminarProducto(int idFacturaDetalle) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet del = new HttpGet(uri + urlREST + "/delete/" + idFacturaDetalle);
@@ -171,7 +208,13 @@ public class JPAFacturaDetalleDAO extends
 		}
 	}
 
-	@Override
+	/**
+	 * Verifica que el producto no este ingresado en otra FacturaDetalle
+	 * 
+	 * @param idFactura
+	 * @param idBodegaDetalle
+	 * @return true/false
+	 */
 	public boolean existeProductoByFacturaDetalle(int idFactura,
 			int idBodegaDetalle) {
 		HttpClient httpClient = new DefaultHttpClient();
@@ -208,7 +251,6 @@ public class JPAFacturaDetalleDAO extends
 	 * @return listado de facturaDetalle
 	 * @author Carlos Iniguez
 	 */
-	@Override
 	public List<FacturaDetalle> getCarroActual(int idFactura) {
 
 		List<FacturaDetalle> listaProductos = new ArrayList<FacturaDetalle>();

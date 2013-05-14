@@ -1,4 +1,4 @@
-package pfm.android.jpa;
+package pfm.android.rest;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,18 +14,21 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
-import pfm.android.dao.FacturaDAO;
 import pfm.entidades.Factura;
 
-public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
-		FacturaDAO {
+public class FacturaREST extends GenericREST {
 
-	public JPAFacturaDAO() {
-		super(Factura.class, "factura");
+	public FacturaREST() {
+		super("factura");
 	}
 
+	/**
+	 * Realiza el mapeo del objeto JSON a la entidad Factura
+	 * 
+	 * @param objJSON
+	 * @return Factura
+	 */
 	@SuppressLint("SimpleDateFormat")
-	@Override
 	public Factura getJSONParserFactura(JSONObject objJSON) {
 		try {
 			// mapea la entidad factura a partir del JSON
@@ -46,7 +49,7 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
 			factura.setFecha(fc1);
 			// obtiene la entidad agencia del objeto JSON
 			JSONObject ageJSON = objJSON.getJSONObject("agencia");
-			factura.setAgencia(JPADAOFactory.getFactory().getAgenciaDAO()
+			factura.setAgencia(new RESTFactory().getAgenciaDAO()
 					.getJSONParserAgencia(ageJSON));
 			return factura;
 		} catch (Exception e) {
@@ -54,7 +57,12 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
 		}
 	}
 
-	@Override
+	/**
+	 * Obtiene la lista de Carros del Cliente (Facturas pendientes)
+	 * 
+	 * @author Carlos Iniguez
+	 * @return Lista de Facturas
+	 */
 	public List<Factura> getCarrosCompra(int idUsuario, int idAgencia) {
 		List<Factura> listaCarros = new ArrayList<Factura>();
 
@@ -74,14 +82,14 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
 
 				for (int i = 0; i < carrosJSON.length(); i++) {
 					JSONObject carroJSON = carrosJSON.getJSONObject(i);
-					factura = JPADAOFactory.getFactory().getFacturaDAO()
+					factura = new RESTFactory().getFacturaDAO()
 							.getJSONParserFactura(carroJSON);
 					listaCarros.add(factura);
 				}
 
 			} else {
 				JSONObject pJSON = respJSON.getJSONObject("factura");
-				factura = JPADAOFactory.getFactory().getFacturaDAO()
+				factura = new RESTFactory().getFacturaDAO()
 						.getJSONParserFactura(pJSON);
 				listaCarros.add(factura);
 
@@ -101,7 +109,6 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
 	 * @author Gabus
 	 * 
 	 */
-	@Override
 	public int EliminarFactura(int id) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet del = new HttpGet(uri + urlREST + "/delete/" + id);
@@ -120,7 +127,14 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
 		}
 	}
 
-	@Override
+	/**
+	 * Confirma que el total enviado sea igual al total generado en la fecha
+	 * actual
+	 * 
+	 * @param id
+	 * @param precioTotal
+	 * @return el totalFactura generado
+	 */
 	public double ConfirmaTotal(int id, double totalFatura) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet del = new HttpGet(uri + urlREST + "/confirmaTotal/" + id + "/"
@@ -140,7 +154,14 @@ public class JPAFacturaDAO extends JPAGenericDAO<Factura, Integer> implements
 		}
 	}
 
-	@Override
+	/**
+	 * Confirma la compra, seteando pendiente a false, pagado a true, y medio de
+	 * pago
+	 * 
+	 * @param idFactura
+	 * @param idMedioDePago
+	 * @return id de la factura
+	 */
 	public int ConfirmaCompra(int idFactura, int idMedioDePago) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet del = new HttpGet(uri + urlREST + "/confirmaCompra/"

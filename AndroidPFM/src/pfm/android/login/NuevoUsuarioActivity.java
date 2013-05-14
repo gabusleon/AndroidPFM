@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import pfm.android.R;
-import pfm.android.jpa.JPADAOFactory;
+import pfm.android.rest.RESTFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -98,7 +98,7 @@ public class NuevoUsuarioActivity extends Activity {
 					telefono.getText().toString(), fc2,
 					email.getText().toString(), username.getText().toString(),
 					password.getText().toString() };
-			return JPADAOFactory.getFactory().getUsuarioDAO()
+			return new RESTFactory().getUsuarioDAO()
 					.create(atributos, values);
 
 		}

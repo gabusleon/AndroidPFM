@@ -2,7 +2,7 @@ package pfm.android.producto;
 
 import pfm.android.R;
 import pfm.android.compras.ComprasActivity;
-import pfm.android.jpa.JPADAOFactory;
+import pfm.android.rest.RESTFactory;
 import pfm.entidades.BodegaDetalle;
 import pfm.entidades.Descuento;
 import pfm.entidades.FacturaDetalle;
@@ -124,19 +124,15 @@ public class EditProductoActivity extends Activity {
 		@Override
 		protected FacturaDetalle doInBackground(Void... params) {
 			// devuelve facturaDetalle
-			facturaDetalle = JPADAOFactory.getFactory().getFacturaDetalleDAO()
+			facturaDetalle = new RESTFactory().getFacturaDetalleDAO()
 					.getFacturaDetalleById(idFacturaDetalle);
 			// setea para el calculo de totales, cuando cambie el valor de la
 			// cantidad
-			bodegaDetalle = JPADAOFactory
-					.getFactory()
-					.getBodegaDetalleDAO()
+			bodegaDetalle = new RESTFactory().getBodegaDetalleDAO()
 					.getBodegaDetalleById(
 							facturaDetalle.getBodegaDetalle().getId());
-			des = JPADAOFactory
-					.getFactory()
-					.getDescuentoDAO()
-					.getDescuentoByProducto(bodegaDetalle.getProducto().getId());
+			des = new RESTFactory().getDescuentoDAO().getDescuentoByProducto(
+					bodegaDetalle.getProducto().getId());
 
 			return facturaDetalle;
 		}
@@ -164,8 +160,8 @@ public class EditProductoActivity extends Activity {
 	}
 
 	public void calcularTotales() {
-		facturaDetalle = JPADAOFactory.getFactory().getFacturaDetalleDAO()
-				.setTotales(bodegaDetalle, des, cantidad.getValue());
+		facturaDetalle = new RESTFactory().getFacturaDetalleDAO().setTotales(
+				bodegaDetalle, des, cantidad.getValue());
 		nombre.setText(facturaDetalle.getBodegaDetalle().getProducto()
 				.getNombre());
 		precio.setText(String.valueOf(facturaDetalle.getPrecio()));
@@ -205,9 +201,7 @@ public class EditProductoActivity extends Activity {
 				} else {
 					descuentoId = 0;
 				}
-				return JPADAOFactory
-						.getFactory()
-						.getFacturaDetalleDAO()
+				return new RESTFactory().getFacturaDetalleDAO()
 						.actualizarProducto(idFacturaDetalle, descuentoId,
 								facturaDetalle.getCantidad());
 
@@ -267,8 +261,8 @@ public class EditProductoActivity extends Activity {
 		@Override
 		protected Integer doInBackground(Void... params) {
 
-			return JPADAOFactory.getFactory().getFacturaDetalleDAO()
-					.eliminarProducto(idFacturaDetalle);
+			return new RESTFactory().getFacturaDetalleDAO().eliminarProducto(
+					idFacturaDetalle);
 
 		}
 

@@ -1,4 +1,4 @@
-package pfm.android.jpa;
+package pfm.android.rest;
 
 import java.util.Date;
 
@@ -10,19 +10,21 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import android.util.Log;
-
-import pfm.android.dao.DescuentoDAO;
 import pfm.entidades.Descuento;
 
-public class JPADescuentoDAO extends JPAGenericDAO<Descuento, Integer>
-		implements DescuentoDAO {
+public class DescuentoREST extends GenericREST {
 
-	public JPADescuentoDAO() {
-		super(Descuento.class, "descuento");
+	public DescuentoREST() {
+		super("descuento");
 
 	}
 
-	@Override
+	/**
+	 * Realiza el mapeo del objeto JSON a la entidad Descuento
+	 * 
+	 * @param objJSON
+	 * @return Descuento
+	 */
 	public Descuento getJSONParserDescuento(JSONObject objJSON) {
 		try {
 			// mapea la entidad descuento a partir del JSON
@@ -40,7 +42,12 @@ public class JPADescuentoDAO extends JPAGenericDAO<Descuento, Integer>
 		}
 	}
 
-	@Override
+	/**
+	 * Obtiene el Descuento enviando como parametro el producto
+	 * 
+	 * @param idProducto
+	 * @return Descuento
+	 */
 	public Descuento getDescuentoByProducto(int idProducto) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet del = new HttpGet(uri + urlREST + "/getDescuentoByProducto/"
