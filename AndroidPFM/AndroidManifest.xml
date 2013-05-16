@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="pfm.android.login.MainActivity"
+            android:name="pfm.android.login.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,6 +50,10 @@
         <activity
             android:name="pfm.android.compras.ConfirmarComprasActivity"
             android:label="@string/title_activity_medio_de_pago" >
+        </activity>
+        <activity
+            android:name="pfm.android.login.LogoutActivity"
+            android:label="@string/title_activity_logout" >
         </activity>
     </application>
 

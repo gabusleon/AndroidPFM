@@ -169,7 +169,7 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/btn_aceptar"
+            android:id="@+id/btn_logout_aceptar"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
@@ -183,7 +183,7 @@
             android:background="#aaa" />
 
         <Button
-            android:id="@+id/btn_nuevo_usuario"
+            android:id="@+id/btn_logout_cancelar"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"

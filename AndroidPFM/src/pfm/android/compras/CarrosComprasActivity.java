@@ -1,6 +1,7 @@
 package pfm.android.compras;
 
 import java.util.List;
+
 import pfm.android.R;
 import pfm.android.rest.RESTFactory;
 import pfm.entidades.Factura;
@@ -34,25 +35,25 @@ public class CarrosComprasActivity extends ListActivity {
 		setContentView(R.layout.activity_carros_compras);
 		// Recepcion de Parametros
 		Bundle parametros = getIntent().getExtras();
-		this.idAgencia = parametros.getInt("idAgencia");
-		this.idFactura = parametros.getInt("idFactura");
-		this.idCliente = parametros.getInt("idCliente");
-		this.nombreAgencia = parametros.getString("nombreAgencia");
+		idAgencia = parametros.getInt("idAgencia");
+		idFactura = parametros.getInt("idFactura");
+		idCliente = parametros.getInt("idCliente");
+		nombreAgencia = parametros.getString("nombreAgencia");
 
 		// llama a tarea asincrona para rellenar la lista de carros
 		new ListarCarrosTask(this).execute();
 
 		// CONTROLES DE LA VISTA
 
-		this.lblAgencia = (TextView) findViewById(R.id.lblAgencia_carros);
-		this.lblAgencia.setText(this.nombreAgencia);
+		lblAgencia = (TextView) findViewById(R.id.lblAgencia_carros);
+		lblAgencia.setText(nombreAgencia);
 
-		this.lblTitulo = (TextView) findViewById(R.id.lblTitulo_carros);
-		this.lblTitulo.setText("Mis Carros Pendientes");
+		lblTitulo = (TextView) findViewById(R.id.lblTitulo_carros);
+		lblTitulo.setText("Mis Carros Pendientes");
 
 		// btnCarro
-		this.btnCarro = (Button) findViewById(R.id.btnCarro_carro);
-		this.btnCarro.setOnClickListener(new View.OnClickListener() {
+		btnCarro = (Button) findViewById(R.id.btnCarro_carro);
+		btnCarro.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				btnCarro_onClick();
@@ -61,9 +62,9 @@ public class CarrosComprasActivity extends ListActivity {
 		});
 
 		// btnCarros
-		this.btnCarros = (Button) findViewById(R.id.btnCarros_carro);
-		this.btnCarros.setBackgroundColor(BIND_IMPORTANT);
-		this.btnCarros.setOnClickListener(new View.OnClickListener() {
+		btnCarros = (Button) findViewById(R.id.btnCarros_carro);
+		btnCarros.setBackgroundColor(BIND_IMPORTANT);
+		btnCarros.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				btnCarros_onClick();
@@ -188,5 +189,5 @@ public class CarrosComprasActivity extends ListActivity {
 	public void onBackPressed() {
 		cancelar();
 	}
-
+	
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.zxing.client.android.CaptureActivity;
 
 import pfm.android.R;
+import pfm.android.login.LogoutActivity;
 import pfm.android.producto.EditProductoActivity;
 import pfm.android.rest.RESTFactory;
 import pfm.entidades.FacturaDetalle;
@@ -14,6 +15,8 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -335,5 +338,31 @@ public class ComprasActivity extends ListActivity {
 	@Override
 	public void onBackPressed() {
 		finish();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.carros_compras, menu);
+		return true;
+
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		super.onMenuItemSelected(featureId, item);
+		switch (item.getItemId()) {
+		case R.id.menu_logout:
+			Intent intento = new Intent(this, LogoutActivity.class);
+			intento.putExtra("idAgencia", idAgencia);
+			intento.putExtra("nombreAgencia", nombreAgencia);
+			intento.putExtra("idFactura", idFactura);
+			intento.putExtra("idCliente", idCliente);
+
+			// inicia la actividad
+			startActivity(intento);
+			finish();
+			break;
+		}
+		return true;
 	}
 }

@@ -166,7 +166,7 @@ escanearlo.</string>
     <string name="addProducto_descuento">Descuento</string>
     <string name="addProducto_subtotal">Subtotal</string>
     <string name="addProducto_iva">Iva</string>
-    <string name="addProducto_total">Total</string>    
+    <string name="addProducto_total">Total</string>
     <string name="title_activity_edit_producto">Editar Producto</string>
     <string name="title_activity_carro">Mi Carro de Compras</string>
     <string name="title_activity_carros">Mis Carros</string>
@@ -182,5 +182,9 @@ escanearlo.</string>
     <string name="confirmarCompras_total">Total</string>
     <string name="confirmarCompras_pago">Medio de pago</string>
     <string name="compras_titulo">Lista de Compras</string>
+    <string name="menu_logout">Cierre de Sesion</string>
+    <string name="title_activity_logout">Cerrar Sesion</string>    
+    <string name="logout">¿Esta seguro que desea cerrar sesion?</string>
+    <string name="btn_cancelar">Cancelar</string>
 
 </resources>

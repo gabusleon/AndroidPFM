@@ -26,7 +26,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 @SuppressLint("UseSparseArrays")
-public class MainActivity extends Activity {
+public class LoginActivity extends Activity {
 
 	private EditText username;
 	private EditText password;
@@ -38,18 +38,18 @@ public class MainActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_login);
 
 		// llama a tarea asincrona para rellenar el spinner de agencuias
-		new ListaAgenciasTask(MainActivity.this).execute();
+		new ListaAgenciasTask(LoginActivity.this).execute();
 
 		// obtiene los parametros de username y password
 		username = (EditText) findViewById(R.id.username);
 		password = (EditText) findViewById(R.id.password);
 
 		// obtiene los botones
-		Button btnAceptar = (Button) findViewById(R.id.btn_aceptar);
-		Button btnNuevoUsuario = (Button) findViewById(R.id.btn_nuevo_usuario);
+		Button btnAceptar = (Button) findViewById(R.id.btn_logout_aceptar);
+		Button btnNuevoUsuario = (Button) findViewById(R.id.btn_logout_cancelar);
 
 		// agrega los listener de los botones
 		btnAceptar.setOnClickListener(new View.OnClickListener() {
