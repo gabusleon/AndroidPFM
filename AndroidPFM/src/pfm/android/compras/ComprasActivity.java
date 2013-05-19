@@ -6,7 +6,6 @@ import com.google.zxing.client.android.CaptureActivity;
 
 import pfm.android.R;
 import pfm.android.login.LogoutActivity;
-import pfm.android.producto.EditProductoActivity;
 import pfm.android.rest.RESTFactory;
 import pfm.entidades.FacturaDetalle;
 import android.os.AsyncTask;

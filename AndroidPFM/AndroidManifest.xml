@@ -32,11 +32,11 @@
             android:label="@string/title_activity_nuevo_usuario" >
         </activity>
         <activity
-            android:name="pfm.android.producto.AddProductoActivity"
+            android:name="pfm.android.compras.AddProductoActivity"
             android:label="@string/title_activity_add_producto" >
         </activity>
         <activity
-            android:name="pfm.android.producto.EditProductoActivity"
+            android:name="pfm.android.compras.EditProductoActivity"
             android:label="@string/title_activity_edit_producto" >
         </activity>
         <activity

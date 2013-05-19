@@ -1,7 +1,6 @@
-package pfm.android.producto;
+package pfm.android.compras;
 
 import pfm.android.R;
-import pfm.android.compras.ComprasActivity;
 import pfm.android.rest.RESTFactory;
 import pfm.entidades.BodegaDetalle;
 import pfm.entidades.Descuento;

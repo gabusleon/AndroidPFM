@@ -43,8 +43,8 @@ import java.io.IOException;
 import java.util.Collection;
 
 import pfm.android.R;
+import pfm.android.compras.AddProductoActivity;
 import pfm.android.compras.ComprasActivity;
-import pfm.android.producto.AddProductoActivity;
 
 /**
  * This activity opens the camera and does the actual scanning on a background
