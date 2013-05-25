@@ -152,20 +152,13 @@
         android:layout_below="@+id/linearLayout7"
         android:layout_marginTop="20dp"
         android:orientation="horizontal" >
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#aaa" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/linearLayout8"
-        android:layout_marginTop="0dp"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal" >
 
         <Button
@@ -191,5 +184,12 @@
             android:text="@string/btn_nuevo_usuario"
             android:textColor="#FFF" />
     </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/linearLayout9"
+        android:layout_alignParentLeft="true"
+        android:background="#aaa" />
 
 </RelativeLayout>

@@ -2,8 +2,9 @@ package pfm.android.rest;
 
 public class GenericREST {
 	protected String urlREST;
-	protected String uri = "http://10.0.2.2:8080/PFM/rest/";
-
+	//protected String uri = "http://10.0.2.2:8080/PFM/rest/";
+	protected String uri = "http://miw06.calamar.eui.upm.es:8080/PFM/rest/";
+	
 	public GenericREST(String urlREST) {
 		this.urlREST = urlREST;
 	}

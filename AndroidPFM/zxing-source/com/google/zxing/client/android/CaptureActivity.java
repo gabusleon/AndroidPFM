@@ -278,6 +278,7 @@ public final class CaptureActivity extends Activity implements
 			intento.putExtra("idBodegaDetalle",
 					Integer.parseInt(rawResult.getText().toString()));
 			startActivity(intento);
+			finish();
 		} else {
 			// muestra error y llama a la actividad compras
 			Toast.makeText(this, "Codigo QR incompatible", Toast.LENGTH_SHORT)
@@ -288,8 +289,9 @@ public final class CaptureActivity extends Activity implements
 			intento.putExtra("idFactura", this.idFactura);
 			intento.putExtra("idCliente", this.idCliente);
 			startActivity(intento);
+			finish();
 		}
-		finish();
+		
 	}
 
 	/**
@@ -365,7 +367,7 @@ public final class CaptureActivity extends Activity implements
 	private void resetStatusView() {
 		resultView.setVisibility(View.GONE);
 		statusView.setText(R.string.msg_default_status);
-		statusView.setVisibility(View.VISIBLE);
+		statusView.setVisibility(View.INVISIBLE);
 		viewfinderView.setVisibility(View.VISIBLE);
 		lastResult = null;
 	}
@@ -373,4 +375,21 @@ public final class CaptureActivity extends Activity implements
 	public void drawViewfinder() {
 		viewfinderView.drawViewfinder();
 	}
+	
+	public void cancelar() {
+		Toast.makeText(this, "Producto cancelado", Toast.LENGTH_SHORT).show();
+		Intent intento = new Intent(this, ComprasActivity.class);
+		intento.putExtra("idAgencia", idAgencia);
+		intento.putExtra("nombreAgencia", nombreAgencia);
+		intento.putExtra("idFactura", idFactura);
+		intento.putExtra("idCliente", idCliente);
+		startActivity(intento);
+		finish();
+	}
+
+	@Override
+	public void onBackPressed() {
+		cancelar();
+	}
+
 }

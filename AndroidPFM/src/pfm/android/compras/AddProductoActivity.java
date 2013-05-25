@@ -123,11 +123,16 @@ public class AddProductoActivity extends Activity {
 
 			bodegaDetalle = new RESTFactory().getBodegaDetalleDAO()
 					.getBodegaDetalleById(idBodegaDetalle);
-			des = new RESTFactory().getDescuentoDAO().getDescuentoByProducto(
-					bodegaDetalle.getProducto().getId());
-			facturaDetalle = new RESTFactory().getFacturaDetalleDAO()
-					.setTotales(bodegaDetalle, des, 1);
-			return facturaDetalle;
+			if (bodegaDetalle != null) {
+				des = new RESTFactory().getDescuentoDAO()
+						.getDescuentoByProducto(
+								bodegaDetalle.getProducto().getId());
+				facturaDetalle = new RESTFactory().getFacturaDetalleDAO()
+						.setTotales(bodegaDetalle, des, 1);
+				return facturaDetalle;
+			} else {
+				return null;
+			}
 		}
 
 		@Override
@@ -147,7 +152,7 @@ public class AddProductoActivity extends Activity {
 				} else {
 					Toast.makeText(context,
 							"Producto no pertenece a la agencia seleccionada",
-							Toast.LENGTH_SHORT).show();
+							Toast.LENGTH_SHORT).show();					
 				}
 			} else {
 				Toast.makeText(context, "Producto no encontrado",
