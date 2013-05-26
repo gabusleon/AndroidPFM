@@ -152,11 +152,25 @@ public class AddProductoActivity extends Activity {
 				} else {
 					Toast.makeText(context,
 							"Producto no pertenece a la agencia seleccionada",
-							Toast.LENGTH_SHORT).show();					
+							Toast.LENGTH_SHORT).show();
+					Intent intento = new Intent(context, ComprasActivity.class);
+					intento.putExtra("idAgencia", idAgencia);
+					intento.putExtra("nombreAgencia", nombreAgencia);
+					intento.putExtra("idFactura", idFactura);
+					intento.putExtra("idCliente", idCliente);
+					startActivity(intento);
+					finish();
 				}
 			} else {
 				Toast.makeText(context, "Producto no encontrado",
 						Toast.LENGTH_SHORT).show();
+				Intent intento = new Intent(context, ComprasActivity.class);
+				intento.putExtra("idAgencia", idAgencia);
+				intento.putExtra("nombreAgencia", nombreAgencia);
+				intento.putExtra("idFactura", idFactura);
+				intento.putExtra("idCliente", idCliente);
+				startActivity(intento);
+				finish();
 			}
 			pDialog.dismiss();
 		}
