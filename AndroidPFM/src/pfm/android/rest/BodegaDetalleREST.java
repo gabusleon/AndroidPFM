@@ -75,8 +75,9 @@ public class BodegaDetalleREST extends GenericREST {
 			Producto producto = new Producto();
 			producto.setEliminado(pro.getBoolean("eliminado"));
 			producto.setId(pro.getInt("id"));
-			producto.setNombre(pro.getString("nombre"));
-
+			//producto.setNombre(pro.getString("nombre"));
+			producto.setNombre(new String(pro.getString("nombre").getBytes("ISO-8859-1")));
+			
 			// genera la entidad categora para agregarla al producto
 			JSONObject cat = pro.getJSONObject("categoria");
 			Categoria categoria = new Categoria();
