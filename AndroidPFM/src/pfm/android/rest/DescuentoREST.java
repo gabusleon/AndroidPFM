@@ -1,5 +1,6 @@
 package pfm.android.rest;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.http.HttpResponse;
@@ -9,6 +10,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import pfm.entidades.Descuento;
 
@@ -25,16 +27,25 @@ public class DescuentoREST extends GenericREST {
 	 * @param objJSON
 	 * @return Descuento
 	 */
+	@SuppressLint("SimpleDateFormat")
 	public Descuento getJSONParserDescuento(JSONObject objJSON) {
 		try {
 			// mapea la entidad descuento a partir del JSON
 			Descuento descuento = new Descuento();
 			descuento.setEliminado(objJSON.getBoolean("eliminado"));
-			descuento.setFechaFin((Date) objJSON.get("fechaFin"));
-			descuento.setFechaInicio((Date) objJSON.get("fechaFin"));
 			descuento.setId(objJSON.getInt("id"));
 			descuento.setNombre(objJSON.getString("nombre"));
 			descuento.setValor(objJSON.getDouble("valor"));
+			String fechaInicioString = objJSON.getString("fechaInicio");
+			String fechaFinString = objJSON.getString("fechaFin");
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+			Date fechaInicioDate = null;
+			Date fechaFinDate = null;
+			fechaInicioDate = formatoFecha.parse(fechaInicioString);
+			fechaFinDate = formatoFecha.parse(fechaFinString);
+			descuento.setFechaFin(fechaFinDate);
+			descuento.setFechaInicio(fechaInicioDate);
+			
 
 			return descuento;
 		} catch (Exception e) {
